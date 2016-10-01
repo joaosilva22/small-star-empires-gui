@@ -27,7 +27,8 @@ MySceneGraph.prototype.onXMLReady=function()
     this.ids = [];
     
     // Here should go the calls for different functions to parse the various blocks
-    var error = this.parseGlobalsExample(rootElement);
+    var error = this.parseViews(rootElement);
+    console.log(this.views.toString());
 
     if (error != null) {
 	this.onXMLError(error);
@@ -118,16 +119,19 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	return "either zero or more than one 'views' element found.";
     }
 
-    var views = elems[0];
+    var _views = elems[0];
+    var def = this.reader.getString(_views, 'default', true);
 
-    elems = views.getElementsByTagName('perspective');
+    console.log("I am here my friend");
+    this.views = new Views();
+
+    elems = _views.getElementsByTagName('perspective');
     if (elems == null) {
 	return "perspective element is missing.";
     }
 
-    this.views = new Views();
     for (var i = 0; i < elems.length; i++) {
-	var perspective = elems[0];
+	var perspective = elems[i];
 	
 	var _from = perspective.getElementsByTagName('from');
 	if (_from == null) {
@@ -147,7 +151,7 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	    return "either zero or more than one 'to' element found.";
 	}
 
-	var id = getItem(perspective, 'id', undefined, true);
+	var id = this.reader.getString(perspective, 'id', true);
 	if (contains(this.ids, id)) {
 	    return "invalid id on 'perspective' element";
 	}
@@ -155,20 +159,22 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	    this.ids.push(id);
 	}
 
-	var near = getFloat(perspective, 'near', true);
-	var far = getFloat(perspective, 'far', true);
-	var angle = getFloat(perspective, 'angle', true);
+	var near = this.reader.getFloat(perspective, 'near', true);
+	var far = this.reader.getFloat(perspective, 'far', true);
+	var angle = this.reader.getFloat(perspective, 'angle', true);
 
-	var from = new Vector3(getFloat(_from[0], 'x', true),
-			       getFloat(_from[0], 'y', true),
-			       getFloat(_from[0], 'z', true));
+	var from = new Vector3(this.reader.getFloat(_from[0], 'x', true),
+			       this.reader.getFloat(_from[0], 'y', true),
+			       this.reader.getFloat(_from[0], 'z', true));
 	
-	var to = new Vector3(getFloat(_to[0], 'x', true),
-			     getFloat(_to[0], 'y', true),
-			     getFloat(_to[0], 'z', true));
+	var to = new Vector3(this.reader.getFloat(_to[0], 'x', true),
+			     this.reader.getFloat(_to[0], 'y', true),
+			     this.reader.getFloat(_to[0], 'z', true));
 
 	this.views.addPerspective(new Perspective(id, near, far, angle, from, to));
-    }	    
+    }
+
+    this.views.setDefault(def);
 };
 
 /*
@@ -311,3 +317,4 @@ MySceneGraph.prototype.onXMLError=function (message) {
 // Ter referências para as classes na scene
 // Verificar se todos os objectos foram loaded corretamente
 // Implementar toString em todas as 'classes'
+// Classe scene para guardar lista de ids + todas as outras classes

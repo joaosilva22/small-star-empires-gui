@@ -20,18 +20,22 @@
     <scene root="ss" axis_length="ff" />
     
     
-    <views default="ss" >
+    <views default="view0" >
     
         <!-- declaracao obrigatoria de pelo menos uma vista; -->
         <!-- se varias vistas declaradas, o default e' a -->
         <!-- primeira vista; de cada vez que se pressione a tecla v/V, -->
         <!-- a vista muda para a proxima da lista; da --> 
         <!-- ultima vista da lista volta 'a primeira -->
-        <perspective id="ss" near="ff" far="ff" angle="ff">
-            <from x="ff" y="ff" z="ff" />
-            <to x="ff" y="ff" z="ff" />
+        <perspective id="view0" near="0.1" far="100.0" angle="45.0">
+            <from x="20.0" y="20.0" z="20.0" />
+            <to x="0.0" y="0.0" z="0.0" />
         </perspective>
-        
+	
+        <perspective id="view1" near="0.1" far="100.0" angle="45.0">
+            <from x="-20.0" y="-20.0" z="-20.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>        
     </views>
     
 
