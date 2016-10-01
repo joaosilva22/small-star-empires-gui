@@ -4,6 +4,12 @@ function Vector3(x, y, z) {
     this.z = z;
 }
 
+function Vector4(x, y, z, w) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+}
+
 function RGBA(r, g, b, a) {
     this.r = r;
     this.g = g;
@@ -21,4 +27,5 @@ function contains(array, object) {
 	}
     }
     return false;
-};
+}
+

@@ -17,7 +17,7 @@
 
     <!-- deve definir-se um objeto para raiz do grafo , assim -->
     <!-- como o comprimento dos tres eixos (cilindros) -->
-    <scene root="ss" axis_length="ff" />
+    <scene root="root" axis_length="10.0" />
     
     
     <views default="view0" >
@@ -31,7 +31,7 @@
             <from x="20.0" y="20.0" z="20.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>
-	
+    
         <perspective id="view1" near="0.1" far="100.0" angle="45.0">
             <from x="-20.0" y="-20.0" z="-20.0" />
             <to x="0.0" y="0.0" z="0.0" />
@@ -39,10 +39,10 @@
     </views>
     
 
-    <illumination doublesided="tt" local="tt" >
+    <illumination doublesided="1" local="1" >
     
-        <ambient r="ff" g="ff" b="ff" a="ff" />
-        <background r="ff" g="ff" b="ff" a="ff" />
+        <ambient r="0.0" g="0.0" b="0.0" a="0.0" />
+        <background r="0.5" g="0.5" b="0.5" a="0.0" />
         
     </illumination>
     
@@ -51,20 +51,20 @@
     
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <omni id="ss" enabled="tt" >
-            <location x="ff" y="ff" z="ff" w="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+        <omni id="omni0" enabled="1" >
+            <location x="0.1" y="2.0" z="1.5" w="0.4" />
+            <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
         </omni>
         
-        <spot id="ss" enabled="tt" angle="ff" exponent="ff">
+        <spot id="spot0" enabled="1" angle="45" exponent="10">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <target x="ff" y="ff" z="ff" />
-            <location x="ff" y="ff" z="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+            <target x="0.0" y="0.0" z="0.0" />
+            <location x="20.0" y="20.0" z="20.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
         </spot>
     </lights>
     

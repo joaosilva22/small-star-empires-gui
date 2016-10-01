@@ -24,11 +24,12 @@ MySceneGraph.prototype.onXMLReady=function()
 {
     console.log("XML Loading finished.");
     var rootElement = this.reader.xmlDoc.documentElement;
-    this.ids = [];
+    
+    this.sceneInfo = new SceneInfo();
     
     // Here should go the calls for different functions to parse the various blocks
-    var error = this.parseViews(rootElement);
-    console.log(this.views.toString());
+    var error = this.parseScene(rootElement);
+    console.log(this.sceneInfo.toString());
 
     if (error != null) {
 	this.onXMLError(error);
@@ -97,13 +98,26 @@ MySceneGraph.prototype.parseScene = function(rootElement) {
     }
 
     var _scene = elems[0];
-    this.scene = {
-	root: getItem(_scene, 'root'),
-	axisLength: getFloat(_scene, 'axis_length')
-    };
+    // Should be getById probably
+    this.sceneInfo.root = this.reader.getString(_scene, 'root', true);
+    this.sceneInfo.axisLenght = this.reader.getFloat(_scene, 'axis_length', true);
 
     // parse other blocks here ?
     // ...
+    var error = this.parseViews(rootElement);
+    if (error != undefined) {
+	return error;
+    }
+
+    error = this.parseIllumination(rootElement);
+    if (error != undefined) {
+	return error;
+    }
+
+    error = this.parseLights(rootElement);
+    if (error != undefined) {
+	return error;
+    }
 };
 
 /*
@@ -121,9 +135,6 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 
     var _views = elems[0];
     var def = this.reader.getString(_views, 'default', true);
-
-    console.log("I am here my friend");
-    this.views = new Views();
 
     elems = _views.getElementsByTagName('perspective');
     if (elems == null) {
@@ -152,11 +163,11 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	}
 
 	var id = this.reader.getString(perspective, 'id', true);
-	if (contains(this.ids, id)) {
+	if (contains(this.sceneInfo.ids, id)) {
 	    return "invalid id on 'perspective' element";
 	}
 	else {
-	    this.ids.push(id);
+	    this.sceneInfo.ids.push(id);
 	}
 
 	var near = this.reader.getFloat(perspective, 'near', true);
@@ -171,10 +182,11 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 			     this.reader.getFloat(_to[0], 'y', true),
 			     this.reader.getFloat(_to[0], 'z', true));
 
-	this.views.addPerspective(new Perspective(id, near, far, angle, from, to));
+	this.sceneInfo.views.addPerspective(
+	    new Perspective(id, near, far, angle, from, to));
     }
 
-    this.views.setDefault(def);
+    this.sceneInfo.views.setDefault(def);
 };
 
 /*
@@ -210,27 +222,200 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	return "either zero or more than one 'background' element found.";
     }
 
-    var doublesided = getBoolean(_illumination, 'doublesided');
-    var local = getBoolean(_illumination, 'local');
+    var doublesided = this.reader.getBoolean(_illumination, 'doublesided');
+    var local = this.reader.getBoolean(_illumination, 'local');
 
-    var ambient = new RGBA(getFloat(_ambient[0], 'r', true),
-			   getFloat(_ambient[0], 'g', true),
-			   getFloat(_ambient[0], 'b', true),
-			   getFloat(_ambient[0], 'a', true));
+    var ambient = new RGBA(this.reader.getFloat(_ambient[0], 'r', true),
+			   this.reader.getFloat(_ambient[0], 'g', true),
+			   this.reader.getFloat(_ambient[0], 'b', true),
+			   this.reader.getFloat(_ambient[0], 'a', true));
 
-    var background = new RGBA(getFloat(_background[0], 'r', true),
-			      getFloat(_background[0], 'g', true),
-			      getFloat(_background[0], 'b', true),
-			      getFloat(_background[0], 'a', true));
+    var background = new RGBA(this.reader.getFloat(_background[0], 'r', true),
+			      this.reader.getFloat(_background[0], 'g', true),
+			      this.reader.getFloat(_background[0], 'b', true),
+			      this.reader.getFloat(_background[0], 'a', true));
 
-    this.illumination = new Illumination(doublesided, local, ambient, background);
+    this.sceneInfo.illumination =
+	new Illumination(doublesided, local, ambient, background);
 };
 
 /*
  * Method that parses elements of the 'lights' block.
  */
+MySceneGraph.prototype.parseLights = function(rootElement) {
+    var elems = rootElement.getElementsByTagName('lights');
+    if (elems == null) {
+	return "lights element is missing.";
+    }
 
-// ...
+    if (elems.length != 1) {
+	return "eiter zero or more than one 'lights' element found";
+    }
+    var lights = elems[0];
+
+    var omni = lights.getElementsByTagName('omni');
+    var spot = lights.getElementsByTagName('spot');
+    if (omni == null && spot == null) {
+	return "at least one of 'omni' or 'spot' elements should be present.";
+    }
+
+    if (omni != null) {
+	for (var i = 0; i < omni.length; i++) {
+	    var current = omni[i];
+
+	    var id = this.reader.getString(current, 'id', true);
+	    if (contains(this.sceneInfo.ids, id)) {
+ 		return "invalid id on 'omni' element";
+	    }
+	    var enabled = this.reader.getBoolean(current, 'enabled', true);
+	    var _omni = new Omni(id, enabled);
+
+	    elems = current.getElementsByTagName('location');
+	    if (elems == null) {
+		return "location element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'location' elements found.";
+	    }
+	    var location = elems[0];
+
+	    _omni.location.x = this.reader.getFloat(location, 'x', true);
+	    _omni.location.y = this.reader.getFloat(location, 'y', true);
+	    _omni.location.z = this.reader.getFloat(location, 'z', true);
+	    _omni.location.w = this.reader.getFloat(location, 'w', true);
+	    
+	    elems = current.getElementsByTagName('ambient');
+	    if (elems == null) {
+		return "ambient element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'ambient' elements found.";
+	    }
+	    var ambient = elems[0];
+
+	    _omni.ambient.r = this.reader.getFloat(ambient, 'r', true);
+	    _omni.ambient.g = this.reader.getFloat(ambient, 'g', true);
+	    _omni.ambient.b = this.reader.getFloat(ambient, 'b', true);
+	    _omni.ambient.a = this.reader.getFloat(ambient, 'a', true);
+    
+	    elems = current.getElementsByTagName('diffuse');
+	    if (elems == null) {
+		return "diffuse element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'diffuse' elements found.";
+	    }
+	    var diffuse = elems[0];
+
+	    _omni.diffuse.r = this.reader.getFloat(diffuse, 'r', true);
+	    _omni.diffuse.g = this.reader.getFloat(diffuse, 'g', true);
+	    _omni.diffuse.b = this.reader.getFloat(diffuse, 'b', true);
+	    _omni.diffuse.a = this.reader.getFloat(diffuse, 'a', true);
+
+	    elems = current.getElementsByTagName('specular');
+	    if (elems == null) {
+		return "specular element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'specular' elements found.";
+	    }
+	    var specular = elems[0];
+
+	    _omni.specular.r = this.reader.getFloat(specular, 'r', true);
+	    _omni.specular.g = this.reader.getFloat(specular, 'g', true);
+	    _omni.specular.b = this.reader.getFloat(specular, 'b', true);
+	    _omni.specular.a = this.reader.getFloat(specular, 'a', true);
+
+	    this.sceneInfo.lights.addOmni(_omni);
+	}
+    }
+
+    if (spot != null) {
+	for (var i = 0; i < spot.length; i++) {
+	    var current = spot[0];
+
+	    var id = this.reader.getString(current, 'id', true);
+	    if (contains(this.sceneInfo.ids, id)) {
+ 		return "invalid id on 'omni' element";
+	    }
+	    var enabled = this.reader.getBoolean(current, 'enabled', true);
+	    var angle = this.reader.getFloat(current, 'angle', true);
+	    var exponent = this.reader.getFloat(current, 'exponent', true);
+	    var _spot = new Spot(id, enabled, angle, exponent);
+
+	    elems = current.getElementsByTagName('target');
+	    if (elems == null) {
+		return "target element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'target' elements found.";
+	    }
+	    var target = elems[0];
+
+	    _spot.target.x = this.reader.getFloat(target, 'x', true);
+	    _spot.target.y = this.reader.getFloat(target, 'y', true);
+	    _spot.target.z = this.reader.getFloat(target, 'z', true);
+
+	    elems = current.getElementsByTagName('location');
+	    if (elems == null) {
+		return "location element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'location' elements found.";
+	    }
+	    var location = elems[0];
+
+	    _spot.location.x = this.reader.getFloat(location, 'x', true);
+	    _spot.location.y = this.reader.getFloat(location, 'y', true);
+	    _spot.location.z = this.reader.getFloat(location, 'z', true);
+
+	    elems = current.getElementsByTagName('ambient');
+	    if (elems == null) {
+		return "ambient element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'ambient' elements found.";
+	    }
+	    var ambient = elems[0];
+
+	    _spot.ambient.r = this.reader.getFloat(ambient, 'r', true);
+	    _spot.ambient.g = this.reader.getFloat(ambient, 'g', true);
+	    _spot.ambient.b = this.reader.getFloat(ambient, 'b', true);
+	    _spot.ambient.a = this.reader.getFloat(ambient, 'a', true);
+
+	    elems = current.getElementsByTagName('diffuse');
+	    if (elems == null) {
+		return "diffuse element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'diffuse' elements found.";
+	    }
+	    var diffuse = elems[0];
+
+	    _spot.diffuse.r = this.reader.getFloat(diffuse, 'r', true);
+	    _spot.diffuse.g = this.reader.getFloat(diffuse, 'g', true);
+	    _spot.diffuse.b = this.reader.getFloat(diffuse, 'b', true);
+	    _spot.diffuse.a = this.reader.getFloat(diffuse, 'a', true);
+
+	    elems = current.getElementsByTagName('specular');
+	    if (elems == null) {
+		return "specular element is missing.";
+	    }
+	    if (elems.length != 1) {
+		return "either zero or more than one 'specular' elements found.";
+	    }
+	    var specular = elems[0];
+
+	    _spot.specular.r = this.reader.getFloat(ambient, 'r', true);
+	    _spot.specular.g = this.reader.getFloat(ambient, 'g', true);
+	    _spot.specular.b = this.reader.getFloat(ambient, 'b', true);
+	    _spot.specular.a = this.reader.getFloat(ambient, 'a', true);
+
+	    this.sceneInfo.lights.addSpot(_spot);
+	}
+    }	    
+};
+
 
 /*
  * Method that parses elements of the 'transformations' block.
@@ -318,3 +503,4 @@ MySceneGraph.prototype.onXMLError=function (message) {
 // Verificar se todos os objectos foram loaded corretamente
 // Implementar toString em todas as 'classes'
 // Classe scene para guardar lista de ids + todas as outras classes
+// SceneInfo.geteById implementar
