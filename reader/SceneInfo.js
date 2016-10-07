@@ -13,7 +13,12 @@ function SceneInfo(root, axisLength) {
 }
 
 SceneInfo.prototype.toString = function() {
-    return JSON.stringify(this);
+    return JSON.stringify(this, function(key, val) {
+	if (val instanceof CGFscene) {
+	    return undefined;
+	}
+	return val;
+    });
 };
 
 SceneInfo.prototype.hasId = function(id) {

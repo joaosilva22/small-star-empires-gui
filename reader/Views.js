@@ -1,33 +1,22 @@
-function Perspective(id, near, far, angle, from, to) {
-    this.id = id;
-    this.near = near;
-    this.far = far;
-    this.angle = angle;
-    this.from = from;
-    this.to = to;
-}
-
 function Views() {
     this.default = null;
-    this.perspectives = [];
+    this.perspectives = {};
 }
 
-Views.prototype.addPerspective = function(perspective) {
-    this.perspectives.push(perspective);
+Views.prototype.addPerspective = function(id, near, far, angle, from, to) {
+    this.perspectives[id] = new CGFcamera(angle, near, far, from, to);
 };
 
 Views.prototype.getById = function(id) {
-    for (var i = 0; i < this.perspectives.length; i++) {
-	if (this.perspectives[i].id == id) {
-	    return this.perspectives[i];
-	}
+    if (this.perspectives[id] != null) {
+	return this.perspectives[id];
     }
-    this.perspectives.push(new Perspective(id));
-    return this.getById(id);
+    this.perspectives[id] = new CGFcamera();
+    return this.perspectives[id];
 };
 
-Views.prototype.setDefault = function(def) {
-    this.default = this.getById(def);
+Views.prototype.setDefault = function(id) {
+    this.default = this.getById(id);
 };
 
 Views.prototype.toString = function() {

@@ -187,16 +187,15 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	var far = this.reader.getFloat(perspective, 'far', true);
 	var angle = this.reader.getFloat(perspective, 'angle', true);
 
-	var from = new Vector3(this.reader.getFloat(_from[0], 'x', true),
-			       this.reader.getFloat(_from[0], 'y', true),
-			       this.reader.getFloat(_from[0], 'z', true));
+	var from = [this.reader.getFloat(_from[0], 'x', true),
+		    this.reader.getFloat(_from[0], 'y', true),
+		    this.reader.getFloat(_from[0], 'z', true)];
 	
-	var to = new Vector3(this.reader.getFloat(_to[0], 'x', true),
-			     this.reader.getFloat(_to[0], 'y', true),
-			     this.reader.getFloat(_to[0], 'z', true));
+	var to = [this.reader.getFloat(_to[0], 'x', true),
+		  this.reader.getFloat(_to[0], 'y', true),
+		  this.reader.getFloat(_to[0], 'z', true)];
 
-	this.sceneInfo.views.addPerspective(
-	    new Perspective(id, near, far, angle, from, to));
+	this.sceneInfo.views.addPerspective(id, near, far, angle, from, to);
     }
 
     this.sceneInfo.views.setDefault(def);
@@ -282,7 +281,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    this.sceneInfo.ids.push(id);
 	    var enabled = this.reader.getBoolean(current, 'enabled', true);
-	    var _omni = new Omni(id, enabled);
+	    this.sceneInfo.lights.addOmni(id, this.scene, enabled);
 
 	    elems = current.getElementsByTagName('location');
 	    if (elems == null) {
@@ -293,10 +292,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var location = elems[0];
 
-	    _omni.location.x = this.reader.getFloat(location, 'x', true);
-	    _omni.location.y = this.reader.getFloat(location, 'y', true);
-	    _omni.location.z = this.reader.getFloat(location, 'z', true);
-	    _omni.location.w = this.reader.getFloat(location, 'w', true);
+	    this.sceneInfo.lights.setLocation(
+		id,
+		this.reader.getFloat(location, 'x', true),
+		this.reader.getFloat(location, 'y', true),
+		this.reader.getFloat(location, 'z', true),
+		this.reader.getFloat(location, 'w', true));
 	    
 	    elems = current.getElementsByTagName('ambient');
 	    if (elems == null) {
@@ -307,10 +308,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var ambient = elems[0];
 
-	    _omni.ambient.r = this.reader.getFloat(ambient, 'r', true);
-	    _omni.ambient.g = this.reader.getFloat(ambient, 'g', true);
-	    _omni.ambient.b = this.reader.getFloat(ambient, 'b', true);
-	    _omni.ambient.a = this.reader.getFloat(ambient, 'a', true);
+	    this.sceneInfo.lights.setAmbient(
+		id,
+		this.reader.getFloat(ambient, 'r', true),
+		this.reader.getFloat(ambient, 'g', true),
+		this.reader.getFloat(ambient, 'b', true),
+		this.reader.getFloat(ambient, 'a', true));
     
 	    elems = current.getElementsByTagName('diffuse');
 	    if (elems == null) {
@@ -321,10 +324,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var diffuse = elems[0];
 
-	    _omni.diffuse.r = this.reader.getFloat(diffuse, 'r', true);
-	    _omni.diffuse.g = this.reader.getFloat(diffuse, 'g', true);
-	    _omni.diffuse.b = this.reader.getFloat(diffuse, 'b', true);
-	    _omni.diffuse.a = this.reader.getFloat(diffuse, 'a', true);
+	    this.sceneInfo.lights.setDiffuse(
+		id,
+		this.reader.getFloat(diffuse, 'r', true),
+		this.reader.getFloat(diffuse, 'g', true),
+		this.reader.getFloat(diffuse, 'b', true),
+		this.reader.getFloat(diffuse, 'a', true));
 
 	    elems = current.getElementsByTagName('specular');
 	    if (elems == null) {
@@ -335,12 +340,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var specular = elems[0];
 
-	    _omni.specular.r = this.reader.getFloat(specular, 'r', true);
-	    _omni.specular.g = this.reader.getFloat(specular, 'g', true);
-	    _omni.specular.b = this.reader.getFloat(specular, 'b', true);
-	    _omni.specular.a = this.reader.getFloat(specular, 'a', true);
-
-	    this.sceneInfo.lights.addOmni(_omni);
+	    this.sceneInfo.lights.setSpecular(
+		id,
+		this.reader.getFloat(specular, 'r', true),
+		this.reader.getFloat(specular, 'g', true),
+		this.reader.getFloat(specular, 'b', true),
+		this.reader.getFloat(specular, 'a', true));
 	}
     }
 
@@ -356,7 +361,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    var enabled = this.reader.getBoolean(current, 'enabled', true);
 	    var angle = this.reader.getFloat(current, 'angle', true);
 	    var exponent = this.reader.getFloat(current, 'exponent', true);
-	    var _spot = new Spot(id, enabled, angle, exponent);
+	    this.sceneInfo.lights.addSpot(id, this.scene, enabled, angle, exponent);
 
 	    elems = current.getElementsByTagName('target');
 	    if (elems == null) {
@@ -367,9 +372,11 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var target = elems[0];
 
-	    _spot.target.x = this.reader.getFloat(target, 'x', true);
-	    _spot.target.y = this.reader.getFloat(target, 'y', true);
-	    _spot.target.z = this.reader.getFloat(target, 'z', true);
+	    this.sceneInfo.lights.setTarget(
+		id,
+		this.reader.getFloat(target, 'x', true),
+		this.reader.getFloat(target, 'y', true),
+		this.reader.getFloat(target, 'z', true)); 
 
 	    elems = current.getElementsByTagName('location');
 	    if (elems == null) {
@@ -380,9 +387,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var location = elems[0];
 
-	    _spot.location.x = this.reader.getFloat(location, 'x', true);
-	    _spot.location.y = this.reader.getFloat(location, 'y', true);
-	    _spot.location.z = this.reader.getFloat(location, 'z', true);
+	    this.sceneInfo.lights.setLocation(
+		id,
+		this.reader.getFloat(location, 'x', true),
+		this.reader.getFloat(location, 'y', true),
+		this.reader.getFloat(location, 'z', true),
+		0);
 
 	    elems = current.getElementsByTagName('ambient');
 	    if (elems == null) {
@@ -393,10 +403,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var ambient = elems[0];
 
-	    _spot.ambient.r = this.reader.getFloat(ambient, 'r', true);
-	    _spot.ambient.g = this.reader.getFloat(ambient, 'g', true);
-	    _spot.ambient.b = this.reader.getFloat(ambient, 'b', true);
-	    _spot.ambient.a = this.reader.getFloat(ambient, 'a', true);
+	    this.sceneInfo.lights.setAmbient(
+		id,
+		this.reader.getFloat(ambient, 'r', true),
+		this.reader.getFloat(ambient, 'g', true),
+		this.reader.getFloat(ambient, 'b', true),
+		this.reader.getFloat(ambient, 'a', true));
 
 	    elems = current.getElementsByTagName('diffuse');
 	    if (elems == null) {
@@ -407,10 +419,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var diffuse = elems[0];
 
-	    _spot.diffuse.r = this.reader.getFloat(diffuse, 'r', true);
-	    _spot.diffuse.g = this.reader.getFloat(diffuse, 'g', true);
-	    _spot.diffuse.b = this.reader.getFloat(diffuse, 'b', true);
-	    _spot.diffuse.a = this.reader.getFloat(diffuse, 'a', true);
+	    this.sceneInfo.lights.setDiffuse(
+		id,
+		this.reader.getFloat(diffuse, 'r', true),
+		this.reader.getFloat(diffuse, 'g', true),
+		this.reader.getFloat(diffuse, 'b', true),
+		this.reader.getFloat(diffuse, 'a', true));
 
 	    elems = current.getElementsByTagName('specular');
 	    if (elems == null) {
@@ -421,12 +435,12 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    }
 	    var specular = elems[0];
 
-	    _spot.specular.r = this.reader.getFloat(ambient, 'r', true);
-	    _spot.specular.g = this.reader.getFloat(ambient, 'g', true);
-	    _spot.specular.b = this.reader.getFloat(ambient, 'b', true);
-	    _spot.specular.a = this.reader.getFloat(ambient, 'a', true);
-
-	    this.sceneInfo.lights.addSpot(_spot);
+	    this.sceneInfo.lights.setAmbient(
+		id,
+		this.reader.getFloat(ambient, 'r', true),
+		this.reader.getFloat(ambient, 'g', true),
+		this.reader.getFloat(ambient, 'b', true),
+		this.reader.getFloat(ambient, 'a', true));
 	}
     }	    
 };
@@ -453,7 +467,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
 
 	var id = this.reader.getString(texture, 'id', true);
 	if (this.sceneInfo.hasId(id)) {
- 	    return "invalid id on 'texture' element";
+ 	    return "invalid id on 'texture' element.";
 	}
 	this.sceneInfo.ids.push(id);
 	var file = this.reader.getString(texture, 'file', true);
@@ -493,7 +507,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 
 	var id = this.reader.getString(current, 'id', true);
 	if (this.sceneInfo.hasId(id)) {
-	    return "invalid id on 'material' element";
+	    return "invalid id on 'material' element.";
 	}
 	this.sceneInfo.ids.push(id);
 
@@ -504,7 +518,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	    return "emission element is missing.";
 	}
 	if (elems.length != 1) {
-	    return "either zero or more than one 'emission' element found";
+	    return "either zero or more than one 'emission' element found.";
 	}
 	var emission = elems[0];
 
@@ -518,7 +532,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	    return "ambient element is missing.";
 	}
 	if (elems.length != 1) {
-	    return "either zero or more than one 'ambient' element found";
+	    return "either zero or more than one 'ambient' element found.";
 	}
 	var ambient = elems[0];
 
@@ -532,7 +546,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	    return "diffuse element is missing.";
 	}
 	if (elems.length != 1) {
-	    return "either zero or more than one 'diffuse' element found";
+	    return "either zero or more than one 'diffuse' element found.";
 	}
 	var diffuse = elems[0];
 
@@ -546,7 +560,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	    return "specular element is missing.";
 	}
 	if (elems.length != 1) {
-	    return "either zero or more than one 'specular' element found";
+	    return "either zero or more than one 'specular' element found.";
 	}
 	var specular = elems[0];
 
@@ -560,7 +574,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	    return "shininess element is missing.";
 	}
 	if (elems.length != 1) {
-	    return "either zero or more than one 'shininess' element found";
+	    return "either zero or more than one 'shininess' element found.";
 	}
 	var shininess = elems[0];
 
@@ -580,7 +594,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
     }
 
     if (elems.length != 1) {
-	return "either zero or more than one 'transformations' element found";
+	return "either zero or more than one 'transformations' element found.";
     }
 
     var _transformations = elems[0].getElementsByTagName('transformation');
@@ -591,7 +605,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
     for (var i = 0; i < _transformations.length; i++) {
 	var id = this.reader.getString(_transformations[i], 'id', true);
 	if (this.sceneInfo.hasId(id)) {
-	    return "invalid id on 'transformation' element";
+	    return "invalid id on 'transformation' element.";
 	}
 	this.sceneInfo.ids.push(id);
 	this.sceneInfo.transformations.addTransformation(new Transformation(id));
@@ -625,6 +639,37 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	    }	
 	}
     }
+};
+
+MySceneGraph.prototype.parsePrimitives = function(rootElement) {
+    var elems = rootElement.getElementsByTagName('primitives');
+    if (elems == null) {
+	return "primitives element is missing.";
+    }
+
+    if (elems.length != 1) {
+	return "either zero or more than one 'primitives' element found.";
+    }
+
+    var primitives = elems[0].getElementsByTagName('primitive');
+    if (primitives == null) {
+	return "primitive element is missing.";
+    }
+
+    for (var i = 0; i < primitives.length; i++) {
+	if (primitives[i].children.length != 1) {
+	    return "either zero or more than one primitive type found.";
+	}
+
+	var id = this.reader.getString(primitives[i], 'id', true);
+	if (this.sceneInfo.hasId(id)) {
+	    return "invalid id on 'transformation' element.";
+	}
+	this.sceneInfo.push(id);
+
+	var primitive = primitives[i].children[0];
+	var type = primitive.nodeName;
+    }	
 };
 
 /*
