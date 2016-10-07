@@ -128,6 +128,11 @@ MySceneGraph.prototype.parseScene = function(rootElement) {
     if (error != undefined) {
 	return error;
     }
+
+    error = this.parseTransformations(rootElement);
+    if (error != undefined) {
+	return error;
+    }
 };
 
 /*
@@ -578,62 +583,47 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	return "either zero or more than one 'transformations' element found";
     }
 
-    var _transformations = elems.getElementsByTagName('transformation');
+    var _transformations = elems[0].getElementsByTagName('transformation');
     if (_transformations == null) {
 	return "transformation element is missing.";
     }
 
-    this.transformations = new Transformations();
     for (var i = 0; i < _transformations.length; i++) {
-	var _transformation = _transformations[i];
-
-	var _id = getItem(_transformation, 'id');
-	if (contains(this.ids, _id)) {
+	var id = this.reader.getString(_transformations[i], 'id', true);
+	if (this.sceneInfo.hasId(id)) {
 	    return "invalid id on 'transformation' element";
 	}
-	else {
-	    this.ids.push(_id);
-	}
+	this.sceneInfo.ids.push(id);
+	this.sceneInfo.transformations.addTransformation(new Transformation(id));
+	
+	var children = _transformations[i].children;
+	for (var j = 0; j < children.length; j++) {
+	    var transformation = children[j];
+	    var type = transformation.nodeName;
 
-	var transformation = new Transformation(_id);
+	    if (type == "translate") {
+		var x = this.reader.getFloat(children[j], 'x', true);
+		var y = this.reader.getFloat(transformation, 'y', true);
+		var z = this.reader.getFloat(transformation, 'z', true);
 
-	var _translations = _transformation.getElementsByTagName('translate');
-	var _rotations = _transformation.getElementsByTagName('rotate');
-	var _scales = _transformation.getElementsByTagName('scale');
-
-	if (_translations != null) {
-	    for (var j = 0; j < _translations.length; j++) {
-		var translation = _translations[j];
-		var vector = new Vector3(getFloat(translation, 'x', true),
-					 getFloat(translation, 'y', true),
-					 getFloat(translation, 'z', true));
-		
-		transformation.addTranslation(vector);
+		this.sceneInfo.transformations.getById(id).translate(x, y, z);
 	    }
-	}
 
-	if (_rotations != null) {
-	    for (var j = 0; j < _rotations.length; j++) {
-		var rotation = _rotations[j];
-		var axis = getItem(rotation, 'axis', ['x', 'y', 'z'], true);
-		var angle = getFloat(rotation, 'angle', true);
-		
-		transformation.addRotation(new Rotation(axis, angle));
+	    if (type == "rotate") {
+		var axis = this.reader.getItem(transformation, 'axis', ["x", "y", "z"], true);
+		var angle = this.reader.getFloat(transformation, 'angle', true);
+
+		this.sceneInfo.transformations.getById(id).rotate(axis, angle);
 	    }
+
+	    if (type == "scale") {
+		var x = this.reader.getFloat(transformation, 'x', true);
+		var y = this.reader.getFloat(transformation, 'y', true);
+		var z = this.reader.getFloat(transformation, 'z', true);
+
+		this.sceneInfo.transformations.getById(id).scale(x, y, z);
+	    }	
 	}
-
-	if (_scales != null) {
-	    for (var j = 0; j < _scales.length; j++) {
-		var scale = _scales[j];
-		var vector = new Vector3(getFloat(scale, 'x', true),
-					 getFloat(scale, 'y', true),
-					 getFloat(scale, 'z', true));
-
-		transformation.addScale(vector);
-	    }
-	}
-
-	this.transformations.addTransformation(transformation);
     }
 };
 

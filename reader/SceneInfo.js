@@ -9,6 +9,7 @@ function SceneInfo(root, axisLength) {
     this.lights = new Lights();
     this.textures = new Textures();
     this.materials = new Materials();
+    this.transformations = new Transformations();
 }
 
 SceneInfo.prototype.toString = function() {

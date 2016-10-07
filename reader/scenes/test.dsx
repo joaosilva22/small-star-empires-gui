@@ -107,12 +107,12 @@
     
         <!-- Deve existir um ou mais blocos "transformation" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <transformation id="ss">
+        <transformation id="transformation0">
            <!-- instrucoes a usar sem limite nem ordem -->
            <!-- deve existir pelo menos uma transformacao -->
-           <translate x="ff" y="ff" z="ff" />
-           <rotate axis="cc" angle="ff" />
-           <scale x="ff" y="ff" z="ff" />
+           <translate x="0.5" y="1.0" z="3.5" />
+           <rotate axis="x" angle="45.0" />
+           <scale x="2.0" y="2.0" z="2.0" />
         </transformation>
         
     </transformations>
