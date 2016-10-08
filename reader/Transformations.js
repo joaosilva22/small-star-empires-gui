@@ -18,8 +18,8 @@ function Scale(x, y, z) {
     this.z = z;
 }
 
-function Transformation(id) {
-    this.id = id;
+function Transformation(scene) {
+    this.scene = scene;
     this.stack = [];
 }
 
@@ -35,21 +35,33 @@ Transformation.prototype.scale = function(x, y, z) {
     this.stack.push(new Scale(x, y, z));
 };
 
-function Transformations() {
-    this.transformations = [];
-}
-
-Transformations.prototype.addTransformation = function(transformation) {
-    this.transformations.push(transformation);
-};
-
-Transformations.prototype.getById = function(id) {
-    for (var i = 0; i < this.transformations.length; i++) {
-	if (this.transformations[i].id == id) {
-	    return this.transformations[i];
+Transformation.prototype.push = function() {
+    this.scene.pushMatrix();
+    for (let t of this.stack) {
+	switch (t.type) {
+	    case "translation":
+		this.scene.translate(t.x, t.y, t.z);
+		break;
+	    case "rotation":
+		switch (t.axis) {
+		    case 'x':
+			this.scene.rotate(t.angle, 1, 0, 0);
+			break;
+		    case 'y':
+			this.scene.rotate(t.angle, 0, 1, 0);
+			break;
+		    case 'z':
+			this.scene.rotate(t.angle, 0, 0, 1);
+			break;
+		}
+		break;
+	    case "scale":
+		this.scene.scale(t.x, t.y, t.z);
+		break;
 	}
     }
-    this.transformations.push(new Transformation(id));
-    return this.getById(id);
 };
 
+Transformation.prototype.pop = function() {
+    this.scene.popMatrix();
+};

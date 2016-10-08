@@ -463,18 +463,21 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
     }
 
     for (var i = 0; i < textures.length; i++) {
-	var texture = textures[i];
+	var _texture = textures[i];
 
-	var id = this.reader.getString(texture, 'id', true);
+	var id = this.reader.getString(_texture, 'id', true);
 	if (this.sceneInfo.hasId(id)) {
  	    return "invalid id on 'texture' element.";
 	}
 	this.sceneInfo.ids.push(id);
-	var file = this.reader.getString(texture, 'file', true);
-	var lengthS = this.reader.getFloat(texture, 'length_s', true);
-	var lengthT = this.reader.getFloat(texture, 'length_t', true);
+	var file = this.reader.getString(_texture, 'file', true);
+	var lengthS = this.reader.getFloat(_texture, 'length_s', true);
+	var lengthT = this.reader.getFloat(_texture, 'length_t', true);
 
-	this.sceneInfo.textures.addTexture(new Texture(id, file, lengthS, lengthT));
+	var tex = new CGFappearance(this.scene);
+	tex.loadTexture(file);
+
+	this.sceneInfo.textures[id] = {s: lengthS, t: lengthT, texture: tex};
     }
 };
 
@@ -511,7 +514,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	}
 	this.sceneInfo.ids.push(id);
 
-	var material = new Material(id);
+	var material = new CGFappearance(this.scene);
 
 	elems = current.getElementsByTagName('emission');
 	if (elems == null) {
@@ -522,10 +525,10 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	}
 	var emission = elems[0];
 
-	material.emission.r = this.reader.getFloat(emission, 'r', true);
-	material.emission.g = this.reader.getFloat(emission, 'g', true);
-	material.emission.b = this.reader.getFloat(emission, 'b', true);
-	material.emission.a = this.reader.getFloat(emission, 'a', true);
+	material.setEmission(this.reader.getFloat(emission, 'r', true),
+			     this.reader.getFloat(emission, 'g', true),
+			     this.reader.getFloat(emission, 'b', true),
+			     this.reader.getFloat(emission, 'a', true));
 
 	elems = current.getElementsByTagName('ambient');
 	if (elems == null) {
@@ -536,10 +539,10 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	}
 	var ambient = elems[0];
 
-	material.ambient.r = this.reader.getFloat(ambient, 'r', true);
-	material.ambient.g = this.reader.getFloat(ambient, 'g', true);
-	material.ambient.b = this.reader.getFloat(ambient, 'b', true);
-	material.ambient.a = this.reader.getFloat(ambient, 'a', true);
+	material.setAmbient(this.reader.getFloat(ambient, 'r', true),
+			    this.reader.getFloat(ambient, 'g', true),
+			    this.reader.getFloat(ambient, 'b', true),
+			    this.reader.getFloat(ambient, 'a', true));
 
 	elems = current.getElementsByTagName('diffuse');
 	if (elems == null) {
@@ -550,10 +553,10 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	}
 	var diffuse = elems[0];
 
-	material.diffuse.r = this.reader.getFloat(diffuse, 'r', true);
-	material.diffuse.g = this.reader.getFloat(diffuse, 'g', true);
-	material.diffuse.b = this.reader.getFloat(diffuse, 'b', true);
-	material.diffuse.a = this.reader.getFloat(diffuse, 'a', true);
+	material.setDiffuse(this.reader.getFloat(diffuse, 'r', true),
+			    this.reader.getFloat(diffuse, 'g', true),
+			    this.reader.getFloat(diffuse, 'b', true),
+			    this.reader.getFloat(diffuse, 'a', true));
 
 	elems = current.getElementsByTagName('specular');
 	if (elems == null) {
@@ -563,11 +566,11 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	    return "either zero or more than one 'specular' element found.";
 	}
 	var specular = elems[0];
-
-	material.specular.r = this.reader.getFloat(specular, 'r', true);
-	material.specular.g = this.reader.getFloat(specular, 'g', true);
-	material.specular.b = this.reader.getFloat(specular, 'b', true);
-	material.specular.a = this.reader.getFloat(specular, 'a', true);
+	
+	material.setSpecular(this.reader.getFloat(specular, 'r', true),
+			     this.reader.getFloat(specular, 'g', true),
+			     this.reader.getFloat(specular, 'b', true),
+			     this.reader.getFloat(specular, 'a', true));
 
 	elems = current.getElementsByTagName('shininess');
 	if (elems == null) {
@@ -578,9 +581,9 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	}
 	var shininess = elems[0];
 
-	material.shininess = this.reader.getFloat(shininess, 'value', true);
+	material.setShininess(this.reader.getFloat(shininess, 'value', true));
 
-	this.sceneInfo.materials.addMaterial(material);
+	this.sceneInfo.materials[id] = material;
     }
 };
 
@@ -608,7 +611,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	    return "invalid id on 'transformation' element.";
 	}
 	this.sceneInfo.ids.push(id);
-	this.sceneInfo.transformations.addTransformation(new Transformation(id));
+	this.sceneInfo.transformations[id] = new Transformation(this.scene);
 	
 	var children = _transformations[i].children;
 	for (var j = 0; j < children.length; j++) {
@@ -620,14 +623,14 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 		var y = this.reader.getFloat(transformation, 'y', true);
 		var z = this.reader.getFloat(transformation, 'z', true);
 
-		this.sceneInfo.transformations.getById(id).translate(x, y, z);
+		this.sceneInfo.transformations[id].translate(x, y, z);
 	    }
 
 	    if (type == "rotate") {
 		var axis = this.reader.getItem(transformation, 'axis', ["x", "y", "z"], true);
 		var angle = this.reader.getFloat(transformation, 'angle', true);
 
-		this.sceneInfo.transformations.getById(id).rotate(axis, angle);
+		this.sceneInfo.transformations[id].rotate(axis, angle);
 	    }
 
 	    if (type == "scale") {
@@ -635,7 +638,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 		var y = this.reader.getFloat(transformation, 'y', true);
 		var z = this.reader.getFloat(transformation, 'z', true);
 
-		this.sceneInfo.transformations.getById(id).scale(x, y, z);
+		this.sceneInfo.transformations[id].scale(x, y, z);
 	    }	
 	}
     }

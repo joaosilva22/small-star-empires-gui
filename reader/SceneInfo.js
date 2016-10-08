@@ -1,15 +1,17 @@
+// Mover tudo para MySceneGraph
+// Verificar todos os ids
 function SceneInfo(root, axisLength) {
     this.ids = []
     
     this.root = root;
     this.axisLength = axisLength;
     
-    this.views = new Views();
+    this.views = new Views(); // refactored
     this.illumination = new Illumination();
-    this.lights = new Lights();
-    this.textures = new Textures();
-    this.materials = new Materials();
-    this.transformations = new Transformations();
+    this.lights = new Lights(); // refactored
+    this.textures = {} // refactored
+    this.materials = {} // refactored
+    this.transformations = {}; // refactored
 }
 
 SceneInfo.prototype.toString = function() {
