@@ -13,6 +13,7 @@ function SceneInfo(root, axisLength) {
     this.materials = {} // refactored
     this.transformations = {}; // refactored
     this.primitives = {};
+    this.components = {};
 }
 
 SceneInfo.prototype.toString = function() {

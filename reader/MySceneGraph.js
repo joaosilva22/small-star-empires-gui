@@ -24,12 +24,13 @@ MySceneGraph.prototype.onXMLReady=function()
 {
     console.log("XML Loading finished.");
     var rootElement = this.reader.xmlDoc.documentElement;
-    
+
+    // Store scene information
     this.sceneInfo = new SceneInfo();
     
     // Here should go the calls for different functions to parse the various blocks
     var error = this.parseScene(rootElement);
-    console.log(this.sceneInfo.toString());
+    //console.log(this.sceneInfo.toString());
 
     if (error != null) {
 	this.onXMLError(error);
@@ -130,6 +131,11 @@ MySceneGraph.prototype.parseScene = function(rootElement) {
     }
 
     error = this.parseTransformations(rootElement);
+    if (error != undefined) {
+	return error;
+    }
+
+    error = this.parseComponents(rootElement);
     if (error != undefined) {
 	return error;
     }
@@ -728,6 +734,156 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	    this.sceneInfo.primitives[id] =
 		new Torus(this.scene, inner, outer, slices, loops);
 	}
+    }	
+};
+
+/*
+ * Method that parses elements of the 'components' block.
+ */
+MySceneGraph.prototype.parseComponents = function(rootElement) {
+    var elems = rootElement.getElementsByTagName('components');
+    if (elems == null) {
+	return "components element is missing.";
+    }
+    if (elems.length != 1) {
+	return "either zero or more than one 'components' element found.";
+    }
+
+    var components = elems[0].getElementsByTagName('component');
+    for (let component of components) {
+	var id = this.reader.getString(component, 'id', true);
+	if (this.sceneInfo.hasId(id)) {
+	    return "invalid id on 'component' element.";
+	}
+	this.sceneInfo.ids.push(id);
+
+	this.sceneInfo.components[id] = new Component();
+
+	// TRANSFORMACOES
+	var elems = component.getElementsByTagName('transformation');
+	if (elems == null) {
+	    return "transformation block is missing.";
+	}
+	if (elems.length != 1) {
+	    return "either zero or more than one 'transformation' element found.";
+	}
+	
+	var transformations = elems[0].children;
+	if (transformations.lenght != 0) {
+	    
+	    var hasRef = false;
+	    for (let transformation of transformations) {
+		if (transformation.nodeName == "transformationref") {
+		    hasRef = true;
+		    break;
+		}
+	    }
+
+	    if (hasRef && transformations.length > 1) {
+		return "invalid transformations."
+	    }
+
+	    if (hasRef) {
+		var refid = this.reader.getString(transformations[0], 'id', true);
+		if (this.sceneInfo.transformations[refid] == null) {
+		    return "transformation '" + refid + "' does not exist.";
+		}
+		
+		this.sceneInfo.components[id].setTransformation(this.sceneInfo.transformations[refid]);
+	    }
+	    else {
+		var explicit = new Transformation(this.scene);
+		for (let transformation of transformations) {
+		    if (transformation.nodeName == "translate") {
+			var x = this.reader.getFloat(transformation, 'x', true);
+			var y = this.reader.getFloat(transformation, 'y', true);
+			var z = this.reader.getFloat(transformation, 'z', true);
+
+			explicit.translate(x, y, z);
+		    }
+
+		    if (transformation.nodeName == "rotate") {
+			var axis = this.reader.getItem(transformation, 'axis', ["x", "y", "z"], true);
+			var angle = this.reader.getFloat(transformation, 'angle', true);
+
+			explicit.rotate(axis, angle);
+		    }
+
+		    if (transformation.nodeName == "scale") {
+			var x = this.reader.getFloat(transformation, 'x', true);
+			var y = this.reader.getFloat(transformation, 'y', true);
+			var z = this.reader.getFloat(transformation, 'z', true);
+
+			explicit.scale(x, y, z);
+		    }
+		}
+		this.sceneInfo.components[id].setTransformation(explicit);
+	    }
+	}
+
+	// MATERIAIS
+	var elems = component.getElementsByTagName('materials');
+	if (elems == null) {
+	    return "materials block is missing.";
+	}
+	var count = 0, index;
+	for (var i = 0; i < elems.length; i++) {
+	    if (elems[i].parentNode == component) {
+		index = i;
+		count++;
+	    }   
+	}
+	if (count != 1) {
+	    return "either zero or more than one 'materials' element found.";
+	}
+
+	var materials = elems[index].getElementsByTagName('material');
+	if (materials.length < 1) {
+	    return "at least one material should be present";
+	}
+
+	for (let material of materials) {
+	    var refid = this.reader.getString(material, 'id', true);
+	    if (refid == "inherit") {
+		this.sceneInfo.components[id].addMaterial(refid);
+		break;
+	    }
+
+	    if (this.sceneInfo.materials[refid] == null) {
+		return "material '" + refid + "' does not exist.";
+	    }
+	    this.sceneInfo.components[id].addMaterial(this.sceneInfo.materials[refid]);
+	}
+
+	// TEXTURE
+	var elems = component.getElementsByTagName('texture');
+	if (elems == null) {
+	    return "texture block is missing.";
+	}
+	var count = 0, index;
+	for (var i = 0; i < elems.length; i++) {
+	    if (elems[i].parentNode == component) {
+		index = i;
+		count++;
+	    }   
+	}
+	if (count != 1) {
+	    return "either zero or more than one 'texture' element found.";
+	}
+
+	var texture = elems[index];
+	var refid = this.reader.getString(texture, 'id', true);
+	if (refid == "inherit" || refid == "none") {
+	    this.sceneInfo.components[id].setTexture(refid);
+	    break;
+	}
+
+	if (this.sceneInfo.textures[refid] == null) {
+	    return "texture '" + refid + "' does not exist.";
+	}
+	this.sceneInfo.components[id].setTexture(this.sceneInfo.textures[refid]);
+
+	console.log(this.sceneInfo.components[id].toString());
     }	
 };
 

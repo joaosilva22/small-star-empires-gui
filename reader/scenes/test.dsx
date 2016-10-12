@@ -148,15 +148,15 @@
             
                 <!-- deve conter uma referencia a uma das "transformation" -->
                 <!-- declaradas anteriormente -->
-                <transformationref id="ss" />
+                <transformationref id="transformation0" />
                 
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
-                <translate x="ff" y="ff" z="ff" />
-                <rotate axis="cc" angle="ff" />
-                <scale x="ff" y="ff" z="ff" />
+                <!-- <translate x="4.0" y="4.0" z="4.0" /> -->
+                <!-- <rotate axis="x" angle="180" /> -->
+                <!-- <scale x="5.0" y="5.0" z="5.0" /> -->
             </transformation>
        
             <!-- declaracao obrigatoria de pelo menos um material; -->
@@ -166,7 +166,7 @@
             <!-- o material muda para o proximo material da lista; do --> 
             <!-- ultimo material da lista volta ao primeiro -->
             <materials>
-                <material id="ss" />
+                <material id="material0" />
             </materials>
                          
             <!-- declaracao obrigatoria de texture -->
@@ -174,7 +174,7 @@
             <!-- id="none" remove a textura recebida do pai -->
             <!-- a textura declarada sobrepoe a textura recebida do -->
             <!-- objecto "pai" -->
-            <texture id="ss" />
+            <texture id="texture0" />
             
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
