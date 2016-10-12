@@ -20,24 +20,24 @@ function Scale(x, y, z) {
 
 function Transformation(scene) {
     this.scene = scene;
-    this.stack = [];
+    this.queue = [];
 }
 
 Transformation.prototype.translate = function(x, y, z) {
-    this.stack.push(new Translation(x, y, z));
+    this.queue.push(new Translation(x, y, z));
 };
 
 Transformation.prototype.rotate = function(axis, angle) {
-    this.stack.push(new Rotation(axis, angle));
+    this.queue.push(new Rotation(axis, angle));
 };
 
 Transformation.prototype.scale = function(x, y, z) {
-    this.stack.push(new Scale(x, y, z));
+    this.queue.push(new Scale(x, y, z));
 };
 
 Transformation.prototype.push = function() {
     this.scene.pushMatrix();
-    for (let t of this.stack) {
+    for (let t of this.queue) {
 	switch (t.type) {
 	    case "translation":
 		this.scene.translate(t.x, t.y, t.z);
