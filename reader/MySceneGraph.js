@@ -672,6 +672,62 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 	var primitive = primitives[i].children[0];
 	var type = primitive.nodeName;
+
+	if (type = "rectangle") {
+	    var x1 = this.reader.getFloat(primitive, 'x1', true);
+	    var y1 = this.reader.getFloat(primitive, 'y1', true);
+	    var x2 = this.reader.getFloat(primitive, 'x2', true);
+	    var y2 = this.reader.getFloat(primitive, 'y2', true);
+
+	    this.sceneInfo.primitives[id] = new Rectangle(this.scene, x1, y1, x2, y2);
+	}
+
+	if (type = "triangle") {
+	    var x1 = this.reader.getFloat(primitive, 'x1', true);
+	    var y1 = this.reader.getFloat(primitive, 'y1', true);
+	    var z1 = this.reader.getFloat(primitive, 'z1', true);
+
+	    var x2 = this.reader.getFloat(primitive, 'x2', true);
+	    var y2 = this.reader.getFloat(primitive, 'y2', true);
+	    var z2 = this.reader.getFloat(primitive, 'z2', true);
+
+	    var x3 = this.reader.getFloat(primitive, 'x3', true);
+	    var y3 = this.reader.getFloat(primitive, 'y3', true);
+	    var z3 = this.reader.getFloat(primitive, 'z3', true);
+
+	    this.sceneInfo.primitives[id] =
+		new Triangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+	}
+
+	if (type = "cylinder") {
+	    var base = this.reader.getFloat(primitive, 'base', true);
+	    var top = this.reader.getFloat(primitive, 'top', true);
+	    var height = this.reader.getFloat(primitive, 'height', true);
+	    var slices = this.reader.getFloat(primitive, 'slices', true);
+	    var stacks = this.reader.getFloat(primitive, 'stacks', true);
+
+	    this.sceneInfo.primitives[id] =
+		new Cylinder(this.scene, base, top, height, slices, stacks);
+	}
+
+	if (type = "sphere") {
+	    var radius = this.reader.getFloat(primitive, 'radius', true);
+	    var slices = this.reader.getFloat(primitive, 'slices', true);
+	    var stacks = this.reader.getFloat(primitive, 'stacks', true);
+
+	    this.sceneInfo.primitives[id] =
+		new Sphere(this.scene, radius, slices, stacks);
+	}
+
+	if (type = "torus") {
+	    var inner = this.reader.getFloat(primitive, 'inner', true);
+	    var outer = this.reader.getFloat(primitive, 'outer', true);
+	    var slices = this.reader.getFloat(primitive, 'slices', true);
+	    var loops = this.reader.getFloat(primitive, 'loops', true);
+
+	    this.sceneInfo.primitives[id] =
+		new Torus(this.scene, inner, outer, slices, loops);
+	}
     }	
 };
 

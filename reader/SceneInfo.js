@@ -12,6 +12,7 @@ function SceneInfo(root, axisLength) {
     this.textures = {} // refactored
     this.materials = {} // refactored
     this.transformations = {}; // refactored
+    this.primitives = {};
 }
 
 SceneInfo.prototype.toString = function() {
