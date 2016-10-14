@@ -1,5 +1,5 @@
 function Triangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
-    CGFObject.call(this, scene);
+    CGFobject.call(this, scene);
 
     this.x1 = x1;
     this.y1 = y1;
@@ -14,7 +14,7 @@ function Triangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
     this.initBuffers();
 }
 
-Triangle.prototype = Object.create(CGFObject.prototype);
+Triangle.prototype = Object.create(CGFobject.prototype);
 Triangle.prototype.constructor = Triangle;
 
 Triangle.prototype.initBuffers = function() {

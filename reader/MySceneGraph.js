@@ -135,6 +135,11 @@ MySceneGraph.prototype.parseScene = function(rootElement) {
 	return error;
     }
 
+    error = this.parsePrimitives(rootElement);
+    if (error != undefined) {
+	return error;
+    }
+    
     error = this.parseComponents(rootElement);
     if (error != undefined) {
 	return error;
@@ -674,12 +679,12 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	if (this.sceneInfo.hasId(id)) {
 	    return "invalid id on 'transformation' element.";
 	}
-	this.sceneInfo.push(id);
+	this.sceneInfo.ids.push(id);
 
 	var primitive = primitives[i].children[0];
 	var type = primitive.nodeName;
-
-	if (type = "rectangle") {
+	
+	if (type == "rectangle") {
 	    var x1 = this.reader.getFloat(primitive, 'x1', true);
 	    var y1 = this.reader.getFloat(primitive, 'y1', true);
 	    var x2 = this.reader.getFloat(primitive, 'x2', true);
@@ -688,7 +693,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	    this.sceneInfo.primitives[id] = new Rectangle(this.scene, x1, y1, x2, y2);
 	}
 
-	if (type = "triangle") {
+	if (type == "triangle") {
 	    var x1 = this.reader.getFloat(primitive, 'x1', true);
 	    var y1 = this.reader.getFloat(primitive, 'y1', true);
 	    var z1 = this.reader.getFloat(primitive, 'z1', true);
@@ -705,7 +710,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 		new Triangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 	}
 
-	if (type = "cylinder") {
+	if (type == "cylinder") {
 	    var base = this.reader.getFloat(primitive, 'base', true);
 	    var top = this.reader.getFloat(primitive, 'top', true);
 	    var height = this.reader.getFloat(primitive, 'height', true);
@@ -716,7 +721,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 		new Cylinder(this.scene, base, top, height, slices, stacks);
 	}
 
-	if (type = "sphere") {
+	if (type == "sphere") {
 	    var radius = this.reader.getFloat(primitive, 'radius', true);
 	    var slices = this.reader.getFloat(primitive, 'slices', true);
 	    var stacks = this.reader.getFloat(primitive, 'stacks', true);
@@ -725,7 +730,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 		new Sphere(this.scene, radius, slices, stacks);
 	}
 
-	if (type = "torus") {
+	if (type == "torus") {
 	    var inner = this.reader.getFloat(primitive, 'inner', true);
 	    var outer = this.reader.getFloat(primitive, 'outer', true);
 	    var slices = this.reader.getFloat(primitive, 'slices', true);
@@ -883,6 +888,36 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	}
 	this.sceneInfo.components[id].setTexture(this.sceneInfo.textures[refid]);
 
+	// CHILDREN
+	var elems = component.getElementsByTagName('children');
+	if (elems == null) {
+	    return "children block is missing.";
+	}
+	if (elems.length != 1) {
+	    return "either zero or more than one 'children' element found.";
+	}
+	var children = elems[0].children;
+
+	for (let child of children) {
+	    if (child.nodeName == "componentref") {
+		var refid = this.reader.getString(child, 'id', true);
+		if (this.sceneInfo.components[refid] == null) {
+		    return "component '" + refid + "' does not exist.";
+		}
+		if (refid == id) {
+		    return "component can't be a child of itself";
+		}
+		this.sceneInfo.components[id].addChildren(this.sceneInfo.components[refid]);
+	    }
+	    if (child.nodeName == "primitiveref") {
+		var refid = this.reader.getString(child, 'id', true);
+		if (this.sceneInfo.primitives[refid] == null) {
+		    return "primitive '" + refid + "' does not exist.";
+		}
+		this.sceneInfo.components[id].addChildren(this.sceneInfo.primitives[refid]);
+	    }
+	}
+	
 	console.log(this.sceneInfo.components[id].toString());
     }	
 };

@@ -1,5 +1,5 @@
 function Rectangle(scene, x1, y1, x2, y2) {
-    CGFObject.call(this, scene);
+    CGFobject.call(this, scene);
 
     this.x1 = x1;
     this.y1 = y1;
@@ -9,7 +9,7 @@ function Rectangle(scene, x1, y1, x2, y2) {
     this.initBuffers();
 }
 
-Rectangle.prototype = Object.create(CGFObject.prototype);
+Rectangle.prototype = Object.create(CGFobject.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 Rectangle.prototype.initBuffers = function() {

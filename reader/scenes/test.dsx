@@ -122,17 +122,17 @@
     
         <!-- Deve existir um ou mais blocos "primitive" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <primitive id="ss">
+        <primitive id="rectangle0">
            
             <!-- apenas pode existir UMA das seguintes tags: -->
             <!--     rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente como-->
             <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
-            <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" />
-            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
-            <sphere radius="ff" slices="ii" stacks="ii" />
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+            <rectangle x1="5.0" y1="5.0" x2="-5.0" y2="-5.0" />
+            <!-- <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" /> -->
+            <!-- <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" /> -->
+            <!-- <sphere radius="ff" slices="ii" stacks="ii" /> -->
+            <!-- <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
             
         </primitive>
         
@@ -141,7 +141,7 @@
     
     <components>
         
-        <component id="ss">
+        <component id="component0">
         
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
@@ -182,8 +182,8 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
-                <componentref id="ss" />
-                <primitiveref id="ss" />
+                <!-- <componentref id="ss" /> -->
+                <primitiveref id="rectangle0" />
                 
             </children>
             
