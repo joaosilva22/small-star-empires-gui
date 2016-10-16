@@ -17,6 +17,20 @@ function Triangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
 Triangle.prototype = Object.create(CGFobject.prototype);
 Triangle.prototype.constructor = Triangle;
 
+Triangle.prototype.setTexCoords(length_s,length_t) = function(){
+	var a = sqrt(Math.pow(this.x1-this.x3,2) +  Math.pow(this.y1-this.y3,2) + Math.pow(this.z1-this.z3,2));
+	var b = sqrt(Math.pow(this.x2-this.x1,2) +  Math.pow(this.y2-this.y1,2) + Math.pow(this.z2-this.z1,2));
+	var c = sqrt(Math.pow(this.x3-this.x2,2) +  Math.pow(this.y3-this.y2,2) + Math.pow(this.z3-this.z2,2));
+	var cosBeta = (a*a - b*b + c*c)/(2*a*c);
+	var sinBeta = 1-(cosBeta*cosBeta);
+	
+	this.texCoords = [
+		length_s*(c-a*cosBeta), length_t*(a*sinBeta),
+		0,0,
+		length_s*c,0
+	];
+}
+
 Triangle.prototype.initBuffers = function() {
     this.vertices = [
         this.x1, this.y1, this.z1,
