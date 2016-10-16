@@ -191,7 +191,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="rectangle0"/>
+                <primitiveref id="triangle0"/>
                 
             </children>
             
