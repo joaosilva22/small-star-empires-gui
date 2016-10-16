@@ -11,32 +11,33 @@ function getUrlVars() {
     return vars;
 }	 
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'Utils.js', 'Views.js', 'Illumination.js', 'Transformations.js', 'SceneInfo.js', 'Lights.js', 'Textures.js', 'Materials.js', 'Component.js', 'Triangle.js', 'Rectangle.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'Utils.js', 'Views.js', 'Illumination.js', 'Transformations.js', 'SceneInfo.js', 'Lights.js', 'Textures.js', 'Materials.js', 'Component.js', 'Triangle.js', 'Rectangle.js', 'Interface.js',
 
 main=function()
 {
-	// Standard application, scene and interface setup
+    // Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
-    var myInterface = new CGFinterface();
+    var myInterface = new Interface();
 
     app.init();
 
     app.setScene(myScene);
     app.setInterface(myInterface);
+    myScene.interface = myInterface;
 
     myInterface.setActiveCamera(myScene.camera);
 
-	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
-	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
-	
-	var filename=getUrlVars()['file'] || "demo.xml";
+    // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
+    // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
+    
+    var filename=getUrlVars()['file'] || "demo.xml";
 
-	// create and load graph, and associate it to scene. 
-	// Check console for loading errors
-	var myGraph = new MySceneGraph(filename, myScene);
-	
-	// start
+    // create and load graph, and associate it to scene. 
+    // Check console for loading errors
+    var myGraph = new MySceneGraph(filename, myScene);
+    
+    // start
     app.run();
 }
 

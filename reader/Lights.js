@@ -3,27 +3,14 @@ function Lights() {
     this.spot = {};
 }
 
-Lights.prototype.addOmni = function(id, scene, enabled) {
-    var light = new CGFlight(scene, id);
-    if (enabled) {
-	light.enable();
-    }
-    else {
-	light.disable();
-    }
+Lights.prototype.addOmni = function(id, enabled) {
+    var light = {enabled: enabled};
     this.omni[id] = light;
 };
 
-Lights.prototype.addSpot = function(id, scene, enabled, angle, exponent) {
-    var light = new CGFlight(scene, id);
-    if (enabled) {
-	light.enable();
-    }
-    else {
-	light.disable();
-    }
+Lights.prototype.addSpot = function(id, enabled, angle, exponent) {
     // angle ??
-    light.setSpotExponent(exponent);
+    var light = {enabled: enabled, angle: angle, exponent: exponent};
     this.spot[id] = light;
 };
 
@@ -40,33 +27,33 @@ Lights.prototype.setLocation = function(id, x, y, z, w) {
     if (this.getById(id) == null) {
 	return "light '" + id + "' does not exist.";
     }
-    this.getById(id).setPosition(x, y, z, w);
+    this.getById(id).position = {x: x, y: y, z: z, w: w};
 };
 
 Lights.prototype.setAmbient = function(id, r, g, b, a) {
     if (this.getById(id) == null) {
 	return "light '" + id + "' does not exist.";
     }
-    this.getById(id).setAmbient(r, g, b, a);
+    this.getById(id).ambient = {r: r, g: g, b: b, a: a};
 };
 
 Lights.prototype.setDiffuse = function(id, r, g, b, a) {
     if (this.getById(id) == null) {
 	return "light '" + id + "' does not exist.";
     }
-    this.getById(id).setDiffuse(r, g, b, a);
+    this.getById(id).diffuse = {r: r, g: g, b: b, a: a};
 };
 
 Lights.prototype.setSpecular = function(id, r, g, b, a) {
     if (this.getById(id) == null) {
 	return "light '" + id + "' does not exist.";
     }
-    this.getById(id).setSpecular(r, g, b, a);
+    this.getById(id).specular = {r: r, g: g, b: b, a: a};
 };
     
 Lights.prototype.setTarget = function(id, x, y, z) {
     if (this.getById(id) == null) {
 	return "light '" + id + "' does not exist.";
     }
-    this.getById(id).setSpotDirection(x, y, z);
+    this.getById(id).target = {x: x, y: y, z: z};
 };
