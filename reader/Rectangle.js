@@ -12,14 +12,11 @@ function Rectangle(scene, x1, y1, x2, y2) {
 Rectangle.prototype = Object.create(CGFobject.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
-Rectangle.prototype.setTexCoords(length_s,length_t) = function(){
-	this.texCoords = [
-		0,length_t,
-		length_s,length_t,
-		0,0,
-		length_s,0
-	];
-}
+Rectangle.prototype.setTexCoords = function(length_s, length_t){
+    this.s = length_s;
+    this.t = length_t;
+    this.initBuffers();
+};
 
 Rectangle.prototype.initBuffers = function() {
     this.vertices = [
@@ -40,8 +37,21 @@ Rectangle.prototype.initBuffers = function() {
 	0, 0, 1,
 	0, 0, 1
     ];
-    //TODO
-    this.texCoords = [];
+
+    if (this.s != undefined && this.t != undefined) {
+	this.texCoords = [
+	    0,this.t,
+	    this.s,this.t,
+	    this.s,0,
+	    0,0
+	];
+    }
+    //this.texCoords = [
+//	0,1,
+//	1,1,
+//	1,0,
+//	0,0
+  //  ];
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();

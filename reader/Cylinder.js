@@ -1,5 +1,5 @@
 function Cylinder(scene, base, top, height, slices, stacks) {
-    CGFObject.call(this, scene);
+    CGFobject.call(this, scene);
 
     this.base = base; //raio
     this.top = top; //raio
@@ -10,11 +10,21 @@ function Cylinder(scene, base, top, height, slices, stacks) {
     this.initBuffers();
 }
 
-Cylinder.prototype = Object.create(CGFObject.prototype);
+Cylinder.prototype = Object.create(CGFobject.prototype);
 Cylinder.prototype.constructor = Cylinder;
 
 //TODO tampos(falta) (verificar TOP? BASE?)
 Cylinder.prototype.initBuffers = function() {
+
+    this.vertices = [];
+    this.indexes = [];
+    this.normals = [];
+    this.texcoords = [];
+
+    var angularstep = (360.0/this.slices)*(Math.PI/180.0);
+    var stackstep = this.height/this.stacks;
+    var radiusstep = (this.top-this.base)/this.stacks;
+    
     this.passoAngular = (360.0/this.slices)*(Math.PI/180.0);
     this.passoAndar = this.height/this.stacks;
     this.vertices = [];
@@ -22,7 +32,7 @@ Cylinder.prototype.initBuffers = function() {
     this.normals = [];
     this.texCoords = [];
     this.difRaios = this.top-this.base;
-    this.passoRaio = difRaios/this.stacks;
+    this.passoRaio = this.difRaios/this.stacks;
 
     this.anguloAtual = 0;
     this.andarAtual = 0;

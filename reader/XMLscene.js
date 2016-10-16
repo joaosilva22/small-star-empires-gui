@@ -20,6 +20,8 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
     this.axis=new CGFaxis(this);
+
+    this.enableTextures(true);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -139,10 +141,12 @@ XMLscene.prototype.displayComponent = function(component) {
 	for (let material of component.materials) {
 	    material.apply();
 	}
+	component.texture.texture.apply();
 	if (child instanceof Component) {
 	    this.displayComponent(child);
 	}
 	else {
+	    child.setTexCoords(component.texture.s, component.texture.t);
 	    this.displayPrimitive(child);
 	}
     }

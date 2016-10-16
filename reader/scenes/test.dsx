@@ -83,7 +83,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="texture0" file="stone.png" length_s="4.0" length_t="0.4" />  
+        <texture id="texture0" file="texture.png" length_s="2.0" length_t="2.0" />  
         
     </textures>
 
@@ -139,6 +139,10 @@
         <primitive id="triangle0">
           <triangle x1="-0.5" y1="-0.5" z1="0.0" x2="0.5" y2="-0.5" z2="0.0" x3="0.0" y3="0.5" z3="0.0"/>
         </primitive>
+
+        <primitive id="cylinder0">
+          <cylinder base="3.0" top="3.0" height="4.0" slices="8" stacks="8"/>
+        </primitive>
         
     </primitives>
     
@@ -187,7 +191,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="triangle0"/>
+                <primitiveref id="rectangle0"/>
                 
             </children>
             
