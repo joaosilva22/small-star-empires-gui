@@ -43,7 +43,7 @@
 
     <illumination doublesided="1" local="0" >
     
-        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+        <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
         
     </illumination>
@@ -55,8 +55,8 @@
         <!-- Os identificadores "id" nao podem ser repetidos -->
 		
          <omni id="omni0" enabled="1" >
-            <location x="5.0" y="5.0" z="5.0" w="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <location x="3.0" y="5.0" z="5.0" w="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="0.5" />
          </omni>
@@ -64,8 +64,8 @@
         <spot id="spot0" enabled="0" angle="45" exponent="0.1">
             <!-- atencao, "target" e' diferente de "direction" -->
             <target x="0.0" y="0.0" z="0.0" />
-            <location x="3.0" y="7.0" z="5.0" />
-            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <location x="3.0" y="2.0" z="5.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="0.5" />
         </spot>
@@ -86,9 +86,9 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="greytex" file="metal.png" length_s="1.0" length_t="1.0" />
-		<texture id="face" file="face.png" length_s="1.0" length_t="1.0" />
-		<texture id="body" file="body.png" length_s="1.0" length_t="1.0" />
+        <texture id="greytex" file="metal.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="face" file="face.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="body" file="body.jpg" length_s="1.0" length_t="1.0" />
         
     </textures>
 
@@ -129,43 +129,44 @@
         </transformation>
 		
 		<transformation id="trans_futurama_bot">
+			<scale x="0.1" y="0.1" z="0.1"/>
 			<translate x="0.0" y="0.0" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_head">
-			<translate x="0.0" y="0.0" z="6.5"/>
+			<translate x="0.0" y="6.5" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_head_top">
-			<translate x="0.0" y="0.0" z="5.5"/>
+			<translate x="0.0" y="2.5" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_antena">
-			<translate x="0.0" y="0.0" z="9.0"/>
+			<translate x="0.0" y="5.5" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_antena_top">
-			<translate x="0.0" y="0.0" z="0.75"/>
+			<translate x="0.0" y="1.5" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_left_arm">
-			<translate x="0.0" y="-5" z="-0.5"/>
+			<translate x="0.0" y="-0.7" z="-5.0"/>
 		</transformation>
 		
 		<transformation id="trans_right_arm">
-			<translate x="0.0" y="5" z="-0.5"/>
+			<translate x="0.0" y="-0.7" z="5.0"/>
 		</transformation>
 		
 		<transformation id="trans_shoulder">
-			<translate x="0.0" y="0.0" z="4"/>
+			<translate x="0.0" y="4.0" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_wrist">
-			<translate x="0.0" y="0.0" z="-4"/>
+			<translate x="0.0" y="-4.0" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_finger">
-			<translate x="0.0" y="0.0" z="-0.6"/>
+			<translate x="0.0" y="-4.6" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_finger1">
@@ -177,23 +178,23 @@
 		</transformation>
 		
 		<transformation id="trans_finger3">
-			<translate x="0.0" y="0.5" z="0.0"/>
+			<translate x="0.0" y="0.0" z="0.5"/>
 		</transformation>
 		
 		<transformation id="trans_left_leg">
-			<translate x="0.0" y="-2" z="-7.5"/>
+			<translate x="0.0" y="-7.5" z="-2.0"/>
 		</transformation>
 		
 		<transformation id="trans_right_leg">
-			<translate x="0.0" y="2" z="-7.5"/>
+			<translate x="0.0" y="-7.5" z="2.0"/>
 		</transformation>
 		
 		<transformation id="trans_foot">
-			<translate x="0.0" y="0.0" z="-4.25"/>
+			<translate x="0.0" y="-4.25" z="0.0"/>
 		</transformation>
 		
 		<transformation id="trans_body_top">
-			<translate x="0.0" y="0.0" z="4.0"/>
+			<translate x="0.0" y="4.0" z="0.0"/>
 		</transformation>
         
     </transformations>
