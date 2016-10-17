@@ -13,43 +13,39 @@ function Cylinder(scene, base, top, height, slices, stacks) {
 Cylinder.prototype = Object.create(CGFobject.prototype);
 Cylinder.prototype.constructor = Cylinder;
 
-//TODO tampos(falta) (verificar TOP? BASE?)
+Cylinder.prototype.setTexCoords = function() {
+};
+
 Cylinder.prototype.initBuffers = function() {
-
-    this.vertices = [];
-    this.indexes = [];
-    this.normals = [];
-    this.texcoords = [];
-
-    var angularstep = (360.0/this.slices)*(Math.PI/180.0);
-    var stackstep = this.height/this.stacks;
-    var radiusstep = (this.top-this.base)/this.stacks;
-    
-    this.passoAngular = (360.0/this.slices)*(Math.PI/180.0);
-    this.passoAndar = this.height/this.stacks;
     this.vertices = [];
     this.indices = [];
     this.normals = [];
     this.texCoords = [];
-    this.difRaios = this.top-this.base;
-    this.passoRaio = this.difRaios/this.stacks;
+    
+    var angularstep = (360.0/this.slices)*(Math.PI/180.0);
+    var stackstep = this.height/this.stacks;
+    var radiusstep = (this.top-this.base)/this.stacks;
 
-    this.anguloAtual = 0;
-    this.andarAtual = 0;
-    this.raioAtual = this.base;
+    var currentangle = 0;
+    var currentstack = 0;
+    var currentradius = this.base;
 
-    for(var k=0; k < this.stacks ; k++){
-        this.andarAtual = k*this.passoAndar;
-        this.raioAtual = this.base + k*this.passoRaio;
-        for(var i=0 ; i < this.slices ; i++){
-            this.anguloAtual = i*this.passoAngular;
+    for (var i = 0; i <= this.stacks; i++) {
+	currentstack = i*stackstep - this.height/2;
+	currentradius = this.base + i*radiusstep;
+	for (var j = 0; j < this.slices; j++) {
+	    currentangle = j*angularstep;
 
-            this.vertices.push(this.raioAtual * Math.cos(this.anguloAtual));
-            this.vertices.push(this.raioAtual * Math.sin(this.anguloAtual));
-            this.vertices.push(this.andarAtual);
+	    this.vertices.push(currentradius * Math.cos(currentangle),
+			       currentstack,
+			       currentradius * Math.sin(currentangle));
 
-            if (k % 2 == 0) {
-                if (i % 2 == 0) {
+	    this.normals.push(currentradius * Math.cos(currentangle),
+			      0,
+			      currentradius * Math.sin(currentangle));
+
+	    if (i % 2 === 0) {
+                if (j % 2 === 0) {
                     this.texCoords.push(0);
                     this.texCoords.push(1);
                 } else {
@@ -57,7 +53,7 @@ Cylinder.prototype.initBuffers = function() {
                     this.texCoords.push(1);
                 }
             } else {
-                if (i % 2 == 0) {
+                if (j % 2 === 0) {
                     this.texCoords.push(0);
                     this.texCoords.push(0);
                 } else {
@@ -65,26 +61,46 @@ Cylinder.prototype.initBuffers = function() {
                     this.texCoords.push(0);
                 }
             }
-
-            this.normals.push(this.raioAtual * Math.cos(this.anguloatual));
-            this.normals.push(this.raioAtual * Math.sin(this.anguloatual));
-            this.normals.push(0);
-        }
+	}
     }
 
-    for (var m = 1; m < this.stacks; m++) {
-        this.andaratual = m*this.passoAndar;
-        for (var j = 0; j < this.slices; j++) {
-            this.indices.push((this.andaratual - this.passoAndar) * this.slices + j);
-            this.indices.push((this.andaratual - this.passoAndar) * this.slices + ((j + 1) % this.slices));
-            this.indices.push(this.andaratual * this.slices + j);
+    for (var i = 1; i <= this.stacks; i++) {
+	for (var j = 0; j < this.slices; j++) {
+	    this.indices.push((i - 1) * this.slices + j,
+			      i * this.slices + j,
+			      (i - 1) * this.slices + ((j + 1) % this.slices));
 
-            this.indices.push((this.andaratual - this.passoAndar) * this.slices + ((j + 1) % this.slices));
-            this.indices.push(this.andaratual * this.slices + ((j + 1) % this.slices));
-            this.indices.push(this.andaratual * this.slices + j);
-        }
+	    this.indices.push((i - 1) * this.slices + ((j + 1) % this.slices),
+			      i * this.slices + j,
+			      i * this.slices + ((j + 1) % this.slices));
+	}
     }
 
+    this.vertices.push(0, this.height/2, 0);
+    this.texCoords.push(0.5,0.5);
+    var num = this.vertices.length/3;
+    for (var i = 0; i < this.slices; i++) {
+	this.indices.push(num - 2,
+			  num - (i+2),
+			  num - ((i+1)%this.slices+2));
+    }
+    this.normals.push(0,1,0);
+
+    this.vertices.push(0, -this.height/2, 0);
+    this.texCoords.push(0.5,0.5);
+    var num = this.vertices.length/3;
+    for (var i = 0; i < this.slices; i++) {
+	this.indices.push(num - 1,
+			  i,
+			  (i+1)%this.slices);
+    }
+    this.normals.push(0,-1,0);
+
+    console.log(this.indices.length);
+    for (var i = 0; i < this.indices.length; i++) {
+	console.log(this.indices[i]);
+    }
+    
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
 };

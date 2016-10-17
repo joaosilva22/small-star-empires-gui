@@ -35,6 +35,11 @@
         <perspective id="view1" near="0.1" far="100.0" angle="45.0">
             <from x="20.0" y="20.0" z="20.0" />
             <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
+
+        <perspective id="view2" near="0.1" far="100.0" angle="45.0">
+            <from x="0.0" y="-10.0" z="0.0" />
+            <to x="0.0" y="0.0" z="0.0" />
         </perspective>        
     </views>
     
@@ -141,7 +146,7 @@
         </primitive>
 
         <primitive id="cylinder0">
-          <cylinder base="3.0" top="3.0" height="4.0" slices="8" stacks="8"/>
+          <cylinder base="1.0" top="1.0" height="1.0" slices="8" stacks="2"/>
         </primitive>
         
     </primitives>
@@ -191,7 +196,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="triangle0"/>
+                <primitiveref id="cylinder0"/>
                 
             </children>
             
