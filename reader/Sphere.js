@@ -27,18 +27,17 @@ Sphere.prototype.initBuffers = function() {
     var anglev = 0;
     var currentstack = 0;
 
-    for (var i = 0; i < this.stacks; i++) {
+    for (var i = 0; i <= this.stacks; i++) {
 	anglev = Math.PI - i*stepv;
 	for (var j = 0; j < this.slices; j++)  {
-	    anglev = j * steph;
+	    angleh = j * steph;
 
 	    this.vertices.push(Math.sin(anglev) * Math.cos(angleh),
 			       Math.cos(anglev),
 			       Math.sin(anglev) * Math.sin(angleh));
 
-	    console.log(Math.sin(anglev) * Math.cos(angleh),
-			Math.cos(anglev),
-			Math.sin(anglev) * Math.sin(angleh));
+	    this.texCoords.push(0.5 + (Math.sin(anglev) * Math.cos(angleh)) / 2);
+            this.texCoords.push(0.5 + (Math.sin(anglev) * Math.sin(angleh)) / 2);
 	    
 	    this.normals.push(Math.sin(anglev) * Math.cos(angleh),
 			      Math.cos(anglev),
@@ -46,7 +45,7 @@ Sphere.prototype.initBuffers = function() {
 	}
     }
 
-    for (var i = 1; i < this.stacks; i++) {
+    for (var i = 1; i <= this.stacks; i++) {
 	for (var j = 0; j < this.slices; j++) {
 	    this.indices.push((i - 1) * this.slices + j,
 			      i * this.slices + j,
