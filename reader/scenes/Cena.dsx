@@ -230,15 +230,15 @@
 		</primitive>
 		
 		<primitive id="head">
-			<cylinder base="3.0" top="3.0" height="5.0"/>
+			<cylinder base="3.0" top="3.0" height="5.0" slices="6" stacks="5"/>
 		</primitive>
 		
 		<primitive id="body_top">
-			<cylinder base="5.0" top="3.0" height="1.0"/>
+			<cylinder base="5.0" top="3.0" height="1.0" slices="6" stacks="1"/>
 		</primitive>
 		
 		<primitive id="body">
-			<cylinder base="4.0" top="5.0" height="7.0"/>
+			<cylinder base="4.0" top="5.0" height="7.0" slices="6" stacks="7"/>
 		</primitive>
 		
 		<primitive id="shoulder">
@@ -299,7 +299,7 @@
             <!-- id="none" remove a textura recebida do pai -->
             <!-- a textura declarada sobrepoe a textura recebida do -->
             <!-- objecto "pai" -->
-            <texture id="metal" />
+            <texture id="greytex" />
             
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
