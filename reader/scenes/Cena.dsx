@@ -1,0 +1,800 @@
+<!-- Os comentarios devem ter espacos no inicio e no fim, a -->
+<!-- separar dos hifens -->
+<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
+<!-- Todas as tags e atributos sao obrigatorios, exceto onde for -->
+<!-- referido o contrario -->
+
+<!-- Na descricao abaixo, os simbolos utilizados tem o seguinte significado: -->
+    <!-- ii: integer value -->
+    <!-- ff: float value -->
+    <!-- ss: string value -->
+    <!-- cc: character "x" or "y" or "z" -->
+    <!-- tt: "0" or "1" with Boolean significance -->
+
+    
+<dsx>
+
+
+    <!-- deve definir-se um objeto para raiz do grafo , assim -->
+    <!-- como o comprimento dos tres eixos (cilindros) -->
+    <scene root="component0" axis_length="2.0" />
+    
+    
+    <views default="view1" >
+    
+        <!-- declaracao obrigatoria de pelo menos uma vista; -->
+        <!-- se varias vistas declaradas, o default e' a -->
+        <!-- primeira vista; de cada vez que se pressione a tecla v/V, -->
+        <!-- a vista muda para a proxima da lista; da --> 
+        <!-- ultima vista da lista volta 'a primeira -->
+		
+        <perspective id="view0" near="0.1" far="100.0" angle="45.0">
+            <from x="5.0" y="5.0" z="5.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
+    
+        <perspective id="view1" near="0.1" far="100.0" angle="40.0">
+            <from x="1.0" y="2.0" z="10.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
+		
+    </views>
+    
+
+    <illumination doublesided="1" local="0" >
+    
+        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+        
+    </illumination>
+    
+    
+    <lights>
+    
+        <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+		
+         <omni id="omni0" enabled="1" >
+            <location x="5.0" y="5.0" z="5.0" w="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+         </omni>
+        
+        <spot id="spot0" enabled="0" angle="45" exponent="0.1">
+            <!-- atencao, "target" e' diferente de "direction" -->
+            <target x="0.0" y="0.0" z="0.0" />
+            <location x="3.0" y="7.0" z="5.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </spot>
+    </lights>
+    
+    
+    <textures>
+    
+        <!-- Deve existir um ou mais blocos "texture" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <!-- length_s e length_t sao fatores de escala de textura:-->
+        <!-- Exemplo length_s=3.0: uma ocorrencia da textura, em -->
+        <!-- comprimento, deve cobrir um comprimento igual -->
+        <!-- a 3 unidades;  -->
+        <!-- Exemplo length_t=0.4, uma ocorrencia da textura, em -->
+        <!-- largura, deve cobrir uma largura igual a 0.4 unidades.  -->
+        <!-- Transf. Geometr. do tipo escalamento sobre os -->
+        <!-- objetos respetivos podem a violar esta regra.         -->
+        <!-- Nao necessario aplicar fatores de escala em  -->
+        <!-- quadricas (esfera, ciclindro...) -->
+        <texture id="greytex" file="metal.png" length_s="1.0" length_t="1.0" />
+		<texture id="face" file="face.png" length_s="1.0" length_t="1.0" />
+		<texture id="body" file="body.png" length_s="1.0" length_t="1.0" />
+        
+    </textures>
+
+    
+    <materials>
+    
+        <!-- Deve existir um ou mais blocos "material" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <material id="material0" >
+            <emission r="0.0" g="0.0" b="1.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <shininess value="20.0" />
+        </material>
+		
+		<material id="metal">
+			<emission r="0.0" g="0.0" b="1.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <shininess value="20.0" />
+		</material>
+        
+    </materials>
+    
+    
+    <transformations>
+    
+        <!-- Deve existir um ou mais blocos "transformation" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <transformation id="transformation0">
+           <!-- instrucoes a usar sem limite nem ordem -->
+           <!-- deve existir pelo menos uma transformacao -->
+           <translate x="0.0" y="0.0" z="0.0" />
+           <!-- <rotate axis="x" angle="45.0" /> -->
+           <!-- <scale x="2.0" y="2.0" z="2.0" /> -->
+        </transformation>
+		
+		<transformation id="trans_futurama_bot">
+			<translate x="0.0" y="0.0" z="0.0"/>
+		</transformation>
+		
+		<transformation id="trans_head">
+			<translate x="0.0" y="0.0" z="6.5"/>
+		</transformation>
+		
+		<transformation id="trans_head_top">
+			<translate x="0.0" y="0.0" z="5.5"/>
+		</transformation>
+		
+		<transformation id="trans_antena">
+			<translate x="0.0" y="0.0" z="9.0"/>
+		</transformation>
+		
+		<transformation id="trans_antena_top">
+			<translate x="0.0" y="0.0" z="0.75"/>
+		</transformation>
+		
+		<transformation id="trans_left_arm">
+			<translate x="0.0" y="-5" z="-0.5"/>
+		</transformation>
+		
+		<transformation id="trans_right_arm">
+			<translate x="0.0" y="5" z="-0.5"/>
+		</transformation>
+		
+		<transformation id="trans_shoulder">
+			<translate x="0.0" y="0.0" z="4"/>
+		</transformation>
+		
+		<transformation id="trans_wrist">
+			<translate x="0.0" y="0.0" z="-4"/>
+		</transformation>
+		
+		<transformation id="trans_finger">
+			<translate x="0.0" y="0.0" z="-0.6"/>
+		</transformation>
+		
+		<transformation id="trans_finger1">
+			<translate x="-0.5" y="0.0" z="0.0"/>
+		</transformation>
+		
+		<transformation id="trans_finger2">
+			<translate x="0.5" y="0.0" z="0.0"/>
+		</transformation>
+		
+		<transformation id="trans_finger3">
+			<translate x="0.0" y="0.5" z="0.0"/>
+		</transformation>
+		
+		<transformation id="trans_left_leg">
+			<translate x="0.0" y="-2" z="-7.5"/>
+		</transformation>
+		
+		<transformation id="trans_right_leg">
+			<translate x="0.0" y="2" z="-7.5"/>
+		</transformation>
+		
+		<transformation id="trans_foot">
+			<translate x="0.0" y="0.0" z="-4.25"/>
+		</transformation>
+		
+		<transformation id="trans_body_top">
+			<translate x="0.0" y="0.0" z="4.0"/>
+		</transformation>
+        
+    </transformations>
+    
+    
+    <primitives>
+    
+        <!-- Deve existir um ou mais blocos "primitive" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <primitive id="rectangle0">
+           
+            <!-- apenas pode existir UMA das seguintes tags: -->
+            <!--     rectangle, triangle, cylinder, sphere, torus -->
+            <!-- os parametros devem ser interpretados, genericamente como-->
+            <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+            <!-- <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" /> -->
+            <!-- <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" /> -->
+            <!-- <sphere radius="ff" slices="ii" stacks="ii" /> -->
+            <!-- <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
+            
+        </primitive>
+		
+		<primitive id="antena_top">
+			<sphere radius="0.15" slices="6" stacks="6"/>
+		</primitive>
+		
+        <primitive id="antena">
+			<cylinder base="0.2" top="0.1" height="1.0" slices="6" stacks="1"/>
+        </primitive>
+		
+		<primitive id="head_top">
+			<sphere radius="3.0" slices="6" stacks="6"/>
+		</primitive>
+		
+		<primitive id="head">
+			<cylinder base="3.0" top="3.0" height="5.0"/>
+		</primitive>
+		
+		<primitive id="body_top">
+			<cylinder base="5.0" top="3.0" height="1.0"/>
+		</primitive>
+		
+		<primitive id="body">
+			<cylinder base="4.0" top="5.0" height="7.0"/>
+		</primitive>
+		
+		<primitive id="shoulder">
+			<sphere radius="1.0" slices="6" stacks="6"/>
+		</primitive>
+		
+		<primitive id="member">
+			<cylinder base="0.8" top="0.8" height="8.0" slices="6" stacks="8"/>
+		</primitive>
+		
+		<primitive id="wrist">
+			<cylinder base="1.0" top="0.8" height="0.5" slices="6" stacks="1"/>
+		</primitive>
+		
+		<primitive id="finger">
+			<cylinder base="0.2" top="0.2" height="0.7" slices="6" stacks="1"/>
+		</primitive>
+		
+		<primitive id="feet">
+			<cylinder base="1.3" top="0.8" height="0.5" slices="6" stacks="1"/>
+		</primitive>
+        
+    </primitives>
+    
+    
+    <components>
+        
+        <component id="component0">
+        
+            <!-- bloco "transformation" obrigatorio -->
+            <transformation>
+            
+                <!-- deve conter uma referencia a uma das "transformation" -->
+                <!-- declaradas anteriormente -->
+                <!-- <transformationref id="transformation0" /> -->
+                
+                <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
+                <!-- usando zero ou mais das instrucoes seguintes, sem -->
+                <!-- limite nem ordem -->
+                <!-- ex: bloco transformation pode ficar sem conteudo -->
+                <!-- <translate x="4.0" y="4.0" z="4.0" /> -->
+                <!-- <rotate axis="x" angle="180" /> -->
+                <!-- <scale x="5.0" y="5.0" z="5.0" /> -->
+            </transformation>
+       
+            <!-- declaracao obrigatoria de pelo menos um material; -->
+            <!-- o material id="inherit", mantem (herda) material do "pai" -->
+            <!-- se varios materiais declarados, o default e' o -->
+            <!-- primeiro material; de cada vez que se pressione a tecla m/M, -->
+            <!-- o material muda para o proximo material da lista; do --> 
+            <!-- ultimo material da lista volta ao primeiro -->
+            <materials>
+                <material id="metal" />
+            </materials>
+                         
+            <!-- declaracao obrigatoria de texture -->
+            <!-- id="inherit" mantem (herda) a textura do objecto "pai" -->
+            <!-- id="none" remove a textura recebida do pai -->
+            <!-- a textura declarada sobrepoe a textura recebida do -->
+            <!-- objecto "pai" -->
+            <texture id="metal" />
+            
+            <!-- bloco "children" obrigatorio num "component" -->
+            <children>
+            
+                <!-- deve existir uma ou mais tags "componentref" e/ou -->
+                <!-- "primitiveref", identificando outros -->
+                <!-- componentes ou primitivas -->
+                <!-- <componentref id="ss" /> -->
+                <!-- <primitiveref id="triangle0"/> -->
+                <componentref id="component_futurama_bot"/>
+            </children>
+            
+        </component>
+		
+		<component id="component_futurama_bot">
+			<transformation>
+				<transformationref id="trans_futurama_bot"/>
+			</transformation>
+			
+			<materials>
+			</materials>
+			
+			<texture id="greytex">
+			
+			<children>
+				<componentref id="component_head"/>
+				<componentref id="component_body"/>
+			</children>
+		</component>
+		
+		<component id="component_head">
+			<transformation>
+				<transformationref id="trans_head"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="face"/>
+			
+			<children>
+				<componentref id="component_head_top"/>
+				<componentref id="component_antena"/>
+				<primitiveref id="head"/>
+			</children>
+		</component>
+		
+		<component id="component_head_top"/>
+			<transformation>
+				<transformationref id="trans_head_top"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="head_top"/>
+			</children>
+		</component>
+		
+		<component id="component_antena">
+			<transformation>
+				<transformationref id="trans_antena"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_antena_top"/>
+				<primitiveref id="antena"/>
+			</children>
+		</component>
+		
+		<component id="component_antena_top">
+			<transformation>
+				<transformationref id="trans_antena_top"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="antena_top"/>
+			</children>
+		</component>
+		
+		<component id="component_body">
+			
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="body"/>
+			
+			<children>
+				<componentref id="component_body_top"/>
+				<componentref id="component_arm"/>
+				<componentref id="component_leg"/>
+				<primitiveref id="body"/>
+			</children>
+		</component>
+		
+		<component id="component_body_top">
+			<transformation>
+				<transformationref id="trans_body_top"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="body_top"/>
+			</children>
+		</component>
+		
+		<component id="component_arm">
+			<transformation>
+				<!-- transformation to left arm -->
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_arm"/>
+				<componentref id="component_right_arm"/>
+			</children>
+		</component>
+		
+		<component id="component_left_arm">
+			<transformation>
+				<transformationref id="trans_left_arm"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_shoulder"/>
+				<componentref id="component_left_hand"/>
+				<primitiveref id="member"/>
+			</children>
+		</component>
+		
+		<component id="component_left_shoulder">
+			<transformation>
+				<transformationref id="trans_shoulder"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="shoulder"/>
+			</children>
+		</component>
+		
+		<component id="component_left_hand">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_wrist"/>
+				<componentref id="component_left_fingers"/>
+			</children>
+		</component>
+		
+		<component id="component_left_wrist">
+			<transformation>
+				<transformationref id="trans_wrist"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="wrist"/>
+			</children>
+		</component>
+		
+		<component id="component_left_fingers">
+			<transformation>
+				<transformationref id="trans_finger"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_finger1"/>
+				<componentref id="component_left_finger2"/>
+				<componentref id="component_left_finger3"/>
+			</children>
+		</component>
+		
+		<component id="component_left_finger1">
+			<transformation>
+				<transformationref id="trans_finger1"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="finger"/>
+			</children>
+		</component>
+		
+		<component id="component_left_finger2">
+			<transformation>
+				<transformationref id="trans_finger2"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="finger"/>
+			</children>
+		</component>
+		
+		<component id="component_left_finger3">
+			<transformation>
+				<transformationref id="trans_finger3"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="finger"/>
+			</children>
+		</component>
+		
+		<component id="component_right_arm">
+			<transformation>
+				<transformationref id="trans_right_arm"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_right_shoulder"/>
+				<componentref id="component_right_hand"/>
+				<primitiveref id="member"/>
+			</children>
+		</component>
+		
+		<component id="component_right_shoulder">
+			<transformation>
+				<transformationref id="trans_shoulder"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="shoulder"/>
+			</children>
+		</component>
+		
+		<component id="component_right_hand">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_right_wrist"/>
+				<componentref id="component_right_fingers"/>
+			</children>
+		</component>
+		
+		<component id="component_right_wrist">
+			<transformation>
+				<transformationref id="trans_wrist"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="wrist"/>
+			</children>
+		</component>
+		
+		<component id="component_right_fingers">
+			<transformation>
+				<transformationref id="trans_finger"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_right_finger1"/>
+				<componentref id="component_right_finger2"/>
+				<componentref id="component_right_finger3"/>
+			</children>
+		</component>
+		
+		<component id="component_right_finger1">
+			<transformation>
+				<transformationref id="trans_finger1"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="finger"/>
+			</children>
+		</component>
+		
+		<component id="component_right_finger2">
+			<transformation>
+				<transformationref id="trans_finger2"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="finger"/>
+			</children>
+		</component>
+		
+		<component id="component_right_finger3">
+			<transformation>
+				<transformationref id="trans_finger3"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="finger"/>
+			</children>
+		</component>
+		
+		<component id="component_leg">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_leg"/>
+				<componentref id="component_right_leg"/>
+			</children>
+		</component>
+		
+		<component id="component_left_leg">
+			<transformation>
+				<transformationref id="trans_left_leg"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_foot"/>
+				<primitiveref id="member"/>
+			</children>
+		</component>
+		
+		<component id="component_left_foot">
+			<transformation>
+				<transformationref id="trans_foot"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="feet"/>
+			</children>
+		</component>
+		
+		<component id="component_right_leg">
+			<transformation>
+				<transformationref id="trans_right_leg"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_right_foot"/>
+				<primitiveref id="member"/>
+			</children>
+		</component>
+		
+		<component id="component_right_foot">
+			<transformation>
+				<transformationref id="trans_foot"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="feet"/>
+			</children>
+		</component>
+        
+    </components>
+
+</dsx>
