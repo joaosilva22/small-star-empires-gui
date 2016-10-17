@@ -95,11 +95,6 @@ Cylinder.prototype.initBuffers = function() {
 			  (i+1)%this.slices);
     }
     this.normals.push(0,-1,0);
-
-    console.log(this.indices.length);
-    for (var i = 0; i < this.indices.length; i++) {
-	console.log(this.indices[i]);
-    }
     
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();

@@ -1,5 +1,5 @@
 function Sphere(scene, radius, slices, stacks) {
-    CGFObject.call(this, scene);
+    CGFobject.call(this, scene);
 
     this.radius = radius;
     this.slices = slices;
@@ -8,56 +8,54 @@ function Sphere(scene, radius, slices, stacks) {
     this.initBuffers();
 }
 
-Sphere.prototype = Object.create(CGFObject.prototype);
+Sphere.prototype = Object.create(CGFobject.prototype);
 Sphere.prototype.constructor = Sphere;
 
-//TODO verificar pode estar mal
+Sphere.prototype.setTexCoords = function() {
+};
+
 Sphere.prototype.initBuffers = function() {
 
-    /*r-raio, V-angulo vertical, H-angulo horizontal
-      x = r sin V cos H
-      y = r sin V sin H
-      z = r cos V
-     */
-    var degree2rad= Math.PI/180.0;
-    var incAngle=(360/this.slices)*degree2rad;
-    var angle=0;
     this.vertices=[];
-    this.normals = [];
-    //this.texCoords = [];
+    this.indices=[];
+    this.normals=[];
+    this.texCoords=[];
 
-    for(var i=0; i<=this.stacks;i+=1){
-        for(angle = 0 ; angle < 2*Math.PI ; angle+=incAngle){
+    var steph=(360/this.slices)*(Math.PI/180.0);
+    var stepv=(Math.PI)/this.stacks;
+    var angleh = 0;
+    var anglev = 0;
+    var currentstack = 0;
 
-            this.vertices.push(this.radius * Math.cos(angle) * Math.cos( i/(this.stacks*Math.PI) ));
-            this.vertices.push(this.radius * Math.sin(angle) * Math.cos( i/(this.stacks*Math.PI) ));
-            this.vertices.push(this.radius * Math.sin(i/this.stacks*Math.PI));
-            this.normals.push(this.radius * Math.cos(angle) * Math.cos( i/(this.stacks*Math.PI) ));
-            this.normals.push(this.radius * Math.sin(angle) * Math.cos( i/(this.stacks*Math.PI) ));
-            this.normals.push(this.radius * Math.sin( i/(this.stacks*Math.PI) ));
-            //this.texCoords.push(0.5+0.5*Math.cos(angle)*Math.cos((i)/(this.stacks)*Math.PI/2),1-(0.5+0.5*Math.sin(angle))*Math.cos((i)/(this.stacks)*Math.PI/2));
-        }
+    for (var i = 0; i < this.stacks; i++) {
+	anglev = Math.PI - i*stepv;
+	for (var j = 0; j < this.slices; j++)  {
+	    anglev = j * steph;
+
+	    this.vertices.push(Math.sin(anglev) * Math.cos(angleh),
+			       Math.cos(anglev),
+			       Math.sin(anglev) * Math.sin(angleh));
+
+	    console.log(Math.sin(anglev) * Math.cos(angleh),
+			Math.cos(anglev),
+			Math.sin(anglev) * Math.sin(angleh));
+	    
+	    this.normals.push(Math.sin(anglev) * Math.cos(angleh),
+			      Math.cos(anglev),
+			      Math.sin(anglev) * Math.sin(angleh));
+	}
     }
 
-    this.indices = [];
+    for (var i = 1; i < this.stacks; i++) {
+	for (var j = 0; j < this.slices; j++) {
+	    this.indices.push((i - 1) * this.slices + j,
+			      i * this.slices + j,
+			      (i - 1) * this.slices + ((j + 1) % this.slices));
 
-    for(var j = 0; j < this.stacks; j++){
-        for(var i=0; i < this.slices ; i++){
-            this.indices.push(j*this.slices+i);
-            if(i == this.slices-1){
-                this.indices.push(j*this.slices);
-            }else this.indices.push(j*this.slices+i+1);
-            this.indices.push((j+1)*this.slices+i);
-
-            if(i == this.slices-1){
-                this.indices.push(j*this.slices);
-            }else this.indices.push(j*this.slices+i+1);
-
-            if(i == this.slices-1){
-                this.indices.push((j+1)*this.slices);
-            }else this.indices.push((j+1)*this.slices+i+1);
-            this.indices.push((j+1)*this.slices+i);
-        }
+	    this.indices.push((i - 1) * this.slices + ((j + 1) % this.slices),
+			      i * this.slices + j,
+			      i * this.slices + ((j + 1) % this.slices));
+	}
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;
