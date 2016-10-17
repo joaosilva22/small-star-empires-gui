@@ -265,68 +265,53 @@
     
     
     <components>
-        
-        <component id="component0">
-        
-            <!-- bloco "transformation" obrigatorio -->
-            <transformation>
-            
-                <!-- deve conter uma referencia a uma das "transformation" -->
-                <!-- declaradas anteriormente -->
-                <!-- <transformationref id="transformation0" /> -->
-                
-                <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
-                <!-- usando zero ou mais das instrucoes seguintes, sem -->
-                <!-- limite nem ordem -->
-                <!-- ex: bloco transformation pode ficar sem conteudo -->
-                <!-- <translate x="4.0" y="4.0" z="4.0" /> -->
-                <!-- <rotate axis="x" angle="180" /> -->
-                <!-- <scale x="5.0" y="5.0" z="5.0" /> -->
-            </transformation>
-       
-            <!-- declaracao obrigatoria de pelo menos um material; -->
-            <!-- o material id="inherit", mantem (herda) material do "pai" -->
-            <!-- se varios materiais declarados, o default e' o -->
-            <!-- primeiro material; de cada vez que se pressione a tecla m/M, -->
-            <!-- o material muda para o proximo material da lista; do --> 
-            <!-- ultimo material da lista volta ao primeiro -->
-            <materials>
-                <material id="metal" />
-            </materials>
-                         
-            <!-- declaracao obrigatoria de texture -->
-            <!-- id="inherit" mantem (herda) a textura do objecto "pai" -->
-            <!-- id="none" remove a textura recebida do pai -->
-            <!-- a textura declarada sobrepoe a textura recebida do -->
-            <!-- objecto "pai" -->
-            <texture id="greytex" />
-            
-            <!-- bloco "children" obrigatorio num "component" -->
-            <children>
-            
-                <!-- deve existir uma ou mais tags "componentref" e/ou -->
-                <!-- "primitiveref", identificando outros -->
-                <!-- componentes ou primitivas -->
-                <!-- <componentref id="ss" /> -->
-                <!-- <primitiveref id="triangle0"/> -->
-                <componentref id="component_futurama_bot"/>
-            </children>
-            
-        </component>
 		
-		<component id="component_futurama_bot">
+		<component id="component_head_top">
 			<transformation>
-				<transformationref id="trans_futurama_bot"/>
+				<transformationref id="trans_head_top"/>
 			</transformation>
 			
 			<materials>
+				<material id="metal"/>
 			</materials>
 			
 			<texture id="greytex"/>
 			
 			<children>
-				<componentref id="component_head"/>
-				<componentref id="component_body"/>
+				<primitiveref id="head_top"/>
+			</children>
+		</component>
+		
+		<component id="component_antena_top">
+			<transformation>
+				<transformationref id="trans_antena_top"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="antena_top"/>
+			</children>
+		</component>
+		
+		<component id="component_antena">
+			<transformation>
+				<transformationref id="trans_antena"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_antena_top"/>
+				<primitiveref id="antena"/>
 			</children>
 		</component>
 		
@@ -348,74 +333,6 @@
 			</children>
 		</component>
 		
-		<component id="component_head_top">
-			<transformation>
-				<transformationref id="trans_head_top"/>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<primitiveref id="head_top"/>
-			</children>
-		</component>
-		
-		<component id="component_antena">
-			<transformation>
-				<transformationref id="trans_antena"/>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_antena_top"/>
-				<primitiveref id="antena"/>
-			</children>
-		</component>
-		
-		<component id="component_antena_top">
-			<transformation>
-				<transformationref id="trans_antena_top"/>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<primitiveref id="antena_top"/>
-			</children>
-		</component>
-		
-		<component id="component_body">
-			
-			<transformation>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="body"/>
-			
-			<children>
-				<componentref id="component_body_top"/>
-				<componentref id="component_arm"/>
-				<componentref id="component_leg"/>
-				<primitiveref id="body"/>
-			</children>
-		</component>
-		
 		<component id="component_body_top">
 			<transformation>
 				<transformationref id="trans_body_top"/>
@@ -429,41 +346,6 @@
 			
 			<children>
 				<primitiveref id="body_top"/>
-			</children>
-		</component>
-		
-		<component id="component_arm">
-			<transformation>
-				<!-- transformation to left arm -->
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_left_arm"/>
-				<componentref id="component_right_arm"/>
-			</children>
-		</component>
-		
-		<component id="component_left_arm">
-			<transformation>
-				<transformationref id="trans_left_arm"/>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_left_shoulder"/>
-				<componentref id="component_left_hand"/>
-				<primitiveref id="member"/>
 			</children>
 		</component>
 		
@@ -483,22 +365,6 @@
 			</children>
 		</component>
 		
-		<component id="component_left_hand">
-			<transformation>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_left_wrist"/>
-				<componentref id="component_left_fingers"/>
-			</children>
-		</component>
-		
 		<component id="component_left_wrist">
 			<transformation>
 				<transformationref id="trans_wrist"/>
@@ -512,24 +378,6 @@
 			
 			<children>
 				<primitiveref id="wrist"/>
-			</children>
-		</component>
-		
-		<component id="component_left_fingers">
-			<transformation>
-				<transformationref id="trans_finger"/>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_left_finger1"/>
-				<componentref id="component_left_finger2"/>
-				<componentref id="component_left_finger3"/>
 			</children>
 		</component>
 		
@@ -581,9 +429,9 @@
 			</children>
 		</component>
 		
-		<component id="component_right_arm">
+		<component id="component_left_fingers">
 			<transformation>
-				<transformationref id="trans_right_arm"/>
+				<transformationref id="trans_finger"/>
 			</transformation>
 			
 			<materials>
@@ -593,8 +441,42 @@
 			<texture id="greytex"/>
 			
 			<children>
-				<componentref id="component_right_shoulder"/>
-				<componentref id="component_right_hand"/>
+				<componentref id="component_left_finger1"/>
+				<componentref id="component_left_finger2"/>
+				<componentref id="component_left_finger3"/>
+			</children>
+		</component>
+		
+		<component id="component_left_hand">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_wrist"/>
+				<componentref id="component_left_fingers"/>
+			</children>
+		</component>
+		
+		<component id="component_left_arm">
+			<transformation>
+				<transformationref id="trans_left_arm"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_shoulder"/>
+				<componentref id="component_left_hand"/>
 				<primitiveref id="member"/>
 			</children>
 		</component>
@@ -615,22 +497,6 @@
 			</children>
 		</component>
 		
-		<component id="component_right_hand">
-			<transformation>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_right_wrist"/>
-				<componentref id="component_right_fingers"/>
-			</children>
-		</component>
-		
 		<component id="component_right_wrist">
 			<transformation>
 				<transformationref id="trans_wrist"/>
@@ -644,24 +510,6 @@
 			
 			<children>
 				<primitiveref id="wrist"/>
-			</children>
-		</component>
-		
-		<component id="component_right_fingers">
-			<transformation>
-				<transformationref id="trans_finger"/>
-			</transformation>
-			
-			<materials>
-				<material id="metal"/>
-			</materials>
-			
-			<texture id="greytex"/>
-			
-			<children>
-				<componentref id="component_right_finger1"/>
-				<componentref id="component_right_finger2"/>
-				<componentref id="component_right_finger3"/>
 			</children>
 		</component>
 		
@@ -713,7 +561,25 @@
 			</children>
 		</component>
 		
-		<component id="component_leg">
+		<component id="component_right_fingers">
+			<transformation>
+				<transformationref id="trans_finger"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_right_finger1"/>
+				<componentref id="component_right_finger2"/>
+				<componentref id="component_right_finger3"/>
+			</children>
+		</component>
+		
+		<component id="component_right_hand">
 			<transformation>
 			</transformation>
 			
@@ -724,8 +590,59 @@
 			<texture id="greytex"/>
 			
 			<children>
-				<componentref id="component_left_leg"/>
-				<componentref id="component_right_leg"/>
+				<componentref id="component_right_wrist"/>
+				<componentref id="component_right_fingers"/>
+			</children>
+		</component>
+		
+		<component id="component_right_arm">
+			<transformation>
+				<transformationref id="trans_right_arm"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_right_shoulder"/>
+				<componentref id="component_right_hand"/>
+				<primitiveref id="member"/>
+			</children>
+		</component>
+		
+		<component id="component_arm">
+			<transformation>
+				<!-- transformation to left arm -->
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_left_arm"/>
+				<componentref id="component_right_arm"/>
+			</children>
+		</component>
+		
+		<component id="component_left_foot">
+			<transformation>
+				<transformationref id="trans_foot"/>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<primitiveref id="feet"/>
 			</children>
 		</component>
 		
@@ -746,7 +663,7 @@
 			</children>
 		</component>
 		
-		<component id="component_left_foot">
+		<component id="component_right_foot">
 			<transformation>
 				<transformationref id="trans_foot"/>
 			</transformation>
@@ -779,9 +696,8 @@
 			</children>
 		</component>
 		
-		<component id="component_right_foot">
+		<component id="component_leg">
 			<transformation>
-				<transformationref id="trans_foot"/>
 			</transformation>
 			
 			<materials>
@@ -791,9 +707,93 @@
 			<texture id="greytex"/>
 			
 			<children>
-				<primitiveref id="feet"/>
+				<componentref id="component_left_leg"/>
+				<componentref id="component_right_leg"/>
 			</children>
 		</component>
+		
+		<component id="component_body">
+			
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="metal"/>
+			</materials>
+			
+			<texture id="body"/>
+			
+			<children>
+				<componentref id="component_body_top"/>
+				<componentref id="component_arm"/>
+				<componentref id="component_leg"/>
+				<primitiveref id="body"/>
+			</children>
+		</component>
+		
+		<component id="component_futurama_bot">
+			<transformation>
+				<transformationref id="trans_futurama_bot"/>
+			</transformation>
+			
+			<materials>
+			</materials>
+			
+			<texture id="greytex"/>
+			
+			<children>
+				<componentref id="component_head"/>
+				<componentref id="component_body"/>
+			</children>
+		</component>
+		
+		<component id="component0">
+        
+            <!-- bloco "transformation" obrigatorio -->
+            <transformation>
+            
+                <!-- deve conter uma referencia a uma das "transformation" -->
+                <!-- declaradas anteriormente -->
+                <!-- <transformationref id="transformation0" /> -->
+                
+                <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
+                <!-- usando zero ou mais das instrucoes seguintes, sem -->
+                <!-- limite nem ordem -->
+                <!-- ex: bloco transformation pode ficar sem conteudo -->
+                <!-- <translate x="4.0" y="4.0" z="4.0" /> -->
+                <!-- <rotate axis="x" angle="180" /> -->
+                <!-- <scale x="5.0" y="5.0" z="5.0" /> -->
+            </transformation>
+       
+            <!-- declaracao obrigatoria de pelo menos um material; -->
+            <!-- o material id="inherit", mantem (herda) material do "pai" -->
+            <!-- se varios materiais declarados, o default e' o -->
+            <!-- primeiro material; de cada vez que se pressione a tecla m/M, -->
+            <!-- o material muda para o proximo material da lista; do --> 
+            <!-- ultimo material da lista volta ao primeiro -->
+            <materials>
+                <material id="metal" />
+            </materials>
+                         
+            <!-- declaracao obrigatoria de texture -->
+            <!-- id="inherit" mantem (herda) a textura do objecto "pai" -->
+            <!-- id="none" remove a textura recebida do pai -->
+            <!-- a textura declarada sobrepoe a textura recebida do -->
+            <!-- objecto "pai" -->
+            <texture id="greytex" />
+            
+            <!-- bloco "children" obrigatorio num "component" -->
+            <children>
+            
+                <!-- deve existir uma ou mais tags "componentref" e/ou -->
+                <!-- "primitiveref", identificando outros -->
+                <!-- componentes ou primitivas -->
+                <!-- <componentref id="ss" /> -->
+                <!-- <primitiveref id="triangle0"/> -->
+                <componentref id="component_futurama_bot"/>
+            </children>
+            
+        </component>
         
     </components>
 
