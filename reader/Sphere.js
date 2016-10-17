@@ -32,9 +32,9 @@ Sphere.prototype.initBuffers = function() {
 	for (var j = 0; j < this.slices; j++)  {
 	    angleh = j * steph;
 
-	    this.vertices.push(Math.sin(anglev) * Math.cos(angleh),
-			       Math.cos(anglev),
-			       Math.sin(anglev) * Math.sin(angleh));
+	    this.vertices.push(this.radius * Math.sin(anglev) * Math.cos(angleh),
+			       this.radius * Math.cos(anglev),
+			       this.radius * Math.sin(anglev) * Math.sin(angleh));
 
 	    this.texCoords.push(0.5 + (Math.sin(anglev) * Math.cos(angleh)) / 2);
             this.texCoords.push(0.5 + (Math.sin(anglev) * Math.sin(angleh)) / 2);
