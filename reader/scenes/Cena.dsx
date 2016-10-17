@@ -322,7 +322,7 @@
 			<materials>
 			</materials>
 			
-			<texture id="greytex">
+			<texture id="greytex"/>
 			
 			<children>
 				<componentref id="component_head"/>
@@ -348,7 +348,7 @@
 			</children>
 		</component>
 		
-		<component id="component_head_top"/>
+		<component id="component_head_top">
 			<transformation>
 				<transformationref id="trans_head_top"/>
 			</transformation>
