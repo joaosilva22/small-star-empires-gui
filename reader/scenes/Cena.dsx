@@ -87,8 +87,8 @@
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
         <texture id="greytex" file="metal.jpg" length_s="1.0" length_t="1.0" />
-		<texture id="face" file="face.jpg" length_s="1.0" length_t="1.0" />
-		<texture id="body" file="body.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="face" file="metal.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="body" file="metal.jpg" length_s="1.0" length_t="1.0" />
         
     </textures>
 
