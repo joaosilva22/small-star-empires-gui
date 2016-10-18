@@ -46,7 +46,7 @@
 
     <illumination doublesided="1" local="1" >
     
-        <ambient r="0.0" g="0.0" b="1.0" a="1.0" />
+        <ambient r="1.0" g="1.0" b="1.0" a="0.5" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
         
     </illumination>
@@ -88,7 +88,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="texture0" file="texture.png" length_s="2.0" length_t="2.0" />  
+        <texture id="texture0" file="resources/metal.jpg" length_s="1.0" length_t="1.0" />  
         
     </textures>
 
@@ -152,6 +152,10 @@
         <primitive id="sphere0">
           <sphere radius="1.0" slices="8" stacks="8"/>          
         </primitive>
+
+        <primitive id="torus0">
+            <torus inner="2.0" outer="3.0" slices="12" loops="24"/>
+        </primitive>
     </primitives>
     
     
@@ -199,7 +203,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="sphere0"/>
+                <primitiveref id="torus0"/>
                 
             </children>
             

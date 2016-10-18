@@ -1,5 +1,5 @@
 function Torus(scene, inner, outer, slices, loops) {
-    CGFObject.call(this, scene);
+    CGFobject.call(this, scene);
 
     this.inner = inner;
     this.outer = outer;
@@ -9,19 +9,18 @@ function Torus(scene, inner, outer, slices, loops) {
     this.initBuffers();
 }
 
-Torus.prototype = Object.create(CGFObject.prototype);
+Torus.prototype = Object.create(CGFobject.prototype);
 Torus.prototype.constructor = Torus;
-//TODO
+
+Torus.prototype.setTexCoords = function(){
+	
+};
+
 Torus.prototype.initBuffers = function() {
-
-    this.radius = (this.outer-this.inner)/2;
-    this.centerLine = this.inner+this.radius;
-
     this.vertices = [];
-
     this.indices = [];
-
     this.normals = [];
+    this.texCoords = [];
 
     var r = (this.outer-this.inner)/2;
     var R = this.inner + r;
@@ -29,13 +28,15 @@ Torus.prototype.initBuffers = function() {
     //y=r*sin(angleSlice)
     //z=(R+r*sin(angleSlice))*cos(angleLoop)
 
-    var incAngleSlice = (360/this.slices)*(Math.PI/180);
-    var incAngleLoop = (360/this.loops)*(Math.PI/180);
-    for(var k=0;k<2*Math.PI;k+=incAngleLoop){
-	    for(var i=0;i<2*Math.PI;i+=incAngleSlice){
-	    	this.vertices.push((R+r*Math.cos(i))*Math.cos(k));
+    var incAngleSlice = (360/this.slices)*(Math.PI/180.0);
+    var incAngleLoop = (360/this.loops)*(Math.PI/180.0);
+
+    for(var k=0; k < 2*Math.PI ;k+=incAngleLoop){
+	    for(var i=0; i < 2*Math.PI ;i+=incAngleSlice){
+	    	//R+(r*Math.cos(i)))*Math.sin(k)
+	    	this.vertices.push(R*Math.cos(k) + (r*Math.cos(i)*Math.cos(k)));
 	    	this.vertices.push(r*Math.sin(i));
-	    	this.vertices.push((R+r*Math.sin(i))*Math.cos(k));
+	    	this.vertices.push((R+(r*Math.cos(i)))*Math.sin(k));
 
 	    	this.normals.push( Math.cos(k) * (Math.cos(k)*(-Math.sin(i))) );
 	    	this.normals.push( (-Math.sin(k))*Math.sin(k)*(-Math.sin(i)) - Math.cos(k)*Math.cos(k)*(-Math.sin(i)) );
@@ -44,15 +45,15 @@ Torus.prototype.initBuffers = function() {
 	}
 
 	//indices
-	for(var i=1;i<this.loops;i++){
+	for(var i=0;i<this.loops;i++){
 		for(var j=0;j<this.slices;j++){
-			this.indices.push((i - 1) * this.slices + j,
-			      i * this.slices + j,
-			      (i - 1) * this.slices + ((j + 1) % this.slices));
-
-	    	this.indices.push((i - 1) * this.slices + ((j + 1) % this.slices),
-			      i * this.slices + j,
+			this.indices.push(((i+1)%this.loops) * this.slices + j,
+				  i * this.slices + j,
 			      i * this.slices + ((j + 1) % this.slices));
+
+	    	this.indices.push(((i+1)%this.loops) * this.slices + j,
+	    		  i * this.slices + ((j + 1) % this.slices),
+			      ((i+1)%this.loops) * this.slices + ((j + 1) % this.slices));
 		}
 	}
 
@@ -81,6 +82,4 @@ Torus.prototype.initBuffers = function() {
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
-};/**
- * Created by DC on 12/10/2016.
- */
+};
