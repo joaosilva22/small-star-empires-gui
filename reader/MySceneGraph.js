@@ -26,8 +26,6 @@ MySceneGraph.prototype.onXMLReady=function()
     var rootElement = this.reader.xmlDoc.documentElement;
 
     // Store scene information
-    this.sceneInfo = new SceneInfo();
-
     this.root = null;
     this.axisLenght = null;
     this.illumination = new Illumination();
@@ -41,59 +39,63 @@ MySceneGraph.prototype.onXMLReady=function()
     
     // Here should go the calls for different functions to parse the various blocks
     var error = this.parseScene(rootElement);
-    //console.log(this.sceneInfo.toString());
-
     if (error != null) {
 	this.onXMLError(error);
 	return;
-    }	
+    }
+
+    error = this.parseViews(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parseIllumination(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parseLights(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parseTextures(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parseMaterials(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parseTransformations(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parsePrimitives(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+    
+    error = this.parseComponents(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
 
     this.loadedOk=true;
     
     // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
     this.scene.onGraphLoaded();
-};
-
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
-MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {    
-    var elems =  rootElement.getElementsByTagName('globals');
-    if (elems == null) {
-	return "globals element is missing.";
-    }
-
-    if (elems.length != 1) {
-	return "either zero or more than one 'globals' element found.";
-    }
-
-    // various examples of different types of access
-    var globals = elems[0];
-    this.background = this.reader.getRGBA(globals, 'background');
-    this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
-    this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
-    this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
-
-    console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-
-    var tempList=rootElement.getElementsByTagName('list');
-
-    if (tempList == null  || tempList.length==0) {
-	return "list element is missing.";
-    }
-    
-    this.list=[];
-    // iterate over every element
-    var nnodes=tempList[0].children.length;
-    for (var i=0; i< nnodes; i++)
-	{
-	    var e=tempList[0].children[i];
-
-	    // process each element and store its information
-	    this.list[e.id]=e.attributes.getNamedItem("coords").value;
-	    console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};
-
 };
 
 /*
@@ -111,48 +113,6 @@ MySceneGraph.prototype.parseScene = function(rootElement) {
     var _scene = elems[0];
     this.root = this.reader.getString(_scene, 'root', true);
     this.axisLenght = this.reader.getFloat(_scene, 'axis_length', true);
-
-    // parse other blocks here ?
-    // ...
-    var error = this.parseViews(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-
-    error = this.parseIllumination(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-
-    error = this.parseLights(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-
-    error = this.parseTextures(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-
-    error = this.parseMaterials(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-
-    error = this.parseTransformations(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-
-    error = this.parsePrimitives(rootElement);
-    if (error != undefined) {
-	return error;
-    }
-    
-    error = this.parseComponents(rootElement);
-    if (error != undefined) {
-	return error;
-    }
 };
 
 /*
@@ -198,10 +158,9 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	}
 
 	var id = this.reader.getString(perspective, 'id', true);
-	if (this.sceneInfo.hasId(id)) {
+	if (this.hasId(id)) {
 	    return "invalid id on 'perspective' element";
 	}
-	this.sceneInfo.ids.push(id);
 
 	var near = this.reader.getFloat(perspective, 'near', true);
 	var far = this.reader.getFloat(perspective, 'far', true);
@@ -257,15 +216,15 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
     var doublesided = this.reader.getBoolean(_illumination, 'doublesided');
     var local = this.reader.getBoolean(_illumination, 'local');
 
-    var ambient = new RGBA(this.reader.getFloat(_ambient[0], 'r', true),
-			   this.reader.getFloat(_ambient[0], 'g', true),
-			   this.reader.getFloat(_ambient[0], 'b', true),
-			   this.reader.getFloat(_ambient[0], 'a', true));
+    var ambient = [this.reader.getFloat(_ambient[0], 'r', true),
+		   this.reader.getFloat(_ambient[0], 'g', true),
+		   this.reader.getFloat(_ambient[0], 'b', true),
+		   this.reader.getFloat(_ambient[0], 'a', true)];
 
-    var background = new RGBA(this.reader.getFloat(_background[0], 'r', true),
-			      this.reader.getFloat(_background[0], 'g', true),
-			      this.reader.getFloat(_background[0], 'b', true),
-			      this.reader.getFloat(_background[0], 'a', true));
+    var background = [this.reader.getFloat(_background[0], 'r', true),
+		      this.reader.getFloat(_background[0], 'g', true),
+		      this.reader.getFloat(_background[0], 'b', true),
+		      this.reader.getFloat(_background[0], 'a', true)];
 
     this.illumination =	new Illumination(doublesided, local, ambient, background);
 };
@@ -295,10 +254,10 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    var current = omni[i];
 
 	    var id = this.reader.getString(current, 'id', true);
-	    if (this.sceneInfo.hasId(id)) {
+	    if (this.hasId(id)) {
  		return "invalid id on 'omni' element";
 	    }
-	    this.sceneInfo.ids.push(id);
+	    
 	    var enabled = this.reader.getBoolean(current, 'enabled', true);
 	    this.lights.addOmni(id, enabled);
 
@@ -373,10 +332,10 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    var current = spot[0];
 
 	    var id = this.reader.getString(current, 'id', true);
-	    if (this.sceneInfo.hasId(id)) {
+	    if (this.hasId(id)) {
  		return "invalid id on 'omni' element";
 	    }
-	    this.sceneInfo.ids.push(id);
+
 	    var enabled = this.reader.getBoolean(current, 'enabled', true);
 	    var angle = this.reader.getFloat(current, 'angle', true);
 	    var exponent = this.reader.getFloat(current, 'exponent', true);
@@ -485,10 +444,10 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
 	var _texture = textures[i];
 
 	var id = this.reader.getString(_texture, 'id', true);
-	if (this.sceneInfo.hasId(id)) {
+	if (this.hasId(id)) {
  	    return "invalid id on 'texture' element.";
 	}
-	this.sceneInfo.ids.push(id);
+
 	var file = this.reader.getString(_texture, 'file', true);
 	var lengthS = this.reader.getFloat(_texture, 'length_s', true);
 	var lengthT = this.reader.getFloat(_texture, 'length_t', true);
@@ -528,10 +487,9 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	var current = materials[i];
 
 	var id = this.reader.getString(current, 'id', true);
-	if (this.sceneInfo.hasId(id)) {
+	if (this.hasId(id)) {
 	    return "invalid id on 'material' element.";
 	}
-	this.sceneInfo.ids.push(id);
 
 	var material = new CGFappearance(this.scene);
 
@@ -626,10 +584,10 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 
     for (var i = 0; i < _transformations.length; i++) {
 	var id = this.reader.getString(_transformations[i], 'id', true);
-	if (this.sceneInfo.hasId(id)) {
+	if (this.hasId(id)) {
 	    return "invalid id on 'transformation' element.";
 	}
-	this.sceneInfo.ids.push(id);
+	
 	this.transformations[id] = new Transformation(this.scene);
 	
 	var children = _transformations[i].children;
@@ -684,10 +642,9 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	}
 
 	var id = this.reader.getString(primitives[i], 'id', true);
-	if (this.sceneInfo.hasId(id)) {
+	if (this.hasId(id)) {
 	    return "invalid id on 'transformation' element.";
 	}
-	this.sceneInfo.ids.push(id);
 
 	var primitive = primitives[i].children[0];
 	var type = primitive.nodeName;
@@ -761,10 +718,9 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
     var components = elems[0].getElementsByTagName('component');
     for (let component of components) {
 	var id = this.reader.getString(component, 'id', true);
-	if (this.sceneInfo.hasId(id)) {
+	if (this.hasId(id)) {
 	    return "invalid id on 'component' element.";
 	}
-	this.sceneInfo.ids.push(id);
 
 	this.components[id] = new Component();
 
@@ -921,8 +877,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 		this.components[id].addChildren(this.primitives[refid]);
 	    }
 	}
-	
-	// console.log(this.sceneInfo.components[id].toString());
     }	
 };
 
@@ -932,6 +886,22 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 MySceneGraph.prototype.onXMLError=function (message) {
     console.error("XML Loading Error: "+message);	
     this.loadedOk=false;
+};
+
+/*
+ * Checks whether or not id has been used already.
+ */ 
+MySceneGraph.prototype.hasId = function(id) {
+    if (this.lights.spot[id] ||
+	this.lights.omni[id] ||
+	this.textures[id] ||
+	this.materials[id] ||
+	this.transformations[id] ||
+	this.primitives[id] ||
+	this.components[id]) {
+	return true;
+    }
+    return false;
 };
 
 // TODO:

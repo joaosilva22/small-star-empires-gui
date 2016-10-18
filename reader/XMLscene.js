@@ -51,15 +51,15 @@ XMLscene.prototype.onGraphLoaded = function () {
     this.camera = this.graph.views.default;
     this.interface.setActiveCamera(this.camera);
     
-    this.gl.clearColor(this.graph.illumination.background.r,
-		       this.graph.illumination.background.g,
-		       this.graph.illumination.background.b,
-		       this.graph.illumination.background.a);
+    this.gl.clearColor(this.graph.illumination.background[0],
+		       this.graph.illumination.background[1],
+		       this.graph.illumination.background[2],
+		       this.graph.illumination.background[3]);
 
-    this.setAmbient(this.graph.illumination.ambient.r,
-		    this.graph.illumination.ambient.g,
-		    this.graph.illumination.ambient.b,
-		    this.graph.illumination.ambient.a);
+    this.setAmbient(this.graph.illumination.ambient[0],
+		    this.graph.illumination.ambient[1],
+		    this.graph.illumination.ambient[2],
+		    this.graph.illumination.ambient[3]);
 
     this.setupLights();
 };
