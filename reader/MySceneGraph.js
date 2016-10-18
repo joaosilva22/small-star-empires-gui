@@ -38,6 +38,8 @@ MySceneGraph.prototype.onXMLReady=function()
     this.components = {};
     
     // Here should go the calls for different functions to parse the various blocks
+    this.verifyBlockOrder(rootElement);
+    
     var error = this.parseScene(rootElement);
     if (error != null) {
 	this.onXMLError(error);
@@ -678,16 +680,16 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	    var base = this.reader.getFloat(primitive, 'base', true);
 	    var top = this.reader.getFloat(primitive, 'top', true);
 	    var height = this.reader.getFloat(primitive, 'height', true);
-	    var slices = this.reader.getFloat(primitive, 'slices', true);
-	    var stacks = this.reader.getFloat(primitive, 'stacks', true);
+	    var slices = this.reader.getInteger(primitive, 'slices', true);
+	    var stacks = this.reader.getInteger(primitive, 'stacks', true);
 
 	    this.primitives[id] = new Cylinder(this.scene, base, top, height, slices, stacks);
 	}
 
 	if (type == "sphere") {
 	    var radius = this.reader.getFloat(primitive, 'radius', true);
-	    var slices = this.reader.getFloat(primitive, 'slices', true);
-	    var stacks = this.reader.getFloat(primitive, 'stacks', true);
+	    var slices = this.reader.getInteger(primitive, 'slices', true);
+	    var stacks = this.reader.getInteger(primitive, 'stacks', true);
 
 	    this.primitives[id] = new Sphere(this.scene, radius, slices, stacks);
 	}
@@ -695,8 +697,8 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	if (type == "torus") {
 	    var inner = this.reader.getFloat(primitive, 'inner', true);
 	    var outer = this.reader.getFloat(primitive, 'outer', true);
-	    var slices = this.reader.getFloat(primitive, 'slices', true);
-	    var loops = this.reader.getFloat(primitive, 'loops', true);
+	    var slices = this.reader.getInteger(primitive, 'slices', true);
+	    var loops = this.reader.getInteger(primitive, 'loops', true);
 
 	    this.primitives[id] = new Torus(this.scene, inner, outer, slices, loops);
 	}
@@ -724,7 +726,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 
 	this.components[id] = new Component();
 
-	// TRANSFORMACOES
 	var elems = component.getElementsByTagName('transformation');
 	if (elems == null) {
 	    return "transformation block is missing.";
@@ -786,7 +787,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	    }
 	}
 
-	// MATERIAIS
 	var elems = component.getElementsByTagName('materials');
 	if (elems == null) {
 	    return "materials block is missing.";
@@ -820,7 +820,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	    this.components[id].addMaterial(this.materials[refid]);
 	}
 
-	// TEXTURE
 	var elems = component.getElementsByTagName('texture');
 	if (elems == null) {
 	    return "texture block is missing.";
@@ -848,7 +847,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	}
 	this.components[id].setTexture(this.textures[refid]);
 
-	// CHILDREN
 	var elems = component.getElementsByTagName('children');
 	if (elems == null) {
 	    return "children block is missing.";
@@ -904,11 +902,19 @@ MySceneGraph.prototype.hasId = function(id) {
     return false;
 };
 
-// TODO:
-// Encapsular listas e métodos correspondentes
-// Ter referências para as classes na scene
-// Verificar se todos os objectos foram loaded corretamente
-// Implementar toString em todas as 'classes'
-// Classe scene para guardar lista de ids + todas as outras classes
-// SceneInfo.geteById implementar
-// Stringify todas as classes
+/*
+ * Verifies block order.
+ */
+MySceneGraph.prototype.verifyBlockOrder = function(root) {
+    var order = ["scene", "views", "illumination", "lights", "textures", "materials",
+		 "transformations", "primitives", "components"];
+    
+    for (var i = 0; i < root.children.length; i++) {
+	if (root.children[i].nodeName != order[i]) {
+	    console.log("Warning: incorrect block order. Should be: " +
+			"scene, views, illumination, lights, " + 
+                        "textures, materials, transformations, primitives, components");
+	    return;
+	}
+    }
+};
