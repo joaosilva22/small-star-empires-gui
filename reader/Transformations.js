@@ -28,7 +28,8 @@ Transformation.prototype.translate = function(x, y, z) {
 };
 
 Transformation.prototype.rotate = function(axis, angle) {
-    this.queue.push(new Rotation(axis, angle));
+    var rad = angle * (Math.PI/180);
+    this.queue.push(new Rotation(axis, rad));
 };
 
 Transformation.prototype.scale = function(x, y, z) {
