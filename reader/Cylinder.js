@@ -88,8 +88,8 @@ Cylinder.prototype.initBuffers = function() {
     currentangle = 0;
     for (var i = 0; i < this.slices; i++) {
 	currentangle = Math.PI - i*angularstep;
-	this.vertices.push(this.top * Math.cos(currentangle),
-			   this.top * Math.sin(currentangle),
+	this.vertices.push(this.base * Math.cos(currentangle),
+			   this.base * Math.sin(currentangle),
 			   0);
 	this.normals.push(0, 0, -1);
 	this.texCoords.push(0.5 * Math.cos(currentangle) + 0.5,0.5 * Math.sin(currentangle) + 0.5);
