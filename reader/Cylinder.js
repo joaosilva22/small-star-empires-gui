@@ -31,30 +31,30 @@ Cylinder.prototype.initBuffers = function() {
     var currentradius = this.base;
 
     for (var i = 0; i <= this.stacks; i++) {
-	currentstack = i*stackstep - this.height/2;
+	currentstack = i*stackstep;
 	currentradius = this.base + i*radiusstep;
 	for (var j = 0; j <= this.slices; j++) {
 	    currentangle = Math.PI - j*angularstep;
 
 	    this.vertices.push(currentradius * Math.cos(currentangle),
-			       currentstack,
-			       currentradius * Math.sin(currentangle));
-
+			       currentradius * Math.sin(currentangle),
+			       currentstack);
+	    
 	    this.normals.push(currentradius * Math.cos(currentangle),
-			      0,
-			      currentradius * Math.sin(currentangle));
+			      currentradius * Math.sin(currentangle),
+			      0);
 	}
     }
 
     for (var i = 1; i <= this.stacks; i++) {
 	for (var j = 0; j <= this.slices; j++) {
 	    this.indices.push((i - 1) * (this.slices + 1) + j,
-			      (i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
-			      i * (this.slices + 1) + j);
+			      i * (this.slices + 1) + j,
+			      (i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)));
 	    
 	    this.indices.push((i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
-			      i * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
-			      i * (this.slices + 1) + j);
+			      i * (this.slices + 1) + j,
+			      i * (this.slices + 1) + ((j + 1) % (this.slices + 1)));
 	}
     }
 
@@ -65,26 +65,46 @@ Cylinder.prototype.initBuffers = function() {
     }
 
     // Desenha as tampas
-    this.vertices.push(0, this.height/2, 0);
-    this.texCoords.push(0.5,0.5);
-    var num = this.vertices.length/3;
+    currentangle = 0;
     for (var i = 0; i < this.slices; i++) {
-	this.indices.push(num - 2,
-			  num - ((i+1)%this.slices+2),
-			  num - (i+2));
+	currentangle = Math.PI - i*angularstep;
+	this.vertices.push(this.top * Math.cos(currentangle),
+			   this.top * Math.sin(currentangle),
+			   this.height);
+	this.normals.push(0, 0, 1);
+	this.texCoords.push(0.5 * Math.cos(currentangle) + 0.5,0.5 * Math.sin(currentangle) + 0.5);
     }
-    this.normals.push(0,1,0);
-
-    this.vertices.push(0, -this.height/2, 0);
+    this.vertices.push(0, 0, this.height);
+    this.normals.push(0, 0, 1);
     this.texCoords.push(0.5,0.5);
-    var num = this.vertices.length/3;
     for (var i = 0; i < this.slices; i++) {
+	var num = this.vertices.length/3;
 	this.indices.push(num - 1,
-			  (i+1)%this.slices,
-			  i);
+			  num - (i % this.slices + 2),
+			  num - ((i+1) % this.slices + 2));
+			  
     }
-	    this.normals.push(0,-1,0);
-    
+
+    currentangle = 0;
+    for (var i = 0; i < this.slices; i++) {
+	currentangle = Math.PI - i*angularstep;
+	this.vertices.push(this.top * Math.cos(currentangle),
+			   this.top * Math.sin(currentangle),
+			   0);
+	this.normals.push(0, 0, -1);
+	this.texCoords.push(0.5 * Math.cos(currentangle) + 0.5,0.5 * Math.sin(currentangle) + 0.5);
+    }
+    this.vertices.push(0, 0, 0);
+    this.normals.push(0, 0, -1);
+    this.texCoords.push(0.5,0.5);
+    for (var i = 0; i < this.slices; i++) {
+	var num = this.vertices.length/3;
+	this.indices.push(num - 1,
+			  num - ((i+1) % this.slices + 2),
+			  num - (i % this.slices + 2));
+	
+    }
+
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
 };
