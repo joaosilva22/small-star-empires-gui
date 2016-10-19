@@ -34,7 +34,7 @@ Cylinder.prototype.initBuffers = function() {
 	currentstack = i*stackstep - this.height/2;
 	currentradius = this.base + i*radiusstep;
 	for (var j = 0; j <= this.slices; j++) {
-	    currentangle = j*angularstep;
+	    currentangle = Math.PI - j*angularstep;
 
 	    this.vertices.push(currentradius * Math.cos(currentangle),
 			       currentstack,
@@ -43,36 +43,24 @@ Cylinder.prototype.initBuffers = function() {
 	    this.normals.push(currentradius * Math.cos(currentangle),
 			      0,
 			      currentradius * Math.sin(currentangle));
-
-	    if (i % 2 === 0) {
-                if (j % 2 === 0) {
-                    this.texCoords.push(0);
-                    this.texCoords.push(1);
-                } else {
-                    this.texCoords.push(1);
-                    this.texCoords.push(1);
-                }
-            } else {
-                if (j % 2 === 0) {
-                    this.texCoords.push(0);
-                    this.texCoords.push(0);
-                } else {
-                    this.texCoords.push(1);
-                    this.texCoords.push(0);
-                }
-            }
 	}
     }
 
     for (var i = 1; i <= this.stacks; i++) {
-	for (var j = 0; j < this.slices; j++) {
-	    this.indices.push((i - 1) * this.slices + j,
-			      i * this.slices + j,
-			      (i - 1) * this.slices + ((j + 1) % this.slices));
+	for (var j = 0; j <= this.slices; j++) {
+	    this.indices.push((i - 1) * (this.slices + 1) + j,
+			      (i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
+			      i * (this.slices + 1) + j);
+	    
+	    this.indices.push((i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
+			      i * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
+			      i * (this.slices + 1) + j);
+	}
+    }
 
-	    this.indices.push((i - 1) * this.slices + ((j + 1) % this.slices),
-			      i * this.slices + j,
-			      i * this.slices + ((j + 1) % this.slices));
+    for (var i = this.stacks; i >= 0; i--) {
+	for (var j = this.slices; j >= 0; j--) {
+	    this.texCoords.push(j/this.slices, i/this.stacks);
 	}
     }
 
@@ -81,8 +69,8 @@ Cylinder.prototype.initBuffers = function() {
     var num = this.vertices.length/3;
     for (var i = 0; i < this.slices; i++) {
 	this.indices.push(num - 2,
-			  num - (i+2),
-			  num - ((i+1)%this.slices+2));
+			  num - ((i+1)%this.slices+2),
+			  num - (i+2));
     }
     this.normals.push(0,1,0);
 
@@ -91,10 +79,10 @@ Cylinder.prototype.initBuffers = function() {
     var num = this.vertices.length/3;
     for (var i = 0; i < this.slices; i++) {
 	this.indices.push(num - 1,
-			  i,
-			  (i+1)%this.slices);
+			  (i+1)%this.slices,
+			  i);
     }
-    this.normals.push(0,-1,0);
+	    this.normals.push(0,-1,0);
     
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();

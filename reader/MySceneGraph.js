@@ -645,7 +645,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 	var id = this.reader.getString(primitives[i], 'id', true);
 	if (this.hasId(id)) {
-	    return "invalid id on 'transformation' element.";
+	    return "invalid id on 'primitive' element.";
 	}
 
 	var primitive = primitives[i].children[0];
