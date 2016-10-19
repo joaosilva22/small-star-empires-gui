@@ -9,8 +9,8 @@ Lights.prototype.addOmni = function(id, enabled) {
 };
 
 Lights.prototype.addSpot = function(id, enabled, angle, exponent) {
-    // O que significa o angle ?
-    var light = {enabled: enabled, angle: angle, exponent: exponent};
+    var rad = angle * (Math.PI/180.0);
+    var light = {enabled: enabled, angle: rad, exponent: exponent};
     this.spot[id] = light;
 };
 

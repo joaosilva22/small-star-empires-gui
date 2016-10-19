@@ -129,6 +129,7 @@ XMLscene.prototype.setupLights = function() {
 	}
 	this.lights[i].setSpotDirection(l.target.x, l.target.y, l.target.z);
 	this.lights[i].setSpotExponent(l.exponent);
+	this.lights[i].setSpotCutOff(l.angle); 
 	this.lights[i].setVisible(true);
 	this.lights[i].update();	
 	i++;

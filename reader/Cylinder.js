@@ -64,6 +64,7 @@ Cylinder.prototype.initBuffers = function() {
 	}
     }
 
+    // Desenha as tampas
     this.vertices.push(0, this.height/2, 0);
     this.texCoords.push(0.5,0.5);
     var num = this.vertices.length/3;
