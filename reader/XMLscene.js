@@ -139,9 +139,7 @@ XMLscene.prototype.setupLights = function() {
 XMLscene.prototype.displayComponent = function(component) {
     component.transformation.push();
     for (let child of component.children) {
-	for (let material of component.materials) {
-	    material.apply();
-	}
+	this.applyMaterial(component);
 	component.texture.texture.apply();
 	if (child.type == "component") {
 	    this.displayComponent(this.graph.components[child.id]);
@@ -157,3 +155,29 @@ XMLscene.prototype.displayComponent = function(component) {
 XMLscene.prototype.displayPrimitive = function(primitive) {
     primitive.display();
 };
+
+XMLscene.prototype.applyMaterial = function(component) {
+    var material = component.materials[component.currentMaterial];
+    if (material instanceof CGFappearance) {
+	material.apply();
+    }
+};
+
+XMLscene.prototype.applyTexture = function(component, child) {
+    var texture = component.texture.texture;
+    if (texture instanceof CGFappearance) {
+	// setTextureWrap ?
+	texture.apply();
+    }
+    else if (texture == "none") {
+	// remover textura
+    }
+};
+
+XMLscene.prototype.nextMaterials = function() {
+    for (let component in this.graph.components) {
+	var c = this.graph.components[component];
+	c.nextMaterial();
+    }
+};
+

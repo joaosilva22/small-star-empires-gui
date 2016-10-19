@@ -817,13 +817,13 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	    var refid = this.reader.getString(material, 'id', true);
 	    if (refid == "inherit") {
 		this.components[id].addMaterial(refid);
-		break;
 	    }
-
-	    if (this.materials[refid] == null) {
-		return "material '" + refid + "' does not exist.";
+	    else {
+		if (this.materials[refid] == null) {
+		    return "material '" + refid + "' does not exist.";
+		}
+		this.components[id].addMaterial(this.materials[refid]);
 	    }
-	    this.components[id].addMaterial(this.materials[refid]);
 	}
 
 	var elems = component.getElementsByTagName('texture');
@@ -845,13 +845,12 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	var refid = this.reader.getString(texture, 'id', true);
 	if (refid == "inherit" || refid == "none") {
 	    this.components[id].setTexture(refid);
-	    break;
+	} else {
+	    if (this.textures[refid] == null) {
+		return "texture '" + refid + "' does not exist.";
+	    }
+	    this.components[id].setTexture(this.textures[refid]);
 	}
-
-	if (this.textures[refid] == null) {
-	    return "texture '" + refid + "' does not exist.";
-	}
-	this.components[id].setTexture(this.textures[refid]);
 
 	var elems = component.getElementsByTagName('children');
 	if (elems == null) {

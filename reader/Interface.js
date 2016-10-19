@@ -19,6 +19,10 @@ Interface.prototype.processKeyboard = function(event) {
 	    this.scene.camera = this.scene.graph.views.getNext(this.scene.camera);
 	    this.setActiveCamera(this.scene.camera);
 	    break;
+	case (77):
+	case (109):
+	    this.scene.nextMaterials();
+	    break;
     };
 };
 

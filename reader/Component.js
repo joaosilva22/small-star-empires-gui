@@ -1,6 +1,7 @@
 function Component() {
     this.transformation = null;
     this.materials = [];
+    this.currentMaterial = 0;
     this.texture = null;
     this.children = [];
 }
@@ -11,6 +12,10 @@ Component.prototype.setTransformation = function(transformation) {
 
 Component.prototype.addMaterial = function(material) {
     this.materials.push(material);
+};
+
+Component.prototype.nextMaterial = function() {
+    this.currentMaterial = (this.currentMaterial+1)%this.materials.length;
 };
 
 Component.prototype.setTexture = function(texture) {
