@@ -93,7 +93,7 @@ XMLscene.prototype.display = function () {
 	    this.lights[i].update();
 	}
 	let root = this.graph.components[this.graph.root];
-	this.displayComponent(root);
+	this.displayComponent(root, true);
     };	
 };
 
@@ -136,24 +136,31 @@ XMLscene.prototype.setupLights = function() {
     }
 };
 
-XMLscene.prototype.displayComponent = function(component) {
+XMLscene.prototype.displayComponent = function(component, textured) {
     component.transformation.push();
     for (let child of component.children) {
 	this.applyMaterial(component);
-	component.texture.texture.apply();
+
+	var temp = this.applyTexture(component);
+	if (temp != null) textured = temp;
+	
 	if (child.type == "component") {
-	    this.displayComponent(this.graph.components[child.id]);
+	    this.displayComponent(this.graph.components[child.id], textured);
 	}
 	else {
 	    this.graph.primitives[child.id].setTexCoords(component.texture.s, component.texture.t);
-	    this.displayPrimitive(this.graph.primitives[child.id]);
+	    this.displayPrimitive(this.graph.primitives[child.id], textured);
 	}
     }
     component.transformation.pop();
 };
 
-XMLscene.prototype.displayPrimitive = function(primitive) {
+XMLscene.prototype.displayPrimitive = function(primitive, textured) {
+    if (!textured) {
+	this.enableTextures(false);
+    }
     primitive.display();
+    this.enableTextures(true);
 };
 
 XMLscene.prototype.applyMaterial = function(component) {
@@ -163,14 +170,14 @@ XMLscene.prototype.applyMaterial = function(component) {
     }
 };
 
-XMLscene.prototype.applyTexture = function(component, child) {
-    var texture = component.texture.texture;
-    if (texture instanceof CGFappearance) {
+XMLscene.prototype.applyTexture = function(component) {
+    if (component.texture.texture instanceof CGFappearance) {
 	// setTextureWrap ?
-	texture.apply();
+	component.texture.texture.apply();
+	return true;
     }
-    else if (texture == "none") {
-	// remover textura
+    else if (component.texture == "none") {
+	return false;
     }
 };
 

@@ -240,9 +240,25 @@
             <material id="inherit" />
             <material id="material2" />
           </materials>
-          <texture id="texture0" />
+          <texture id="none" />
           <children>
             <primitiveref id="torus0"/>
+            <componentref id="testchild1"/>
+          </children>
+        </component>
+
+        <component id="testchild1">
+          <transformation>
+            <transformationref id="transformation0"/>
+          </transformation>
+          <materials>
+            <material id="material2" />
+            <material id="material1" />
+            <material id="inherit" />
+          </materials>
+          <texture id="inherit" />
+          <children>
+            <primitiveref id="triangle0"/>
           </children>
         </component>
         
