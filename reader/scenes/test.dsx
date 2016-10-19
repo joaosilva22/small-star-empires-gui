@@ -88,7 +88,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="texture0" file="resources/face.jpg" length_s="2.0" length_t="2.0" />  
+        <texture id="texture0" file="resources/texture.png" length_s="2.0" length_t="2.0" />  
         
     </textures>
 
@@ -158,7 +158,7 @@
         </primitive>
 
         <primitive id="transformation0">
-          <sphere radius="2.0" slices="12" stacks="12"/>
+          <sphere radius="2.0" slices="24" stacks="24"/>
         </primitive>
         
     </primitives>
@@ -208,7 +208,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="transformation0"/>
+                <primitiveref id="rectangle0"/>
                 
             </children>
             
