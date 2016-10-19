@@ -172,7 +172,7 @@ XMLscene.prototype.applyMaterial = function(component) {
 
 XMLscene.prototype.applyTexture = function(component) {
     if (component.texture.texture instanceof CGFappearance) {
-	// setTextureWrap ?
+	//component.texture.texture.setTextureWrap('REPEAT', 'REPEAT');
 	component.texture.texture.apply();
 	return true;
     }

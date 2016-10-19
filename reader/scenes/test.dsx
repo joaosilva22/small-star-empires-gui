@@ -256,7 +256,7 @@
             <material id="material1" />
             <material id="inherit" />
           </materials>
-          <texture id="inherit" />
+          <texture id="texture0" />
           <children>
             <primitiveref id="triangle0"/>
           </children>
