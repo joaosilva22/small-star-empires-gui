@@ -38,7 +38,7 @@
         </perspective>
 
         <perspective id="view2" near="0.1" far="100.0" angle="45.0">
-            <from x="5.0" y="5.0" z="5.0" />
+            <from x="5.0" y="-5.0" z="-5.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>        
     </views>
@@ -88,7 +88,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="texture0" file="resources/metal.jpg" length_s="1.0" length_t="1.0" />  
+        <texture id="texture0" file="resources/texture.png" length_s="2.0" length_t="1.0" />  
         
     </textures>
 
@@ -203,7 +203,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="torus0"/>
+                <primitiveref id="rectangle0"/>
                 
             </children>
             

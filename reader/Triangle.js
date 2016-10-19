@@ -18,9 +18,18 @@ Triangle.prototype = Object.create(CGFobject.prototype);
 Triangle.prototype.constructor = Triangle;
 
 Triangle.prototype.setTexCoords = function(length_s,length_t) {
-    this.s = length_s;
-    this.t = length_t;
-    this.initBuffers();
+    var a = Math.sqrt(Math.pow(this.x1-this.x3,2) +  Math.pow(this.y1-this.y3,2) + Math.pow(this.z1-this.z3,2));
+    var b = Math.sqrt(Math.pow(this.x2-this.x1,2) +  Math.pow(this.y2-this.y1,2) + Math.pow(this.z2-this.z1,2));
+    var c = Math.sqrt(Math.pow(this.x3-this.x2,2) +  Math.pow(this.y3-this.y2,2) + Math.pow(this.z3-this.z2,2));
+    var cosBeta = (a*a - b*b + c*c)/(2*a*c);
+    var sinBeta = 1-(cosBeta*cosBeta);
+    
+    this.texCoords = [
+	length_s*(c-a*cosBeta), length_t*(a*sinBeta),
+	0,0,
+	length_s*,0
+    ];
+    this.updateTexCoordsGLBuffers();
 };
 
 Triangle.prototype.initBuffers = function() {
@@ -41,17 +50,7 @@ Triangle.prototype.initBuffers = function() {
     ];
 
     if (this.s != undefined && this.t != undefined) {
-	var a = Math.sqrt(Math.pow(this.x1-this.x3,2) +  Math.pow(this.y1-this.y3,2) + Math.pow(this.z1-this.z3,2));
-	var b = Math.sqrt(Math.pow(this.x2-this.x1,2) +  Math.pow(this.y2-this.y1,2) + Math.pow(this.z2-this.z1,2));
-	var c = Math.sqrt(Math.pow(this.x3-this.x2,2) +  Math.pow(this.y3-this.y2,2) + Math.pow(this.z3-this.z2,2));
-	var cosBeta = (a*a - b*b + c*c)/(2*a*c);
-	var sinBeta = 1-(cosBeta*cosBeta);
-	
-	this.texCoords = [
-	    this.s*(c-a*cosBeta), this.t*(a*sinBeta),
-	    0,0,
-	    this.s*c,0
-	];
+
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;

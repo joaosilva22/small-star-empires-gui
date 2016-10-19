@@ -13,9 +13,13 @@ Rectangle.prototype = Object.create(CGFobject.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 Rectangle.prototype.setTexCoords = function(length_s, length_t){
-    this.s = length_s;
-    this.t = length_t;
-    this.initBuffers();
+    this.texCoords = [
+	0,length_t,
+	length_s,length_t,
+	length_s,0,
+	0,0
+    ];
+    this.updateTexCoordsGLBuffers();
 };
 
 Rectangle.prototype.initBuffers = function() {
@@ -38,20 +42,12 @@ Rectangle.prototype.initBuffers = function() {
 	0, 0, 1
     ];
 
-    if (this.s != undefined && this.t != undefined) {
-	this.texCoords = [
-	    0,this.t,
-	    this.s,this.t,
-	    this.s,0,
-	    0,0
-	];
-    }
-    //this.texCoords = [
-//	0,1,
-//	1,1,
-//	1,0,
-//	0,0
-  //  ];
+    this.texCoords = [
+	0,1,
+	1,1,
+	1,0,
+	0,0
+    ];
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
