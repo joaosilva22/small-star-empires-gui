@@ -94,6 +94,12 @@ MySceneGraph.prototype.onXMLReady=function()
 	return error;
     }
 
+    error = this.verifyComponentChildren(this.components[this.root]);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
     this.loadedOk=true;
     
     // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
@@ -859,20 +865,14 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	for (let child of children) {
 	    if (child.nodeName == "componentref") {
 		var refid = this.reader.getString(child, 'id', true);
-		if (this.components[refid] == null) {
-		    return "component '" + refid + "' does not exist.";
-		}
 		if (refid == id) {
 		    return "component can't be a child of itself";
 		}
-		this.components[id].addChildren(this.components[refid]);
+		this.components[id].addChildren({type: "component", id: refid});
 	    }
 	    if (child.nodeName == "primitiveref") {
 		var refid = this.reader.getString(child, 'id', true);
-		if (this.primitives[refid] == null) {
-		    return "primitive '" + refid + "' does not exist.";
-		}
-		this.components[id].addChildren(this.primitives[refid]);
+		this.components[id].addChildren({type: "primitive", id: refid});
 	    }
 	}
     }	
@@ -929,6 +929,26 @@ MySceneGraph.prototype.verifyBlockOrder = function(root) {
 			"scene, views, illumination, lights, " + 
                         "textures, materials, transformations, primitives, components");
 	    return;
+	}
+    }
+};
+
+/*
+ * Verifies if component/primitive loaded ok.
+ */
+MySceneGraph.prototype.verifyComponentChildren = function(component) {
+    var children = component.children;
+    for (let child of children) {
+	if (child.type == "component") {
+	    if (!this.components[child.id]) {
+		return "component '" + child.id + "' does not exist";
+	    }
+	    this.verifyComponentChildren(this.components[child.id]);
+	}
+	else {
+	    if (!this.primitives[child.id]) {
+		return "primitive '" + child.id + "' does not exist";
+	    }
 	}
     }
 };

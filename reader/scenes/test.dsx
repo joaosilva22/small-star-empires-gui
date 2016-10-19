@@ -209,9 +209,23 @@
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
                 <primitiveref id="rectangle0"/>
+                <componentref id="testchild"/>
                 
             </children>
             
+        </component>
+
+        <component id="testchild">
+          <transformation>
+            <transformationref id="transformation0"/>
+          </transformation>
+          <materials>
+            <material id="material0" />
+          </materials>
+          <texture id="texture0" />
+          <children>
+            <primitiveref id="torus0"/>
+          </children>
         </component>
         
     </components>

@@ -1,14 +1,9 @@
 function Component() {
-    this.parent = null;
     this.transformation = null;
     this.materials = [];
     this.texture = null;
     this.children = [];
 }
-
-Component.prototype.setParent = function(component) {
-    this.parent = component;
-};
 
 Component.prototype.setTransformation = function(transformation) {
     this.transformation = transformation;

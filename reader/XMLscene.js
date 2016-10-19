@@ -143,12 +143,12 @@ XMLscene.prototype.displayComponent = function(component) {
 	    material.apply();
 	}
 	component.texture.texture.apply();
-	if (child instanceof Component) {
-	    this.displayComponent(child);
+	if (child.type == "component") {
+	    this.displayComponent(this.graph.components[child.id]);
 	}
 	else {
-	    child.setTexCoords(component.texture.s, component.texture.t);
-	    this.displayPrimitive(child);
+	    this.graph.primitives[child.id].setTexCoords(component.texture.s, component.texture.t);
+	    this.displayPrimitive(this.graph.primitives[child.id]);
 	}
     }
     component.transformation.pop();
