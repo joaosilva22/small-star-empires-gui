@@ -38,7 +38,7 @@
         </perspective>
 
         <perspective id="view2" near="0.1" far="100.0" angle="45.0">
-            <from x="0.0" y="-10.0" z="0.0" />
+            <from x="5.0" y="5.0" z="5.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>        
     </views>
