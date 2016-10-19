@@ -11,7 +11,7 @@ function Sphere(scene, radius, slices, stacks) {
 Sphere.prototype = Object.create(CGFobject.prototype);
 Sphere.prototype.constructor = Sphere;
 
-Sphere.prototype.setTexCoords = function() {
+Sphere.prototype.setTexCoords = function(length_s, length_t) {
 };
 
 Sphere.prototype.initBuffers = function() {
