@@ -29,15 +29,12 @@ Sphere.prototype.initBuffers = function() {
 
     for (var i = 0; i <= this.stacks; i++) {
 	anglev = Math.PI - i*stepv;
-	for (var j = 0; j < this.slices; j++)  {
-	    angleh = j * steph;
+	for (var j = 0; j <= this.slices; j++)  {
+	    angleh = Math.PI - j * steph;
 
 	    this.vertices.push(this.radius * Math.sin(anglev) * Math.cos(angleh),
 			       this.radius * Math.cos(anglev),
 			       this.radius * Math.sin(anglev) * Math.sin(angleh));
-
-	    this.texCoords.push(0.5 + (Math.sin(anglev) * Math.cos(angleh)) / 2);
-            this.texCoords.push(0.5 + (Math.sin(anglev) * Math.sin(angleh)) / 2);
 	    
 	    this.normals.push(Math.sin(anglev) * Math.cos(angleh),
 			      Math.cos(anglev),
@@ -46,14 +43,20 @@ Sphere.prototype.initBuffers = function() {
     }
 
     for (var i = 1; i <= this.stacks; i++) {
-	for (var j = 0; j < this.slices; j++) {
-	    this.indices.push((i - 1) * this.slices + j,
-			      i * this.slices + j,
-			      (i - 1) * this.slices + ((j + 1) % this.slices));
+	for (var j = 0; j <= this.slices; j++) {
+	    this.indices.push((i - 1) * (this.slices + 1) + j,
+			      (i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
+			      i * (this.slices + 1) + j);
 
-	    this.indices.push((i - 1) * this.slices + ((j + 1) % this.slices),
-			      i * this.slices + j,
-			      i * this.slices + ((j + 1) % this.slices));
+	    this.indices.push((i - 1) * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
+			      i * (this.slices + 1) + ((j + 1) % (this.slices + 1)),
+			      i * (this.slices + 1) + j);
+	}
+    }
+
+    for (var i = this.stacks; i >= 0; i--) {
+	for (var j = this.slices; j >= 0; j--) {
+	    this.texCoords.push(j/this.slices, i/this.stacks);
 	}
     }
 

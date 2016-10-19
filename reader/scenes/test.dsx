@@ -58,7 +58,7 @@
         <!-- Os identificadores "id" nao podem ser repetidos -->
          <omni id="omni0" enabled="1" >
             <location x="1.0" y="1.0" z="1.0" w="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="0.5" />
          </omni>
@@ -88,7 +88,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="texture0" file="resources/texture.png" length_s="2.0" length_t="1.0" />  
+        <texture id="texture0" file="resources/face.jpg" length_s="2.0" length_t="1.0" />  
         
     </textures>
 
@@ -203,7 +203,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="rectangle0"/>
+                <primitiveref id="sphere0"/>
                 
             </children>
             

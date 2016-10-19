@@ -27,9 +27,9 @@ Triangle.prototype.setTexCoords = function(length_s,length_t) {
     this.texCoords = [
 	length_s*(c-a*cosBeta), length_t*(a*sinBeta),
 	0,0,
-	length_s*,0
+	length_s*c,0
     ];
-    this.updateTexCoordsGLBuffers();
+    this.updateTextCoordsGLBuffer();
 };
 
 Triangle.prototype.initBuffers = function() {

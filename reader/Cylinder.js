@@ -33,7 +33,7 @@ Cylinder.prototype.initBuffers = function() {
     for (var i = 0; i <= this.stacks; i++) {
 	currentstack = i*stackstep - this.height/2;
 	currentradius = this.base + i*radiusstep;
-	for (var j = 0; j < this.slices; j++) {
+	for (var j = 0; j <= this.slices; j++) {
 	    currentangle = j*angularstep;
 
 	    this.vertices.push(currentradius * Math.cos(currentangle),
