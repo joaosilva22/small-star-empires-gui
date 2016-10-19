@@ -203,7 +203,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="cylinder0"/>
+                <primitiveref id="sphere0"/>
                 
             </children>
             
