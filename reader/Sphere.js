@@ -35,9 +35,6 @@ Sphere.prototype.initBuffers = function() {
 	    this.vertices.push(this.radius * Math.sin(anglev) * Math.cos(angleh),
 			       this.radius * Math.sin(anglev) * Math.sin(angleh),
 			       this.radius * Math.cos(anglev));
-	    console.log(this.radius * Math.sin(anglev) * Math.cos(angleh),
-			this.radius * Math.sin(anglev) * Math.sin(angleh),
-			this.radius * Math.cos(anglev));
 	    
 	    this.normals.push(Math.sin(anglev) * Math.cos(angleh),
 			      Math.cos(anglev),

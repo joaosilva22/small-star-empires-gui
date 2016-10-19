@@ -160,7 +160,7 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	}
 
 	var id = this.reader.getString(perspective, 'id', true);
-	if (this.hasId(id)) {
+	if (this.hasId(id, "views")) {
 	    return "invalid id on 'perspective' element";
 	}
 
@@ -256,7 +256,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    var current = omni[i];
 
 	    var id = this.reader.getString(current, 'id', true);
-	    if (this.hasId(id)) {
+	    if (this.hasId(id, "lights")) {
  		return "invalid id on 'omni' element";
 	    }
 	    
@@ -334,7 +334,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	    var current = spot[0];
 
 	    var id = this.reader.getString(current, 'id', true);
-	    if (this.hasId(id)) {
+	    if (this.hasId(id, "lights")) {
  		return "invalid id on 'omni' element";
 	    }
 
@@ -446,7 +446,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
 	var _texture = textures[i];
 
 	var id = this.reader.getString(_texture, 'id', true);
-	if (this.hasId(id)) {
+	if (this.hasId(id, "textures")) {
  	    return "invalid id on 'texture' element.";
 	}
 
@@ -489,7 +489,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	var current = materials[i];
 
 	var id = this.reader.getString(current, 'id', true);
-	if (this.hasId(id)) {
+	if (this.hasId(id, "materials")) {
 	    return "invalid id on 'material' element.";
 	}
 
@@ -586,7 +586,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 
     for (var i = 0; i < _transformations.length; i++) {
 	var id = this.reader.getString(_transformations[i], 'id', true);
-	if (this.hasId(id)) {
+	if (this.hasId(id, "transformations")) {
 	    return "invalid id on 'transformation' element.";
 	}
 	
@@ -644,7 +644,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	}
 
 	var id = this.reader.getString(primitives[i], 'id', true);
-	if (this.hasId(id)) {
+	if (this.hasId(id, "primitives")) {
 	    return "invalid id on 'primitive' element.";
 	}
 
@@ -720,7 +720,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
     var components = elems[0].getElementsByTagName('component');
     for (let component of components) {
 	var id = this.reader.getString(component, 'id', true);
-	if (this.hasId(id)) {
+	if (this.hasId(id, "components")) {
 	    return "invalid id on 'component' element.";
 	}
 
@@ -889,15 +889,29 @@ MySceneGraph.prototype.onXMLError=function (message) {
 /*
  * Checks whether or not id has been used already.
  */ 
-MySceneGraph.prototype.hasId = function(id) {
-    if (this.lights.spot[id] ||
-	this.lights.omni[id] ||
-	this.textures[id] ||
-	this.materials[id] ||
-	this.transformations[id] ||
-	this.primitives[id] ||
-	this.components[id]) {
-	return true;
+MySceneGraph.prototype.hasId = function(id, type) {
+    switch (type) {
+	case "views":
+	    if (this.views.perspectives[id]) return true;
+	    break;
+	case "lights":
+	    if (this.lights.spot[id] || this.lights.omni[id]) return true;
+	    break;
+	case "textures":
+	    if (this.textures[id]) return true;
+	    break;
+	case "materials":
+	    if (this.materials[id]) return true;
+	    break;
+	case "transformations":
+	    if (this.transformations[id]) return true;
+	    break;
+	case "primitives":
+	    if (this.primitives[id]) return true;
+	    break;
+	case "components":
+	    if (this.components[id]) return true;
+	    break;
     }
     return false;
 };
