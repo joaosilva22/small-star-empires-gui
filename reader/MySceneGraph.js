@@ -38,9 +38,13 @@ MySceneGraph.prototype.onXMLReady=function()
     this.components = {};
     
     // Here should go the calls for different functions to parse the various blocks
-    this.verifyBlockOrder(rootElement);
+    var error = this.verifyBlockOrder(rootElement);
+    if (error != null) {
+	this.onXMLError(error);
+	return;
+    }
     
-    var error = this.parseScene(rootElement);
+    error = this.parseScene(rootElement);
     if (error != null) {
 	this.onXMLError(error);
 	return;
@@ -921,12 +925,16 @@ MySceneGraph.prototype.hasId = function(id, type) {
 MySceneGraph.prototype.verifyBlockOrder = function(root) {
     var order = ["scene", "views", "illumination", "lights", "textures", "materials",
 		 "transformations", "primitives", "components"];
+
+    if (root.children.length != order.length) {
+	return "wrong number of blocks.";
+    }
     
     for (var i = 0; i < root.children.length; i++) {
 	if (root.children[i].nodeName != order[i]) {
 	    console.log("Warning: incorrect block order. Should be: " +
 			"scene, views, illumination, lights, " + 
-                        "textures, materials, transformations, primitives, components");
+                        "textures, materials, transformations, primitives, components.");
 	    return;
 	}
     }
