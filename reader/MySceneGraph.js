@@ -341,11 +341,11 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 
     if (spot != null) {
 	for (var i = 0; i < spot.length; i++) {
-	    var current = spot[0];
+	    var current = spot[i];
 
 	    var id = this.reader.getString(current, 'id', true);
 	    if (this.hasId(id, "lights")) {
- 		return "invalid id on 'omni' element";
+ 		return "invalid id on 'spot' element";
 	    }
 
 	    var enabled = this.reader.getBoolean(current, 'enabled', true);
