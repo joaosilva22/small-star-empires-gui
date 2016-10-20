@@ -93,7 +93,7 @@ XMLscene.prototype.display = function () {
 	    this.lights[i].update();
 	}
 	let root = this.graph.components[this.graph.root];
-	this.displayComponent(root, true);
+	this.displayComponent2(root, true);
     };	
 };
 
@@ -151,6 +151,62 @@ XMLscene.prototype.displayComponent = function(component, textured) {
 	}
     }
     component.transformation.pop();
+};
+
+XMLscene.prototype.displayComponent2 = function(component, prevtex, prevmat) {
+    component.transformation.push();
+    
+    for (let child of component.children) {
+	var material = this.getMaterial(component, prevmat);
+	var texture = this.getTexture(component, prevtex);
+	if (texture) {
+	    material.setTexture(texture.texture);
+	}
+	material.apply();
+	
+	if (child.type == "component") {
+	    this.displayComponent2(this.graph.components[child.id], texture, material);
+	}
+	else {
+	    if (texture) {
+		this.graph.primitives[child.id].setTexCoords(texture.s, texture.t);
+	    }
+	    this.displayPrimitive2(this.graph.primitives[child.id], texture);
+	}
+    }
+    component.transformation.pop();
+};
+
+XMLscene.prototype.displayPrimitive2 = function(primitive, texture) {
+    this.enableTextures(true);
+    if (!texture) {
+	this.enableTextures(false);
+    }
+    primitive.display();
+    this.enableTextures(true);
+};  
+
+XMLscene.prototype.getMaterial = function(component, prevmat) {
+    var material = component.materials[component.currentMaterial];
+    if (material instanceof CGFappearance) {
+	return material;
+    }
+    else {
+	if (prevmat != null) {
+	    return prevmat;
+	}
+    }
+};
+
+XMLscene.prototype.getTexture = function(component, prevtex) {
+    var texture = component.texture;
+    if (texture.texture instanceof CGFtexture) {
+	return texture;
+    }
+    else if (texture == "inherit") {
+	return prevtex;
+    }
+    return null;
 };
 
 XMLscene.prototype.displayPrimitive = function(primitive, textured) {
