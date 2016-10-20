@@ -139,9 +139,7 @@ XMLscene.prototype.setupLights = function() {
 XMLscene.prototype.displayComponent = function(component, textured) {
     component.transformation.push();
     for (let child of component.children) {
-	this.applyMaterial(component);
-
-	var temp = this.applyTexture(component);
+	var temp = this.applyMaterial(component);
 	if (temp != null) textured = temp;
 	
 	if (child.type == "component") {
@@ -165,18 +163,19 @@ XMLscene.prototype.displayPrimitive = function(primitive, textured) {
 
 XMLscene.prototype.applyMaterial = function(component) {
     var material = component.materials[component.currentMaterial];
-    if (material instanceof CGFappearance) {
-	material.apply();
-    }
-};
+    var texture = component.texture;
 
-XMLscene.prototype.applyTexture = function(component) {
-    if (component.texture.texture instanceof CGFappearance) {
-	//component.texture.texture.setTextureWrap('REPEAT', 'REPEAT');
-	component.texture.texture.apply();
+    if (texture.texture instanceof CGFtexture) {
+	if (material instanceof CGFappearance) {
+	    material.setTexture(texture.texture);
+	    material.apply();
+	}
 	return true;
     }
-    else if (component.texture == "none") {
+    else if (texture == "none") {
+	if (material instanceof CGFappearance) {
+	    material.apply();
+	}
 	return false;
     }
 };

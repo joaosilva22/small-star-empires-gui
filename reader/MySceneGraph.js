@@ -464,9 +464,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
 	var lengthS = this.reader.getFloat(_texture, 'length_s', true);
 	var lengthT = this.reader.getFloat(_texture, 'length_t', true);
 
-	var tex = new CGFappearance(this.scene);
-	tex.loadTexture(file);
-
+	var tex = new CGFtexture(this.scene, file);
 	this.textures[id] = {s: lengthS, t: lengthT, texture: tex};
     }
 };
