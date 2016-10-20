@@ -1,6 +1,6 @@
 <dsx>
 
-    <scene root="component0" axis_length="2.0" />
+    <scene root="component_root" axis_length="2.0" />
     
     
     <views default="view0" >
@@ -62,6 +62,8 @@
         <texture id="tex_eye_hold" file="resources/eyehold.png" length_s="1.0" length_t="1.0"/>
         <texture id="tex_cigar" file="resources/cigar.jpg" length_s="1.0" length_t="1.0" />
         <texture id="tex_ash" file="resources/cigar2.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="tex_wall" file="resources/wall.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="tex_floor" file="resources/floor.jpg" length_s="10.0" length_t="10.0" />
     </textures>
 
     
@@ -94,9 +96,9 @@
            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
         
-        <transformation id="trans_futurama_bot">
-            <scale x="0.3" y="0.3" z="0.3"/>
-            <translate x="0.5" y="0.0" z="0.0"/>
+        <transformation id="trans_futurama_bender">
+            <scale x="0.5" y="0.5" z="0.5"/>
+            <translate x="20.0" y="10.0" z="20.0"/>
         </transformation>
         
         <transformation id="trans_head">
@@ -199,6 +201,16 @@
             <rotate axis="x" angle="-90"/>
             <translate x="0.0" y="0.0" z="-1.0"/>
         </transformation>
+
+        <transformation id="trans_floor">
+            <rotate axis="x" angle="-90"/>
+            <translate x="0.0" y="-40.0" z="0.0"/>
+        </transformation>
+
+        <transformation id="trans_wall">
+            <rotate axis="y" angle="90"/>
+            <translate x="-40.0" y="0.0" z="0.0"/>
+        </transformation>
         
     </transformations>
     
@@ -271,6 +283,13 @@
             <cylinder base="0.2" top="0.2" height="0.2" slices="12" stacks="1"/>
         </primitive>
 
+        <primitive id="wall">
+            <rectangle x1="0.0" x2="40.0" y1="0.0" y2="20.0"/>
+        </primitive>
+
+        <primitive id="floor">
+            <rectangle x1="0.0" x2="40.0" y1="0.0" y2="40.0"/>
+        </primitive>
 
     </primitives>
     
@@ -844,9 +863,9 @@
             </children>
         </component>
         
-        <component id="component_futurama_bot">
+        <component id="component_futurama_bender">
             <transformation>
-                <transformationref id="trans_futurama_bot"/>
+                <transformationref id="trans_futurama_bender"/>
             </transformation>
             
             <materials>
@@ -861,30 +880,87 @@
             </children>
         </component>
         
-        <component id="component0">
-        
-
+        <component id="component_root">
             <transformation>
-            
-
             </transformation>
        
-
             <materials>
                 <material id="metal" />
             </materials>
                          
-
             <texture id="greytex" />
             
-
             <children>
-            
-
-                <componentref id="component_futurama_bot"/>
-            </children>
-            
+                <componentref id="component_futurama_bender"/>
+                <componentref id="component_room"/>
+            </children>           
         </component>
+
+        <component id="component_room">
+            <transformation>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="greytex"/>
+            
+            <children>
+                <componentref id="component_right_wall"/>
+                <componentref id="component_left_wall"/>
+                <componentref id="component_floor"/>
+            </children>
+        </component>
+
+        <component id="component_right_wall">
+            <transformation>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="tex_wall"/>
+            
+            <children>
+                <primitiveref id="wall"/>
+            </children>
+        </component>
+
+        <component id="component_left_wall">
+            <transformation>
+                <transformationref id="trans_wall"/>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="tex_wall"/>
+            
+            <children>
+                <primitiveref id="wall"/>
+            </children>
+        </component>
+
+        <component id="component_floor">
+            <transformation>
+                <transformationref id="trans_floor"/>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="tex_floor"/>
+            
+            <children>
+                <primitiveref id="floor"/>
+            </children>
+        </component>
+
+
         
     </components>
 
