@@ -6,13 +6,13 @@
     <views default="view0" >
         
         <perspective id="view0" near="0.1" far="100.0" angle="45.0">
-            <from x="5.0" y="5.0" z="5.0" />
-            <to x="0.0" y="0.0" z="0.0" />
+            <from x="10.0" y="5.0" z="5.0" />
+            <to x="0.0" y="1.0" z="0.0" />
         </perspective>
     
         <perspective id="view1" near="0.1" far="100.0" angle="40.0">
-            <from x="10.0" y="0.0" z="0.0" />
-            <to x="0.0" y="0.0" z="0.0" />
+            <from x="11.0" y="-4.0" z="0.0" />
+            <to x="0.0" y="0.5" z="0.0" />
         </perspective>
         
     </views>
@@ -270,6 +270,8 @@
         <primitive id="ash">
             <cylinder base="0.2" top="0.2" height="0.2" slices="12" stacks="1"/>
         </primitive>
+
+
     </primitives>
     
     
