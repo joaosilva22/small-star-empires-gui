@@ -93,7 +93,7 @@ XMLscene.prototype.display = function () {
 	    this.lights[i].update();
 	}
 	let root = this.graph.components[this.graph.root];
-	this.displayComponent2(root, true);
+	this.displayComponent(root, true);
     };	
 };
 
@@ -136,24 +136,7 @@ XMLscene.prototype.setupLights = function() {
     }
 };
 
-XMLscene.prototype.displayComponent = function(component, textured) {
-    component.transformation.push();
-    for (let child of component.children) {
-	var temp = this.applyMaterial(component);
-	if (temp != null) textured = temp;
-	
-	if (child.type == "component") {
-	    this.displayComponent(this.graph.components[child.id], textured);
-	}
-	else {
-	    this.graph.primitives[child.id].setTexCoords(component.texture.s, component.texture.t);
-	    this.displayPrimitive(this.graph.primitives[child.id], textured);
-	}
-    }
-    component.transformation.pop();
-};
-
-XMLscene.prototype.displayComponent2 = function(component, prevtex, prevmat) {
+XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
     component.transformation.push();
     
     for (let child of component.children) {
@@ -165,20 +148,19 @@ XMLscene.prototype.displayComponent2 = function(component, prevtex, prevmat) {
 	material.apply();
 	
 	if (child.type == "component") {
-	    this.displayComponent2(this.graph.components[child.id], texture, material);
+	    this.displayComponent(this.graph.components[child.id], texture, material);
 	}
 	else {
 	    if (texture) {
 		this.graph.primitives[child.id].setTexCoords(texture.s, texture.t);
 	    }
-	    this.displayPrimitive2(this.graph.primitives[child.id], texture);
+	    this.displayPrimitive(this.graph.primitives[child.id], texture);
 	}
     }
     component.transformation.pop();
 };
 
-XMLscene.prototype.displayPrimitive2 = function(primitive, texture) {
-    this.enableTextures(true);
+XMLscene.prototype.displayPrimitive = function(primitive, texture) {
     if (!texture) {
 	this.enableTextures(false);
     }
@@ -207,33 +189,6 @@ XMLscene.prototype.getTexture = function(component, prevtex) {
 	return prevtex;
     }
     return null;
-};
-
-XMLscene.prototype.displayPrimitive = function(primitive, textured) {
-    if (!textured) {
-	this.enableTextures(false);
-    }
-    primitive.display();
-    this.enableTextures(true);
-};
-
-XMLscene.prototype.applyMaterial = function(component) {
-    var material = component.materials[component.currentMaterial];
-    var texture = component.texture;
-
-    if (texture.texture instanceof CGFtexture) {
-	if (material instanceof CGFappearance) {
-	    material.setTexture(texture.texture);
-	    material.apply();
-	}
-	return true;
-    }
-    else if (texture == "none") {
-	if (material instanceof CGFappearance) {
-	    material.apply();
-	}
-	return false;
-    }
 };
 
 XMLscene.prototype.nextMaterials = function() {
