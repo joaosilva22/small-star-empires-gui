@@ -120,7 +120,7 @@ XMLscene.prototype.setupLights = function() {
 	    this.lights[i].disable();
 	    this['light'+i] = false;
 	}
-	this.interface.lights.add(this, 'light'+i);
+	this.interface.omni.add(this, 'light'+i);
 	this.lights[i].setVisible(true);
 	this.lights[i].update();
 	i++;
@@ -139,7 +139,7 @@ XMLscene.prototype.setupLights = function() {
 	    this.lights[i].disable();
 	    this['light'+i] = false;
 	}
-	this.interface.lights.add(this, 'light'+i);
+	this.interface.spot.add(this, 'light'+i);
 	this.lights[i].setSpotDirection(l.target.x, l.target.y, l.target.z);
 	this.lights[i].setSpotExponent(l.exponent);
 	this.lights[i].setSpotCutOff(l.angle); 
@@ -172,6 +172,7 @@ XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
 	}
     }
     component.transformation.pop();
+    this.setDefaultAppearance();
 };
 
 XMLscene.prototype.displayPrimitive = function(primitive, texture) {
