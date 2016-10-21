@@ -189,7 +189,12 @@ MySceneGraph.prototype.parseViews = function(rootElement) {
 	this.views.addPerspective(id, near, far, angle, from, to);
     }
 
-    this.views.setDefault(def);
+    if (this.views.perspectives[def]) {
+	this.views.setDefault(def);
+    } else {
+	for (var p in this.views.perspectives) break;
+	this.views.setDefault(p);
+    }
 };
 
 /*

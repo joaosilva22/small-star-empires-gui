@@ -89,15 +89,22 @@ XMLscene.prototype.display = function () {
     // only get executed after the graph has loaded correctly.
     // This is one possible way to do it
     if (this.graph.loadedOk) {
-	for (var i = 0; i < this.lights.length; i++) {
-	    this.lights[i].update();
-	}
+	this.updateLights();
 	let root = this.graph.components[this.graph.root];
 	this.displayComponent(root, true);
     };	
 };
 
 XMLscene.prototype.setupLights = function() {
+    for (var i = 0; i < 8; i++) {
+	if (i != 7) {
+	    this['light'+i] = false;
+	}
+	else {
+	    this['light'+i] = true;
+	}
+    }
+    
     var i = 0;
     for (let light in this.graph.lights.omni) {
 	var l = this.graph.lights.omni[light];
@@ -107,10 +114,13 @@ XMLscene.prototype.setupLights = function() {
 	this.lights[i].setSpecular(l.specular.r, l.specular.g, l.specular.b, l.specular.a);
 	if (l.enabled) {
 	    this.lights[i].enable();
+	    this['light'+i] = true;
 	}
 	else {
 	    this.lights[i].disable();
+	    this['light'+i] = false;
 	}
+	this.interface.lights.add(this, 'light'+i);
 	this.lights[i].setVisible(true);
 	this.lights[i].update();
 	i++;
@@ -123,10 +133,13 @@ XMLscene.prototype.setupLights = function() {
 	this.lights[i].setSpecular(l.specular.r, l.specular.g, l.specular.b, l.specular.a);
 	if (l.enabled) {
 	    this.lights[i].enable();
+	    this['light'+i] = true;
 	}
 	else {
 	    this.lights[i].disable();
+	    this['light'+i] = false;
 	}
+	this.interface.lights.add(this, 'light'+i);
 	this.lights[i].setSpotDirection(l.target.x, l.target.y, l.target.z);
 	this.lights[i].setSpotExponent(l.exponent);
 	this.lights[i].setSpotCutOff(l.angle); 
@@ -134,6 +147,7 @@ XMLscene.prototype.setupLights = function() {
 	this.lights[i].update();	
 	i++;
     }
+    this.numLights = i+1;
 };
 
 XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
@@ -198,3 +212,17 @@ XMLscene.prototype.nextMaterials = function() {
     }
 };
 
+XMLscene.prototype.updateLights = function() {
+    for (var i = 0; i < this.numLights; i++) {
+	if (this['light'+i]) {
+	    this.lights[i].enable();
+	}
+	else {
+	    this.lights[i].disable();
+	}
+    }
+
+    for (var i = 0; i < this.lights.length; i++) {
+	this.lights[i].update();
+    }
+};

@@ -7,6 +7,10 @@ Interface.prototype.constructor = Interface;
 
 Interface.prototype.init = function(application) {
     CGFinterface.prototype.init.call(this, application);
+
+    this.gui = new dat.GUI();
+    this.lights = this.gui.addFolder("Lights");
+    
     return true;
 };
 
