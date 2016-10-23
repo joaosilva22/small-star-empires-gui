@@ -43,14 +43,14 @@
     
     <lights>
         
-         <omni id="omni0" enabled="1" >
+         <omni id="omni0" enabled="0" >
             <location x="30.0" y="30.0" z="30.0" w="1.0" />
             <ambient r="0.7" g="0.0" b="0.7" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="0.5" />
          </omni>
          
-         <omni id="omni1" enabled="1" >
+         <omni id="omni1" enabled="0" >
            <location x="-30.0" y="30.0" z="-30.0" w="1.0" />
            <ambient r="0.0" g="0.7" b="0.7" a="1.0" />
            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
@@ -70,7 +70,7 @@
     
     <textures>    
         <texture id="greytex" file="resources/base.png" length_s="1.0" length_t="1.0" />
-        <texture id="face" file="resources/fae2.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="face" file="resources/face.jpg" length_s="1.0" length_t="1.0" />
         <texture id="tex_member" file="resources/member.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_body" file="resources/body3.png" length_s="1.0" length_t="1.0" />
         <texture id="tex_eye" file="resources/eye2.png" length_s="1.0" length_t="1.0" />

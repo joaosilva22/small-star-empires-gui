@@ -143,11 +143,8 @@ XMLscene.prototype.setupLights = function() {
 	    this['light'+i] = false;
 	}
 	this.interface.spot.add(this, 'light'+i);
-	console.log(l.target.x - l.position.x, l.target.y - l.position.y, l.target.z - l.position.z);
 	this.lights[i].setSpotDirection(l.target.x - l.position.x, l.target.y - l.position.y, l.target.z - l.position.z);
-	console.log(l.exponent);
 	this.lights[i].setSpotExponent(l.exponent);
-	console.log(l.angle);
 	this.lights[i].setSpotCutOff(l.angle); 
 	this.lights[i].setVisible(true);
 	this.lights[i].update();	
@@ -167,6 +164,7 @@ XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
 	var texture = this.getTexture(component, prevtex);
 	if (texture) {
 	    material.setTexture(texture.texture);
+	    material.setTextureWrap('REPEAT', 'REPEAT');
 	}
 	material.apply();
 	
