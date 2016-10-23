@@ -376,7 +376,8 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 		id,
 		this.reader.getFloat(target, 'x', true),
 		this.reader.getFloat(target, 'y', true),
-		this.reader.getFloat(target, 'z', true)); 
+		this.reader.getFloat(target, 'z', true),
+		1); 
 
 	    elems = current.getElementsByTagName('location');
 	    if (elems == null) {
@@ -392,7 +393,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 		this.reader.getFloat(location, 'x', true),
 		this.reader.getFloat(location, 'y', true),
 		this.reader.getFloat(location, 'z', true),
-		0);
+		1);
 
 	    elems = current.getElementsByTagName('ambient');
 	    if (elems == null) {

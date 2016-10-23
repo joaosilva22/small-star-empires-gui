@@ -143,8 +143,11 @@ XMLscene.prototype.setupLights = function() {
 	    this['light'+i] = false;
 	}
 	this.interface.spot.add(this, 'light'+i);
-	this.lights[i].setSpotDirection(l.target.x, l.target.y, l.target.z);
+	console.log(l.target.x - l.position.x, l.target.y - l.position.y, l.target.z - l.position.z);
+	this.lights[i].setSpotDirection(l.target.x - l.position.x, l.target.y - l.position.y, l.target.z - l.position.z);
+	console.log(l.exponent);
 	this.lights[i].setSpotExponent(l.exponent);
+	console.log(l.angle);
 	this.lights[i].setSpotCutOff(l.angle); 
 	this.lights[i].setVisible(true);
 	this.lights[i].update();	
