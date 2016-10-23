@@ -262,8 +262,13 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 
     var omni = lights.getElementsByTagName('omni');
     var spot = lights.getElementsByTagName('spot');
+
     if (omni == null && spot == null) {
 	return "at least one of 'omni' or 'spot' elements should be present.";
+    }
+
+    if (omni.length + spot.length > 8) {
+	return "too many lights, should be at most eight.";
     }
 
     if (omni != null) {
@@ -935,9 +940,9 @@ MySceneGraph.prototype.verifyBlockOrder = function(root) {
     
     for (var i = 0; i < root.children.length; i++) {
 	if (root.children[i].nodeName != order[i]) {
-	    console.log("Warning: incorrect block order. Should be: " +
-			"scene, views, illumination, lights, " + 
-                        "textures, materials, transformations, primitives, components.");
+	    console.warn("Warning: incorrect block order. Should be: " +
+			 "scene, views, illumination, lights, " + 
+                         "textures, materials, transformations, primitives, components.");
 	    return;
 	}
     }

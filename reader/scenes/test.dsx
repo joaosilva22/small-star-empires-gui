@@ -71,6 +71,55 @@
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="0.5" />
         </spot>
+
+        <omni id="omni1" enabled="1" >
+          <location x="1.0" y="1.0" z="1.0" w="1.0" />
+          <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+          <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+          <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </omni>
+        
+        <spot id="spot1" enabled="1" angle="45" exponent="0.1">
+          <!-- atencao, "target" e' diferente de "direction" -->
+          <target x="0.0" y="0.0" z="0.0" />
+          <location x="2.0" y="2.0" z="2.0" />
+          <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+          <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+          <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </spot>
+
+        <omni id="omni2" enabled="1" >
+          <location x="1.0" y="1.0" z="1.0" w="1.0" />
+          <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+          <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+          <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </omni>
+        
+        <spot id="spot2" enabled="1" angle="45" exponent="0.1">
+          <!-- atencao, "target" e' diferente de "direction" -->
+          <target x="0.0" y="0.0" z="0.0" />
+          <location x="2.0" y="2.0" z="2.0" />
+          <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+          <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+          <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </spot>
+
+        <omni id="omni3" enabled="1" >
+          <location x="1.0" y="1.0" z="1.0" w="1.0" />
+          <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+          <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+          <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </omni>
+        
+        <spot id="spot3" enabled="1" angle="45" exponent="0.1">
+          <!-- atencao, "target" e' diferente de "direction" -->
+          <target x="0.0" y="0.0" z="0.0" />
+          <location x="2.0" y="2.0" z="2.0" />
+          <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+          <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+          <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+        </spot>
+        
     </lights>
     
     
@@ -125,17 +174,17 @@
     
     
     <transformations>
-    
-        <!-- Deve existir um ou mais blocos "transformation" -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
-        <transformation id="transformation0">
-           <!-- instrucoes a usar sem limite nem ordem -->
-           <!-- deve existir pelo menos uma transformacao -->
-           <translate x="0.0" y="0.0" z="0.0" />
-           <!-- <rotate axis="x" angle="45.0" /> -->
-           <!-- <scale x="2.0" y="2.0" z="2.0" /> -->
-        </transformation>
-        
+      
+      <!-- Deve existir um ou mais blocos "transformation" -->
+      <!-- Os identificadores "id" nao podem ser repetidos -->
+      <transformation id="transformation0">
+        <!-- instrucoes a usar sem limite nem ordem -->
+        <!-- deve existir pelo menos uma transformacao -->
+        <translate x="0.0" y="0.0" z="0.0" />
+        <!-- <rotate axis="x" angle="45.0" /> -->
+        <!-- <scale x="2.0" y="2.0" z="2.0" /> -->
+      </transformation>
+      
     </transformations>
     
     

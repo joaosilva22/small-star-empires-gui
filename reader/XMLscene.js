@@ -147,7 +147,7 @@ XMLscene.prototype.setupLights = function() {
 	this.lights[i].update();	
 	i++;
     }
-    this.numLights = i+1;
+    this.numLights = i;
 };
 
 XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
