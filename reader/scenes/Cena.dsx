@@ -78,7 +78,7 @@
         <texture id="tex_cigar" file="resources/cigar.jpg" length_s="1.0" length_t="1.0" />
         <texture id="tex_ash" file="resources/cigar2.jpg" length_s="1.0" length_t="1.0" />
         <texture id="tex_wall" file="resources/wall.jpg" length_s="1.0" length_t="1.0" />
-        <texture id="tex_floor" file="resources/floor.jpg" length_s="10.0" length_t="10.0" />
+        <texture id="tex_floor" file="resources/floor.jpg" length_s="0.1" length_t="0.1" />
         <texture id="tex_boia" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_ball" file="resources/soccer3.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_beer" file="resources/beer.jpg" length_s="1.0" length_t="1.0"/>
@@ -87,7 +87,6 @@
         <texture id="tex_pedestal" file="resources/column.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_pedestal_top" file="resources/tampas.png" length_s="1.0" length_t="1.0"/>
         <texture id="tex_planet" file="resources/jupiter.png" length_s="1.0" length_t="1.0"/>
-
     </textures>
 
     

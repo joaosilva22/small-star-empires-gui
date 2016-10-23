@@ -14,9 +14,9 @@ Rectangle.prototype.constructor = Rectangle;
 
 Rectangle.prototype.setTexCoords = function(length_s, length_t){
     this.texCoords = [
-	0,length_t,
-	length_s,length_t,
-	length_s,0,
+	0,1.0/length_t,
+	1.0/length_s,1.0/length_t,
+	1.0/length_s,0,
 	0,0
     ];
     this.updateTexCoordsGLBuffers();

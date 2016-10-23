@@ -25,9 +25,9 @@ Triangle.prototype.setTexCoords = function(length_s,length_t) {
     var sinBeta = 1-(cosBeta*cosBeta);
     
     this.texCoords = [
-	length_s*(c-a*cosBeta), length_t*(a*sinBeta),
+	(1.0/length_s)*(c-a*cosBeta), (1.0/length_t)*(a*sinBeta),
 	0,0,
-	length_s*c,0
+	(1.0)/length_s*c,0
     ];
     this.updateTexCoordsGLBuffers();
 };
@@ -49,9 +49,7 @@ Triangle.prototype.initBuffers = function() {
         this.y3*this.z1-this.z3*this.y1, this.z3*this.x1 - this.x3*this.z1, this.x3*this.y1-this.y3*this.x1,
     ];
 
-    if (this.s != undefined && this.t != undefined) {
-
-    }
+    this.texCoords = [];
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();

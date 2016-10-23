@@ -137,7 +137,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="texture0" file="resources/texture.png" length_s="2.0" length_t="2.0" />  
+        <texture id="texture0" file="resources/face.jpg" length_s="0.5" length_t="0.5" />  
         
     </textures>
 
@@ -273,43 +273,14 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <!-- <componentref id="ss" /> -->
-                <primitiveref id="rectangle0"/>
-                <componentref id="testchild"/>
+                <primitiveref id="triangle0"/>
+                <!-- <componentref id="testchild"/> -->
                 
             </children>
             
         </component>
 
-        <component id="testchild">
-          <transformation>
-            <transformationref id="transformation0"/>
-          </transformation>
-          <materials>
-            <material id="material1" />
-            <material id="inherit" />
-            <material id="material2" />
-          </materials>
-          <texture id="none" />
-          <children>
-            <primitiveref id="torus0"/>
-            <componentref id="testchild1"/>
-          </children>
-        </component>
-
-        <component id="testchild1">
-          <transformation>
-            <transformationref id="transformation0"/>
-          </transformation>
-          <materials>
-            <material id="material2" />
-            <material id="material1" />
-            <material id="inherit" />
-          </materials>
-          <texture id="inherit" />
-          <children>
-            <primitiveref id="triangle0"/>
-          </children>
-        </component>
+        
         
     </components>
 
