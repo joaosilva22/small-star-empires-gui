@@ -11,7 +11,7 @@
         </perspective>
     
         <perspective id="view1" near="0.1" far="100.0" angle="40.0">
-            <from x="30.0" y="-1.0" z="30.0" />
+            <from x="30.0" y="0.5" z="30.0" />
             <to x="0.0" y="10" z="0.0" />
         </perspective>
 
@@ -132,7 +132,7 @@
             <ambient r="0.25" g="0.20725" b="0.20725" a="0.922" />
             <diffuse r="1.0" g="0.829" b="0.829" a="0.922" />
             <specular r="0.296648" g="0.296648" b="0.296648" a="0.95" />
-            <shininess value="100.0" />
+            <shininess value="10.0" />
         </material>
 
         <material id="rubber">
@@ -411,7 +411,7 @@
         </primitive>
 
         <primitive id="ball">
-            <sphere radius="1.0" slices="12" stacks="12"/>
+            <sphere radius="1.0" slices="24" stacks="24"/>
         </primitive>
 
         <primitive id="bottle">
