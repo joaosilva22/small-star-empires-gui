@@ -44,7 +44,7 @@
 
          <spot id="spot0" enabled="1" angle="45" exponent="0.1">
             <target x="0.0" y="0.0" z="0.0" />
-            <location x="2.0" y="10.0" z="2.0" />
+            <location x="20.0" y="10.0" z="20.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="0.5" />
@@ -65,12 +65,13 @@
         <texture id="tex_wall" file="resources/wall.jpg" length_s="1.0" length_t="1.0" />
         <texture id="tex_floor" file="resources/floor.jpg" length_s="10.0" length_t="10.0" />
         <texture id="tex_boia" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_ball" file="resources/soccer.jpg" length_s="1.0" length_t="1.0"/>
+        <texture id="tex_ball" file="resources/soccer3.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_beer" file="resources/beer.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_beer_label" file="resources/beerlabel.png" length_s="1.0" length_t="1.0"/>
         <texture id="tex_cap" file="resources/cap.png" length_s="1.0" length_t="1.0"/>
         <texture id="tex_pedestal" file="resources/column.jpg" length_s="1.0" length_t="1.0"/>
         <texture id="tex_pedestal_top" file="resources/tampas.png" length_s="1.0" length_t="1.0"/>
+        <texture id="tex_planet" file="resources/jupiter.png" length_s="1.0" length_t="1.0"/>
 
     </textures>
 
@@ -88,11 +89,51 @@
         </material>
         
         <material id="metal">
-            <emission r="0.3" g="0.3" b="0.3" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.23125" g="0.23125" b="0.23125" a="1.0" />
+            <diffuse r="0.2775" g="0.2775" b="0.2775" a="1.0" />
+            <specular r="0.773911" g="0.773911" b="0.773911" a="1.0" />
+            <shininess value="1.0" />
+        </material>
+
+        <material id="glass">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <shininess value="20.0" />
+            <diffuse r="0.588235" g="0.670588" b="0.729412" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+            <shininess value="4.0" />
+        </material>
+
+        <material id="jade"> <!-- troca -->
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.135" g="0.2225" b="0.1575" a="1.0" />
+            <diffuse r="0.54" g="0.89" b="0.63" a="0.95" />
+            <specular r="0.316228" g="0.316228" b="0.316228" a="0.95" />
+            <shininess value="10.0" />
+        </material>
+
+        <material id="pearl"> <!-- troca -->
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.25" g="0.20725" b="0.20725" a="0.922" />
+            <diffuse r="1.0" g="0.829" b="0.829" a="0.922" />
+            <specular r="0.296648" g="0.296648" b="0.296648" a="0.95" />
+            <shininess value="100.0" />
+        </material>
+
+        <material id="rubber">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
+            <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+            <shininess value="10.0" />
+        </material>
+
+        <material id="black_rubber">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+            <shininess value="10.0" />
         </material>
         
     </materials>
@@ -992,6 +1033,10 @@
                 <componentref id="component_ball"/>
                 <componentref id="component_bottle"/>
                 <componentref id="component_pedestal"/>
+                <componentref id="component_planet"/>
+                <componentref id="component_planet2"/>
+                <componentref id="component_planet3"/>
+                <componentref id="component_planet4"/>
             </children>           
         </component>
 
@@ -1017,7 +1062,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="tex_wall"/>
@@ -1033,7 +1078,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="tex_wall"/>
@@ -1049,7 +1094,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="tex_floor"/>
@@ -1065,7 +1110,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="rubber" />
             </materials>
             
             <texture id="tex_boia"/>
@@ -1081,7 +1126,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="rubber" />
             </materials>
             
             <texture id="tex_ball"/>
@@ -1097,7 +1142,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="glass" />
             </materials>
             
             <texture id="tex_beer"/>
@@ -1114,7 +1159,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="glass" />
             </materials>
             
             <texture id="tex_beer_label"/>
@@ -1131,7 +1176,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="glass" />
             </materials>
             
             <texture id="tex_beer"/>
@@ -1148,7 +1193,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="glass" />
             </materials>
             
             <texture id="inherit"/>
@@ -1164,7 +1209,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="glass" />
             </materials>
             
             <texture id="inherit"/>
@@ -1198,7 +1243,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="tex_pedestal_top"/>
@@ -1215,7 +1260,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="tex_pedestal"/>
@@ -1231,7 +1276,7 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="inherit"/>
@@ -1247,13 +1292,125 @@
             </transformation>
             
             <materials>
-                <material id="metal" />
+                <material id="pearl" />
             </materials>
             
             <texture id="inherit"/>
             
             <children>
                 <primitiveref id="pedestal_top"/>
+            </children>
+        </component>
+
+        <component id="component_planet">
+            <transformation>
+                <translate x="30.0" y="10.0" z="5.0"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="greytex"/>
+            
+            <children>
+                <componentref id="component_planet_center"/>
+                <componentref id="component_planet_disc"/>
+            </children>
+        </component>
+
+        <component id="component_planet2">
+            <transformation>
+                <translate x="15.0" y="10.0" z="5.0"/>
+                <rotate axis="x" angle="90"/>
+                <rotate axis="z" angle="90"/>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="greytex"/>
+            
+            <children>
+                <componentref id="component_planet_center"/>
+                <componentref id="component_planet_disc"/>
+            </children>
+        </component>
+
+        <component id="component_planet3">
+            <transformation>
+                <translate x="5.0" y="10.0" z="15.0"/>
+                <rotate axis="x" angle="90"/>
+                <rotate axis="z" angle="180"/>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+            </materials>
+            
+            <texture id="greytex"/>
+            
+            <children>
+                <componentref id="component_planet_center"/>
+                <componentref id="component_planet_disc"/>
+            </children>
+        </component>
+
+        <component id="component_planet4">
+            <transformation>
+                <translate x="5.0" y="10.0" z="30.0"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            
+            <materials>
+                <material id="pearl" />
+            </materials>
+            
+            <texture id="greytex"/>
+            
+            <children>
+                <componentref id="component_planet_center"/>
+                <componentref id="component_planet_disc"/>
+            </children>
+        </component>
+
+        <component id="component_planet_center">
+            <transformation>
+            </transformation>
+            
+            <materials>
+                <material id="pearl" />
+            </materials>
+            
+            <texture id="tex_planet"/>
+            
+            <children>
+                <primitiveref id="ball"/>
+            </children>
+        </component>
+
+        <component id="component_planet_disc">
+            <transformation>
+                <rotate axis="x" angle="30"/>
+                <scale x="1.0" y="1.0" z="0.1"/>
+            </transformation>
+            
+            <materials>
+                <material id="metal" />
+                <material id="rubber" />
+                <material id="glass" />
+                <material id="jade" />
+                <material id="pearl" />
+                <material id="black_rubber" />
+                <material id="material0" />
+            </materials>
+            
+            <texture id="tex_planet"/>
+            
+            <children>
+                <primitiveref id="boia"/>
             </children>
         </component>
         
