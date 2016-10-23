@@ -1,3 +1,6 @@
+/*
+ * Creates a translation object.
+ */
 function Translation(x, y, z) {
     this.type = "translation";
     this.x = x;
@@ -5,12 +8,18 @@ function Translation(x, y, z) {
     this.z = z;
 }
 
+/*
+ * Creates a rotation object.
+ */
 function Rotation(axis, angle) {
     this.type = "rotation";
     this.axis = axis;
     this.angle = angle;
 }
 
+/*
+ * Creates a scale object.
+ */
 function Scale(x, y, z) {
     this.type = "scale";
     this.x = x;
@@ -18,24 +27,39 @@ function Scale(x, y, z) {
     this.z = z;
 }
 
+/*
+ * Creates a transformation object.
+ */
 function Transformation(scene) {
     this.scene = scene;
     this.queue = [];
 }
 
+/*
+ * Adds a translation to the transformation queue.
+ */
 Transformation.prototype.translate = function(x, y, z) {
     this.queue.push(new Translation(x, y, z));
 };
 
+/*
+ * Adds a rotation to the transformation queue.
+ */
 Transformation.prototype.rotate = function(axis, angle) {
     var rad = angle * (Math.PI/180);
     this.queue.push(new Rotation(axis, rad));
 };
 
+/*
+ * Adds a scale to the transformation queue.
+ */
 Transformation.prototype.scale = function(x, y, z) {
     this.queue.push(new Scale(x, y, z));
 };
 
+/*
+ * Pushes the transformation matrix.
+ */
 Transformation.prototype.push = function() {
     this.scene.pushMatrix();
     for (let t of this.queue) {
@@ -63,6 +87,9 @@ Transformation.prototype.push = function() {
     }
 };
 
+/*
+ * Pops the transformation matrix.
+ */
 Transformation.prototype.pop = function() {
     this.scene.popMatrix();
 };

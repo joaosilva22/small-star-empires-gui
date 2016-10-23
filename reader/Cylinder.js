@@ -1,8 +1,11 @@
+/*
+ * Method that creates a cylinder primitive.
+ */
 function Cylinder(scene, base, top, height, slices, stacks) {
     CGFobject.call(this, scene);
 
-    this.base = base; //raio
-    this.top = top; //raio
+    this.base = base;
+    this.top = top;
     this.height = height;
     this.slices = slices;
     this.stacks = stacks;

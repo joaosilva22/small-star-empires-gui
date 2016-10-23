@@ -95,6 +95,9 @@ XMLscene.prototype.display = function () {
     };	
 };
 
+/*
+ * Method that initializes the lights.
+ */
 XMLscene.prototype.setupLights = function() {
     for (var i = 0; i < 8; i++) {
 	if (i != 7) {
@@ -150,6 +153,9 @@ XMLscene.prototype.setupLights = function() {
     this.numLights = i;
 };
 
+/*
+ * Method that transverses the component graph and displays them.
+ */
 XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
     component.transformation.push();
     
@@ -175,6 +181,9 @@ XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
     this.setDefaultAppearance();
 };
 
+/*
+ * Method that displays a primitive.
+ */
 XMLscene.prototype.displayPrimitive = function(primitive, texture) {
     if (!texture) {
 	this.enableTextures(false);
@@ -183,6 +192,9 @@ XMLscene.prototype.displayPrimitive = function(primitive, texture) {
     this.enableTextures(true);
 };  
 
+/*
+ * Method that gets the correct material to display.
+ */
 XMLscene.prototype.getMaterial = function(component, prevmat) {
     var material = component.materials[component.currentMaterial];
     if (material instanceof CGFappearance) {
@@ -195,6 +207,9 @@ XMLscene.prototype.getMaterial = function(component, prevmat) {
     }
 };
 
+/*
+ * Method that gets the correct texture to display.
+ */
 XMLscene.prototype.getTexture = function(component, prevtex) {
     var texture = component.texture;
     if (texture.texture instanceof CGFtexture) {
@@ -206,6 +221,9 @@ XMLscene.prototype.getTexture = function(component, prevtex) {
     return null;
 };
 
+/*
+ * Method that cycles the materials.
+ */
 XMLscene.prototype.nextMaterials = function() {
     for (let component in this.graph.components) {
 	var c = this.graph.components[component];
@@ -213,6 +231,9 @@ XMLscene.prototype.nextMaterials = function() {
     }
 };
 
+/*
+ * Method that updates the lights.
+ */
 XMLscene.prototype.updateLights = function() {
     for (var i = 0; i < this.numLights; i++) {
 	if (this['light'+i]) {
