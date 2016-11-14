@@ -21,9 +21,6 @@ XMLscene.prototype.init = function (application) {
 
     this.axis=new CGFaxis(this);
 
-    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
-    this.gl.enable(this.gl.GL_BLEND);
-
     this.enableTextures(true);
 };
 

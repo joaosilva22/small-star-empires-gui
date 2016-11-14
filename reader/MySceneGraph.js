@@ -34,6 +34,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.textures = {};
     this.materials = {};
     this.transformations = {};
+    this.animations = {};
     this.primitives = {};
     this.components = {};
     
@@ -81,6 +82,12 @@ MySceneGraph.prototype.onXMLReady=function()
     }
 
     error = this.parseTransformations(rootElement);
+    if (error != undefined) {
+	this.onXMLError(error);
+	return error;
+    }
+
+    error = this.parseAnimations(rootElement);
     if (error != undefined) {
 	this.onXMLError(error);
 	return error;
@@ -642,6 +649,70 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
     }
 };
 
+/*
+ * Method that parses elements of the 'animations' block.
+ */
+MySceneGraph.prototype.parseAnimations = function(rootElement) {
+    var elems = rootElement.getElementsByTagName('animations');
+    if (elems == null) {
+	return "animations element is missing.";
+    }
+    if (elems.length != 1) {
+	return "either zero or more than one 'animations' element found.";
+    }
+
+    var animations = elems[0].getElementsByTagName('animation');
+    
+    for (let animation of animations) {
+	var id = this.reader.getString(animation, 'id', true);
+	if (this.hasId(id, "animations")) {
+	    return "invalid id on 'animation' element.";
+	}
+
+	var span = this.reader.getFloat(animation, 'span', true);
+	var type = this.reader.getString(animation, 'type', true);
+
+	if (type != "linear" && type != "circular") {
+	    return (type + "is not a valid animation type.");
+	}
+
+	var anim = null;
+	
+	if (type == "linear") {
+	    anim = new LinearAnimation(id, span);
+	    
+	    var controlPoints = animation.getElementsByTagName('controlpoint');
+	    
+	    for (let point of controlPoints) {
+		var controlPoint = [this.reader.getFloat(point, 'xx', true),
+				    this.reader.getFloat(point, 'yy', true),
+				    this.reader.getFloat(point, 'zz', true)];
+
+		anim.addControlPoint(controlPoint);
+	    }
+	}
+
+	if (type == "circular") {
+	    var center = [this.reader.getFloat(animation, 'centerx', true),
+			  this.reader.getFloat(animation, 'centery', true),
+			  this.reader.getFloat(animation, 'centerz', true)];
+
+	    var radius = this.reader.getFloat(animation, 'radius', true);
+	    var startang = this.reader.getFloat(animation, 'startang', true);
+	    var rotang = this.reader.getFloat(animation, 'rotang', true);
+
+	    anim = new CircularAnimation(id, span, center, radius, startang, rotang);
+	}
+
+	this.animations[id] = anim;
+    }
+
+    console.log(this.animations);
+};
+
+/*
+ * Method that parses elements of the 'primitives' block.
+ */
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
     var elems = rootElement.getElementsByTagName('primitives');
     if (elems == null) {
@@ -918,6 +989,9 @@ MySceneGraph.prototype.hasId = function(id, type) {
 	case "transformations":
 	    if (this.transformations[id]) return true;
 	    break;
+	case "animations":
+	    if (this.animations[id]) return true;
+	    break;
 	case "primitives":
 	    if (this.primitives[id]) return true;
 	    break;
@@ -933,7 +1007,7 @@ MySceneGraph.prototype.hasId = function(id, type) {
  */
 MySceneGraph.prototype.verifyBlockOrder = function(root) {
     var order = ["scene", "views", "illumination", "lights", "textures", "materials",
-		 "transformations", "primitives", "components"];
+		 "transformations", "animations", "primitives", "components"];
 
     if (root.children.length != order.length) {
 	return "wrong number of blocks.";
@@ -943,7 +1017,8 @@ MySceneGraph.prototype.verifyBlockOrder = function(root) {
 	if (root.children[i].nodeName != order[i]) {
 	    console.warn("Warning: incorrect block order. Should be: " +
 			 "scene, views, illumination, lights, " + 
-                         "textures, materials, transformations, primitives, components.");
+                         "textures, materials, transformations, animations, " +
+                         "primitives, components.");
 	    return;
 	}
     }

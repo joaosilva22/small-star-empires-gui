@@ -1,1433 +1,1441 @@
 <dsx>
 
-    <scene root="component_root" axis_length="2.0" />
-    
-    
-    <views default="view0" >
-        
-        <perspective id="view0" near="0.1" far="100.0" angle="45.0">
-            <from x="30.0" y="20.0" z="30.0" />
-            <to x="0.0" y="1.0" z="0.0" />
-        </perspective>
-    
-        <perspective id="view1" near="0.1" far="100.0" angle="40.0">
-            <from x="30.0" y="0.5" z="30.0" />
-            <to x="0.0" y="10" z="0.0" />
-        </perspective>
-
-        <perspective id="view2" near="0.1" far="100.0" angle="45.0">
-            <from x="40.0" y="20.0" z="10.0" />
-            <to x="0.0" y="1.0" z="0.0" />
-        </perspective>
-
-        <perspective id="view3" near="0.1" far="100.0" angle="45.0">
-            <from x="10.0" y="20.0" z="40.0" />
-            <to x="0.0" y="1.0" z="0.0" />
-        </perspective>
-
-        <perspective id="view4" near="0.1" far="100.0" angle="45.0">
-            <from x="0.0" y="25.0" z="00.0" />
-            <to x="10.0" y="10.0" z="10.0" />
-        </perspective>
-
-    </views>
-    
-
-    <illumination doublesided="1" local="0" >
-    
-        <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-        <background r="0.6" g="0.6" b="0.6" a="1.0" />
-        
-    </illumination>
-    
-    
-    <lights>
-        
-         <omni id="omni0" enabled="0" >
-            <location x="30.0" y="30.0" z="30.0" w="1.0" />
-            <ambient r="0.7" g="0.0" b="0.7" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
-            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
-         </omni>
-         
-         <omni id="omni1" enabled="0" >
-           <location x="-30.0" y="30.0" z="-30.0" w="1.0" />
-           <ambient r="0.0" g="0.7" b="0.7" a="1.0" />
-           <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
-           <specular r="0.5" g="0.5" b="0.5" a="0.5" />
-         </omni>
-
-         <spot id="spot0" enabled="1" angle="45" exponent="10">
-            <target x="10.0" y="10.0" z="10.0" />
-            <location x="20.0" y="20.0" z="20.0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-        </spot>
-         
-    </lights>
-    
-    
-    <textures>    
-        <texture id="greytex" file="resources/base.png" length_s="1.0" length_t="1.0" />
-        <texture id="face" file="resources/face.jpg" length_s="1.0" length_t="1.0" />
-        <texture id="tex_member" file="resources/member.jpg" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_body" file="resources/body3.png" length_s="1.0" length_t="1.0" />
-        <texture id="tex_eye" file="resources/eye2.png" length_s="1.0" length_t="1.0" />
-        <texture id="tex_eye_hold" file="resources/eyehold.png" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_cigar" file="resources/cigar.jpg" length_s="1.0" length_t="1.0" />
-        <texture id="tex_ash" file="resources/cigar2.jpg" length_s="1.0" length_t="1.0" />
-        <texture id="tex_wall" file="resources/wall.jpg" length_s="1.0" length_t="1.0" />
-        <texture id="tex_floor" file="resources/floor.jpg" length_s="0.1" length_t="0.1" />
-        <texture id="tex_boia" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_ball" file="resources/soccer3.jpg" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_beer" file="resources/beer.jpg" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_beer_label" file="resources/beerlabel.png" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_cap" file="resources/cap.png" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_pedestal" file="resources/column.jpg" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_pedestal_top" file="resources/tampas.png" length_s="1.0" length_t="1.0"/>
-        <texture id="tex_planet" file="resources/jupiter.png" length_s="1.0" length_t="1.0"/>
-    </textures>
-
-    
-    <materials>
-    
-        <!-- Deve existir um ou mais blocos "material" -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="material0" >
-            <emission r="0.7" g="0.7" b="0.7" a="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-            <shininess value="20.0" />
-        </material>
-        
-        <material id="metal">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.23125" g="0.23125" b="0.23125" a="1.0" />
-            <diffuse r="0.2775" g="0.2775" b="0.2775" a="1.0" />
-            <specular r="0.773911" g="0.773911" b="0.773911" a="1.0" />
-            <shininess value="1.0" />
-        </material>
-
-        <material id="glass">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.588235" g="0.670588" b="0.729412" a="1.0" />
-            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
-            <shininess value="4.0" />
-        </material>
-
-        <material id="jade"> <!-- troca -->
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.135" g="0.2225" b="0.1575" a="1.0" />
-            <diffuse r="0.54" g="0.89" b="0.63" a="0.1" />
-            <specular r="0.316228" g="0.316228" b="0.316228" a="0.95" />
-            <shininess value="10.0" />
-        </material>
-
-        <material id="pearl"> <!-- troca -->
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.25" g="0.20725" b="0.20725" a="0.922" />
-            <diffuse r="1.0" g="0.829" b="0.829" a="0.5" />
-            <specular r="0.296648" g="0.296648" b="0.296648" a="0.95" />
-            <shininess value="10.0" />
-        </material>
-
-        <material id="rubber">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
-            <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
-            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
-            <shininess value="10.0" />
-        </material>
-
-        <material id="black_rubber">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
-            <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
-            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
-            <shininess value="10.0" />
-        </material>
-        
-    </materials>
-    
-    
-    <transformations>
-    
-        <transformation id="transformation0">
-           <translate x="0.0" y="0.0" z="0.0" />
-        </transformation>
-        
-        <transformation id="trans_futurama_bender">
-            <translate x="10.0" y="9.5" z="10.0"/>
-            <scale x="0.5" y="0.5" z="0.5"/>
-            <rotate axis="y" angle="-45"/>
-        </transformation>
-        
-        <transformation id="trans_head">
-            <translate x="0.0" y="7.0" z="0.0"/>
-            <rotate axis="x" angle="-90"/>
-        </transformation>
-        
-        <transformation id="trans_head_top">
-            <translate x="0.0" y="0.0" z="5.0"/>
-        </transformation>
-        
-        <transformation id="trans_antena">
-            <translate x="0.0" y="0.0" z="6.95"/>
-        </transformation>
-        
-        <transformation id="trans_antena_top">
-            <rotate axis="x" angle="90"/>
-            <translate x="0.0" y="2.25" z="0.0"/>
-        </transformation>
-
-        <transformation id="trans_cigar">
-            <translate x="1.4" y="-1.0" z="1.6"/>
-            <rotate axis="y" angle="70"/>
-            <rotate axis="x" angle="30"/>
-        </transformation>
-
-        <transformation id="trans_ash">
-            <translate x="0" y="-0.0" z="2.0"/>
-        </transformation>
-
-        <transformation id="trans_eyes">
-            <translate x="-0.6" y="0.0" z="3.0"/>
-        </transformation>
-
-        <transformation id="trans_left_eye">            
-            <rotate axis="x" angle="90"/>
-            <translate x="2.5" y="0.7" z="0.8"/>
-        </transformation>
-
-        <transformation id="trans_right_eye">
-            <rotate axis="x" angle="90"/>
-            <translate x="2.5" y="0.7" z="-0.8"/>
-        </transformation>
-
-        <transformation id="trans_eye_hold">
-            <translate x="2.3" y="0.0" z="0.7"/>
-            <rotate axis="y" angle="90"/>
-            <scale x="0.8" y="1.5" z="13.0"/>
-        </transformation>
-        
-        <transformation id="trans_left_arm">
-            <rotate axis="x" angle="-135"/>
-            <translate x="0.0" y="-2.0" z="-14.5"/>
-        </transformation>
-        
-        <transformation id="trans_right_arm">
-            <translate x="0.0" y="8.9" z="11.7"/>
-            <rotate axis="x" angle="135"/>
-        </transformation>
-        
-        <transformation id="trans_shoulder">
-            <translate x="0.0" y="0.0" z="7.9"/>
-        </transformation>
-        
-        <transformation id="trans_wrist">
-            <translate x="0.0" y="0.0" z="-0.50"/>
-        </transformation>
-        
-        <transformation id="trans_finger">
-            <translate x="0.0" y="0.0" z="-1.2"/>
-        </transformation>
-        
-        <transformation id="trans_finger1">
-            <translate x="0.0" y="-0.5" z="0.0"/>
-        </transformation>
-        
-        <transformation id="trans_finger2">
-            <translate x="0.5" y="0.0" z="0.0"/>
-        </transformation>
-        
-        <transformation id="trans_finger3">
-            <translate x="0.0" y="0.5" z="0.0"/>
-        </transformation>
-        
-        <transformation id="trans_left_leg">
-            <translate x="0.0" y="-1.3" z="-8.0"/>
-        </transformation>
-        
-        <transformation id="trans_right_leg">
-            <translate x="0.0" y="1.3" z="-8.0"/>
-        </transformation>
-        
-        <transformation id="trans_foot">
-            <translate x="0.0" y="0.0" z="-1.0"/>
-        </transformation>
-        
-        <transformation id="trans_body_top">
-            <translate x="0.0" y="0.0" z="7.0"/>
-        </transformation>
-
-        <transformation id="trans_body">
-            <rotate axis="x" angle="-90"/>
-            <translate x="0.0" y="0.0" z="-1.0"/>
-        </transformation>
-
-        <transformation id="trans_floor">
-            <rotate axis="x" angle="-90"/>
-            <translate x="0.0" y="-40.0" z="0.0"/>
-        </transformation>
-
-        <transformation id="trans_wall">
-            <rotate axis="y" angle="90"/>
-            <translate x="-40.0" y="0.0" z="0.0"/>
-        </transformation>
-
-        <transformation id="trans_boia">
-            <rotate axis="x" angle="-90"/>
-            <translate x="10.0" y="-10.0" z="10.0"/>
-        </transformation>
-
-        <transformation id="trans_ball">
-            <translate x="6.2" y="16" z="13.7"/>
-        </transformation>
-
-        <transformation id="trans_bottle">
-            <translate x="13.8" y="15.0" z="6.1"/>
-            <scale x="2.0" y="2.0" z="2.0"/>
-            <rotate axis="y" angle="-45"/>
-            <rotate axis="x" angle="-45"/>
-        </transformation>
-
-        <transformation id="trans_bottle_body">
-        </transformation>
-
-        <transformation id="trans_bottle_body_top">
-            <translate x="0.0" y="0.0" z="0.55"/>
-        </transformation>
-
-        <transformation id="trans_bottle_body_top2">
-            <translate x="0.0" y="0.0" z="0.09"/>
-        </transformation>
-
-        <transformation id="trans_bottle_neck">
-            <translate x="0.0" y="0.0" z="0.73"/>
-        </transformation>
-
-        <transformation id="trans_bottle_neck_top">
-            <translate x="0.0" y="0.0" z="0.35"/>
-        </transformation>
-
-        <transformation id="trans_pedestal">
-            <translate x="10.0" y="0.5" z="10.0"/>
-            <rotate axis="x" angle="-90"/>
-        </transformation>
-
-        <transformation id="trans_pedestal_top">
-            <translate x="0.0" y="0.0" z="3.0"/>
-        </transformation>
-
-        <transformation id="trans_pedestal_bottom">
-            <translate x="0.0" y="0.0" z="-0.5"/>
-        </transformation>
-
-    </transformations>
-    
-    
-    <primitives>
-   
-        <primitive id="rectangle0">
+  <scene root="component_root" axis_length="2.0" />
   
-            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
-            
-        </primitive>
-        
-        <primitive id="antena_top">
-            <sphere radius="0.3" slices="6" stacks="6"/>
-        </primitive>
-        
-        <primitive id="antena">
-            <cylinder base="0.3" top="0.1" height="2.0" slices="6" stacks="2"/>
-        </primitive>
-        
-        <primitive id="head_top">
-            <sphere radius="2.0" slices="12" stacks="12"/>
-        </primitive>
-        
-        <primitive id="head">
-            <cylinder base="2.0" top="2.0" height="5.0" slices="12" stacks="5"/>
-        </primitive>
-        
-        <primitive id="body_top">
-            <cylinder base="3.5" top="2.0" height="1.0" slices="12" stacks="1"/>
-        </primitive>
-        
-        <primitive id="body">
-            <cylinder base="2.5" top="3.5" height="7" slices="12" stacks="7"/>
-        </primitive>
-        
-        <primitive id="shoulder">
-            <sphere radius="1.0" slices="12" stacks="12"/>
-        </primitive>
-        
-        <primitive id="member">
-            <cylinder base="0.5" top="0.5" height="8.0" slices="12" stacks="8"/>
-        </primitive>
-        
-        <primitive id="wrist">
-            <cylinder base="0.8" top="0.5" height="0.5" slices="12" stacks="1"/>
-        </primitive>
-        
-        <primitive id="finger">
-            <cylinder base="0.2" top="0.2" height="0.7" slices="12" stacks="1"/>
-        </primitive>
-        
-        <primitive id="feet">
-            <cylinder base="1.2" top="0.5" height="1.0" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="eye">
-            <sphere radius="0.8" slices="12" stacks="12"/>
-        </primitive>
-
-        <primitive id="eye_hold">
-            <torus inner="1.1" outer="1.25" slices="12" loops="24"/>
-        </primitive>
-
-        <primitive id="cigar">
-            <cylinder base="0.2" top="0.2" height="2.0" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="ash">
-            <cylinder base="0.2" top="0.2" height="0.2" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="wall">
-            <rectangle x1="0.0" x2="40.0" y1="0.0" y2="20.0"/>
-        </primitive>
-
-        <primitive id="floor">
-            <rectangle x1="0.0" x2="40.0" y1="0.0" y2="40.0"/>
-        </primitive>
-
-        <primitive id="boia">
-            <torus inner="1.2" outer="2.5" slices="12" loops="24"/>
-        </primitive>
-
-        <primitive id="ball">
-            <sphere radius="1.0" slices="24" stacks="24"/>
-        </primitive>
-
-        <primitive id="bottle">
-            <cylinder base="0.15" top="0.15" height="0.55" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="bottle_top">
-            <cylinder base="0.15" top="0.13" height="0.09" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="bottle_top2">
-            <cylinder base="0.13" top="0.08" height="0.09" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="bottle_neck">
-            <cylinder base="0.08" top="0.05" height="0.35" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="bottle_neck_top">
-            <cylinder base="0.06" top="0.05" height="0.03" slices="12" stacks="1"/>
-        </primitive>
-
-        <primitive id="pedestal">
-            <cylinder base="2" top="2" height="3" slices="12" stacks="3"/>
-        </primitive>
-
-        <primitive id="pedestal_top">
-            <cylinder base="2.5" top="2.5" height="1.0" slices="12" stacks="3"/>
-        </primitive>
-
-    </primitives>
+  
+  <views default="view0" >
     
+    <perspective id="view0" near="0.1" far="100.0" angle="45.0">
+      <from x="30.0" y="20.0" z="30.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
     
-    <components>
-        
-        <component id="component_head_top">
-            <transformation>
-                <transformationref id="trans_head_top"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="head_top"/>
-            </children>
-        </component>
-        
-        <component id="component_antena_top">
-            <transformation>
-                <transformationref id="trans_antena_top"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="antena_top"/>
-            </children>
-        </component>
-        
-        <component id="component_antena">
-            <transformation>
-                <transformationref id="trans_antena"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_antena_top"/>
-                <primitiveref id="antena"/>
-            </children>
-        </component>
+    <perspective id="view1" near="0.1" far="100.0" angle="40.0">
+      <from x="30.0" y="0.5" z="30.0" />
+      <to x="0.0" y="10" z="0.0" />
+    </perspective>
 
-        <component id="component_right_eye">
-            <transformation>
-                <transformationref id="trans_right_eye"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_eye"/>
-            
-            <children>
-                <primitiveref id="eye"/>
-            </children>
-        </component>
+    <perspective id="view2" near="0.1" far="100.0" angle="45.0">
+      <from x="40.0" y="20.0" z="10.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
 
-        <component id="component_left_eye">
-            <transformation>
-                <transformationref id="trans_left_eye"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_eye"/>
-            
-            <children>
-                <primitiveref id="eye"/>
-            </children>
-        </component>
+    <perspective id="view3" near="0.1" far="100.0" angle="45.0">
+      <from x="10.0" y="20.0" z="40.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
 
-        <component id="component_eye_hold">
-            <transformation>
-                <transformationref id="trans_eye_hold"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_eye_hold"/>
-            
-            <children>
-                <primitiveref id="eye_hold"/>
-            </children>
-        </component>
+    <perspective id="view4" near="0.1" far="100.0" angle="45.0">
+      <from x="0.0" y="25.0" z="00.0" />
+      <to x="10.0" y="10.0" z="10.0" />
+    </perspective>
 
-        <component id="component_eyes">
-            <transformation>
-                <transformationref id="trans_eyes"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_left_eye"/>
-                <componentref id="component_right_eye"/>
-                <componentref id="component_eye_hold"/>
-            </children>
-        </component>
+  </views>
+  
 
-        <component id="component_ash">
-            <transformation>
-                <transformationref id="trans_ash"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_ash"/>
-            
-            <children>
-                <primitiveref id="ash"/>
-            </children>
-        </component>
+  <illumination doublesided="1" local="0" >
+    
+    <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+    <background r="0.6" g="0.6" b="0.6" a="1.0" />
+    
+  </illumination>
+  
+  
+  <lights>
+    
+    <omni id="omni0" enabled="0" >
+      <location x="30.0" y="30.0" z="30.0" w="1.0" />
+      <ambient r="0.7" g="0.0" b="0.7" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
+    
+    <omni id="omni1" enabled="0" >
+      <location x="-30.0" y="30.0" z="-30.0" w="1.0" />
+      <ambient r="0.0" g="0.7" b="0.7" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
 
-        <component id="component_cigar">
-            <transformation>
-                <transformationref id="trans_cigar"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_cigar"/>
-            
-            <children>
-                <componentref id="component_ash"/>
-                <primitiveref id="cigar"/>
-            </children>
-        </component>
+    <spot id="spot0" enabled="1" angle="45" exponent="10">
+      <target x="10.0" y="10.0" z="10.0" />
+      <location x="20.0" y="20.0" z="20.0" />
+      <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+    </spot>
+    
+  </lights>
+  
+  
+  <textures>    
+    <texture id="greytex" file="resources/base.png" length_s="1.0" length_t="1.0" />
+    <texture id="face" file="resources/face.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_member" file="resources/member.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_body" file="resources/body3.png" length_s="1.0" length_t="1.0" />
+    <texture id="tex_eye" file="resources/eye2.png" length_s="1.0" length_t="1.0" />
+    <texture id="tex_eye_hold" file="resources/eyehold.png" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_cigar" file="resources/cigar.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_ash" file="resources/cigar2.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_wall" file="resources/wall.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_floor" file="resources/floor.jpg" length_s="0.1" length_t="0.1" />
+    <texture id="tex_boia" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_ball" file="resources/soccer3.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_beer" file="resources/beer.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_beer_label" file="resources/beerlabel.png" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_cap" file="resources/cap.png" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_pedestal" file="resources/column.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_pedestal_top" file="resources/tampas.png" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_planet" file="resources/jupiter.png" length_s="1.0" length_t="1.0"/>
+  </textures>
 
-        
-        <component id="component_head">
-            <transformation>
-                <transformationref id="trans_head"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="face"/>
-            
-            <children>
-                <componentref id="component_head_top"/>
-                <componentref id="component_antena"/>
-                <componentref id="component_eyes"/>
-                <componentref id="component_cigar"/>
-                <primitiveref id="head"/>
-            </children>
-        </component>
-        
-        <component id="component_body_top">
-            <transformation>
-                <transformationref id="trans_body_top"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="body_top"/>
-            </children>
-        </component>
-        
-        <component id="component_left_shoulder">
-            <transformation>
-                <transformationref id="trans_shoulder"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="shoulder"/>
-            </children>
-        </component>
-        
-        <component id="component_left_wrist">
-            <transformation>
-                <transformationref id="trans_wrist"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="wrist"/>
-            </children>
-        </component>
-        
-        <component id="component_left_finger1">
-            <transformation>
-                <transformationref id="trans_finger1"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="finger"/>
-            </children>
-        </component>
-        
-        <component id="component_left_finger2">
-            <transformation>
-                <transformationref id="trans_finger2"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="finger"/>
-            </children>
-        </component>
-        
-        <component id="component_left_finger3">
-            <transformation>
-                <transformationref id="trans_finger3"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="finger"/>
-            </children>
-        </component>
-        
-        <component id="component_left_fingers">
-            <transformation>
-                <transformationref id="trans_finger"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_left_finger1"/>
-                <componentref id="component_left_finger2"/>
-                <componentref id="component_left_finger3"/>
-            </children>
-        </component>
-        
-        <component id="component_left_hand">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_left_wrist"/>
-                <componentref id="component_left_fingers"/>
-            </children>
-        </component>
-        
-        <component id="component_left_arm">
-            <transformation>
-                <transformationref id="trans_left_arm"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_member"/>
-            
-            <children>
-                <componentref id="component_left_shoulder"/>
-                <componentref id="component_left_hand"/>
-                <primitiveref id="member"/>
-            </children>
-        </component>
-        
-        <component id="component_right_shoulder">
-            <transformation>
-                <transformationref id="trans_shoulder"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="shoulder"/>
-            </children>
-        </component>
-        
-        <component id="component_right_wrist">
-            <transformation>
-                <transformationref id="trans_wrist"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="wrist"/>
-            </children>
-        </component>
-        
-        <component id="component_right_finger1">
-            <transformation>
-                <transformationref id="trans_finger1"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="finger"/>
-            </children>
-        </component>
-        
-        <component id="component_right_finger2">
-            <transformation>
-                <transformationref id="trans_finger2"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="finger"/>
-            </children>
-        </component>
-        
-        <component id="component_right_finger3">
-            <transformation>
-                <transformationref id="trans_finger3"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="finger"/>
-            </children>
-        </component>
-        
-        <component id="component_right_fingers">
-            <transformation>
-                <transformationref id="trans_finger"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_right_finger1"/>
-                <componentref id="component_right_finger2"/>
-                <componentref id="component_right_finger3"/>
-            </children>
-        </component>
-        
-        <component id="component_right_hand">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_right_wrist"/>
-                <componentref id="component_right_fingers"/>
-            </children>
-        </component>
-        
-        <component id="component_right_arm">
-            <transformation>
-                <transformationref id="trans_right_arm"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_member"/>
-            
-            <children>
-                <componentref id="component_right_shoulder"/>
-                <componentref id="component_right_hand"/>
-                <primitiveref id="member"/>
-            </children>
-        </component>
-        
-        <component id="component_arm">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_left_arm"/>
-                <componentref id="component_right_arm"/>
-            </children>
-        </component>
-        
-        <component id="component_left_foot">
-            <transformation>
-                <transformationref id="trans_foot"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="feet"/>
-            </children>
-        </component>
-        
-        <component id="component_left_leg">
-            <transformation>
-                <transformationref id="trans_left_leg"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_member"/>
-            
-            <children>
-                <componentref id="component_left_foot"/>
-                <primitiveref id="member"/>
-            </children>
-        </component>
-        
-        <component id="component_right_foot">
-            <transformation>
-                <transformationref id="trans_foot"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <primitiveref id="feet"/>
-            </children>
-        </component>
-        
-        <component id="component_right_leg">
-            <transformation>
-                <transformationref id="trans_right_leg"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_member"/>
-            
-            <children>
-                <componentref id="component_right_foot"/>
-                <primitiveref id="member"/>
-            </children>
-        </component>
-        
-        <component id="component_leg">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_left_leg"/>
-                <componentref id="component_right_leg"/>
-            </children>
-        </component>
-        
-        <component id="component_body">
-            
-            <transformation>
-                <transformationref id="trans_body"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal"/>
-            </materials>
-            
-            <texture id="tex_body"/>
-            
-            <children>
-                <componentref id="component_body_top"/>
-                <componentref id="component_arm"/>
-                <componentref id="component_leg"/>
-                <primitiveref id="body"/>
-            </children>
-        </component>
-        
-        <component id="component_futurama_bender">
-            <transformation>
-                <transformationref id="trans_futurama_bender"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_head"/>
-                <componentref id="component_body"/>
-            </children>
-        </component>
-        
-        <component id="component_root">
-            <transformation>
-            </transformation>
-       
-            <materials>
-                <material id="metal" />
-            </materials>
-                         
-            <texture id="greytex" />
-            
-            <children>
-              <componentref id="component_room"/>
-              <componentref id="component_boia"/>
-              <componentref id="component_futurama_bender"/>
-                <componentref id="component_ball"/>
-                <componentref id="component_bottle"/>
-                <componentref id="component_pedestal"/>
-                <componentref id="component_planet"/>
-                <componentref id="component_planet2"/>
-                <componentref id="component_planet3"/>
-                <componentref id="component_planet4"/>
-            </children>           
-        </component>
+  
+  <materials>
+    
+    <!-- Deve existir um ou mais blocos "material" -->
+    <!-- Os identificadores "id" nao podem ser repetidos -->
+    <material id="material0" >
+      <emission r="0.7" g="0.7" b="0.7" a="1.0" />
+      <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+      <shininess value="20.0" />
+    </material>
+    
+    <material id="metal">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.23125" g="0.23125" b="0.23125" a="1.0" />
+      <diffuse r="0.2775" g="0.2775" b="0.2775" a="1.0" />
+      <specular r="0.773911" g="0.773911" b="0.773911" a="1.0" />
+      <shininess value="1.0" />
+    </material>
 
-        <component id="component_room">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_right_wall"/>
-                <componentref id="component_left_wall"/>
-                <componentref id="component_floor"/>
-            </children>
-        </component>
+    <material id="glass">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.588235" g="0.670588" b="0.729412" a="1.0" />
+      <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+      <shininess value="4.0" />
+    </material>
 
-        <component id="component_right_wall">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="tex_wall"/>
-            
-            <children>
-                <primitiveref id="wall"/>
-            </children>
-        </component>
+    <material id="jade"> <!-- troca -->
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.135" g="0.2225" b="0.1575" a="1.0" />
+      <diffuse r="0.54" g="0.89" b="0.63" a="0.1" />
+      <specular r="0.316228" g="0.316228" b="0.316228" a="0.95" />
+      <shininess value="10.0" />
+    </material>
 
-        <component id="component_left_wall">
-            <transformation>
-                <transformationref id="trans_wall"/>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="tex_wall"/>
-            
-            <children>
-                <primitiveref id="wall"/>
-            </children>
-        </component>
+    <material id="pearl"> <!-- troca -->
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.25" g="0.20725" b="0.20725" a="0.922" />
+      <diffuse r="1.0" g="0.829" b="0.829" a="0.5" />
+      <specular r="0.296648" g="0.296648" b="0.296648" a="0.95" />
+      <shininess value="10.0" />
+    </material>
 
-        <component id="component_floor">
-            <transformation>
-                <transformationref id="trans_floor"/>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="tex_floor"/>
-            
-            <children>
-                <primitiveref id="floor"/>
-            </children>
-        </component>
+    <material id="rubber">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
+      <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+      <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+      <shininess value="10.0" />
+    </material>
 
-        <component id="component_boia">
-            <transformation>
-                <transformationref id="trans_boia"/>
-            </transformation>
-            
-            <materials>
-                <material id="rubber" />
-            </materials>
-            
-            <texture id="tex_boia"/>
-            
-            <children>
-                <primitiveref id="boia"/>
-            </children>
-        </component>
+    <material id="black_rubber">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+      <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+      <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+      <shininess value="10.0" />
+    </material>
+    
+  </materials>
+  
+  
+  <transformations>
+    
+    <transformation id="transformation0">
+      <translate x="0.0" y="0.0" z="0.0" />
+    </transformation>
+    
+    <transformation id="trans_futurama_bender">
+      <translate x="10.0" y="9.5" z="10.0"/>
+      <scale x="0.5" y="0.5" z="0.5"/>
+      <rotate axis="y" angle="-45"/>
+    </transformation>
+    
+    <transformation id="trans_head">
+      <translate x="0.0" y="7.0" z="0.0"/>
+      <rotate axis="x" angle="-90"/>
+    </transformation>
+    
+    <transformation id="trans_head_top">
+      <translate x="0.0" y="0.0" z="5.0"/>
+    </transformation>
+    
+    <transformation id="trans_antena">
+      <translate x="0.0" y="0.0" z="6.95"/>
+    </transformation>
+    
+    <transformation id="trans_antena_top">
+      <rotate axis="x" angle="90"/>
+      <translate x="0.0" y="2.25" z="0.0"/>
+    </transformation>
 
-        <component id="component_ball">
-            <transformation>
-                <transformationref id="trans_ball"/>
-            </transformation>
-            
-            <materials>
-                <material id="rubber" />
-            </materials>
-            
-            <texture id="tex_ball"/>
-            
-            <children>
-                <primitiveref id="ball"/>
-            </children>
-        </component>
+    <transformation id="trans_cigar">
+      <translate x="1.4" y="-1.0" z="1.6"/>
+      <rotate axis="y" angle="70"/>
+      <rotate axis="x" angle="30"/>
+    </transformation>
 
-        <component id="component_bottle">
-            <transformation>
-                <transformationref id="trans_bottle"/>
-            </transformation>
-            
-            <materials>
-                <material id="glass" />
-            </materials>
-            
-            <texture id="tex_beer"/>
-            
-            <children>
-                <componentref id="component_bottle_body"/>
-                <componentref id="component_bottle_neck"/>
-            </children>
-        </component>
+    <transformation id="trans_ash">
+      <translate x="0" y="-0.0" z="2.0"/>
+    </transformation>
 
-        <component id="component_bottle_body">
-            <transformation>
-                <transformationref id="trans_bottle_body"/>
-            </transformation>
-            
-            <materials>
-                <material id="glass" />
-            </materials>
-            
-            <texture id="tex_beer_label"/>
-            
-            <children>
-                <componentref id="component_bottle_body_top"/>
-                <primitiveref id="bottle"/>
-            </children>
-        </component>
+    <transformation id="trans_eyes">
+      <translate x="-0.6" y="0.0" z="3.0"/>
+    </transformation>
 
-        <component id="component_bottle_body_top">
-            <transformation>
-                <transformationref id="trans_bottle_body_top"/>
-            </transformation>
-            
-            <materials>
-                <material id="glass" />
-            </materials>
-            
-            <texture id="tex_beer"/>
-            
-            <children>
-                <componentref id="component_bottle_body_top2"/>
-                <primitiveref id="bottle_top"/>
-            </children>
-        </component>
+    <transformation id="trans_left_eye">            
+      <rotate axis="x" angle="90"/>
+      <translate x="2.5" y="0.7" z="0.8"/>
+    </transformation>
 
-        <component id="component_bottle_body_top2">
-            <transformation>
-                <transformationref id="trans_bottle_body_top2"/>
-            </transformation>
-            
-            <materials>
-                <material id="glass" />
-            </materials>
-            
-            <texture id="inherit"/>
-            
-            <children>
-                <primitiveref id="bottle_top2"/>
-            </children>
-        </component>
+    <transformation id="trans_right_eye">
+      <rotate axis="x" angle="90"/>
+      <translate x="2.5" y="0.7" z="-0.8"/>
+    </transformation>
 
-        <component id="component_bottle_neck">
-            <transformation>
-                <transformationref id="trans_bottle_neck"/>
-            </transformation>
-            
-            <materials>
-                <material id="glass" />
-            </materials>
-            
-            <texture id="inherit"/>
-            
-            <children>
-                <componentref id="component_bottle_neck_top"/>
-                <primitiveref id="bottle_neck"/>
-                
-            </children>
-        </component>
+    <transformation id="trans_eye_hold">
+      <translate x="2.3" y="0.0" z="0.7"/>
+      <rotate axis="y" angle="90"/>
+      <scale x="0.8" y="1.5" z="13.0"/>
+    </transformation>
+    
+    <transformation id="trans_left_arm">
+      <rotate axis="x" angle="-135"/>
+      <translate x="0.0" y="-2.0" z="-14.5"/>
+    </transformation>
+    
+    <transformation id="trans_right_arm">
+      <translate x="0.0" y="8.9" z="11.7"/>
+      <rotate axis="x" angle="135"/>
+    </transformation>
+    
+    <transformation id="trans_shoulder">
+      <translate x="0.0" y="0.0" z="7.9"/>
+    </transformation>
+    
+    <transformation id="trans_wrist">
+      <translate x="0.0" y="0.0" z="-0.50"/>
+    </transformation>
+    
+    <transformation id="trans_finger">
+      <translate x="0.0" y="0.0" z="-1.2"/>
+    </transformation>
+    
+    <transformation id="trans_finger1">
+      <translate x="0.0" y="-0.5" z="0.0"/>
+    </transformation>
+    
+    <transformation id="trans_finger2">
+      <translate x="0.5" y="0.0" z="0.0"/>
+    </transformation>
+    
+    <transformation id="trans_finger3">
+      <translate x="0.0" y="0.5" z="0.0"/>
+    </transformation>
+    
+    <transformation id="trans_left_leg">
+      <translate x="0.0" y="-1.3" z="-8.0"/>
+    </transformation>
+    
+    <transformation id="trans_right_leg">
+      <translate x="0.0" y="1.3" z="-8.0"/>
+    </transformation>
+    
+    <transformation id="trans_foot">
+      <translate x="0.0" y="0.0" z="-1.0"/>
+    </transformation>
+    
+    <transformation id="trans_body_top">
+      <translate x="0.0" y="0.0" z="7.0"/>
+    </transformation>
 
-        <component id="component_bottle_neck_top">
-            <transformation>
-                <transformationref id="trans_bottle_neck_top"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-            </materials>
-            
-            <texture id="tex_cap"/>
-            
-            <children>
-                <primitiveref id="bottle_neck_top"/>
-            </children>
-        </component>
+    <transformation id="trans_body">
+      <rotate axis="x" angle="-90"/>
+      <translate x="0.0" y="0.0" z="-1.0"/>
+    </transformation>
 
-        <component id="component_pedestal">
-            <transformation>
-                <transformationref id="trans_pedestal"/>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="tex_pedestal_top"/>
-            
-            <children>
-                <componentref id="component_pedestal_body"/>
-                <componentref id="component_pedestal_top"/>
-                <componentref id="component_pedestal_bottom"/>
-            </children>
-        </component>
+    <transformation id="trans_floor">
+      <rotate axis="x" angle="-90"/>
+      <translate x="0.0" y="-40.0" z="0.0"/>
+    </transformation>
 
-        <component id="component_pedestal_body">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="tex_pedestal"/>
-            
-            <children>
-                <primitiveref id="pedestal"/>
-            </children>
-        </component>
+    <transformation id="trans_wall">
+      <rotate axis="y" angle="90"/>
+      <translate x="-40.0" y="0.0" z="0.0"/>
+    </transformation>
 
-        <component id="component_pedestal_top">
-            <transformation>
-                <transformationref id="trans_pedestal_top"/>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="inherit"/>
-            
-            <children>
-                <primitiveref id="pedestal_top"/>
-            </children>
-        </component>
+    <transformation id="trans_boia">
+      <rotate axis="x" angle="-90"/>
+      <translate x="10.0" y="-10.0" z="10.0"/>
+    </transformation>
 
-        <component id="component_pedestal_bottom">
-            <transformation>
-                <transformationref id="trans_pedestal_bottom"/>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="inherit"/>
-            
-            <children>
-                <primitiveref id="pedestal_top"/>
-            </children>
-        </component>
+    <transformation id="trans_ball">
+      <translate x="6.2" y="16" z="13.7"/>
+    </transformation>
 
-        <component id="component_planet">
-            <transformation>
-                <translate x="30.0" y="10.0" z="5.0"/>
-                <rotate axis="x" angle="90"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_planet_center"/>
-                <componentref id="component_planet_disc"/>
-            </children>
-        </component>
+    <transformation id="trans_bottle">
+      <translate x="13.8" y="15.0" z="6.1"/>
+      <scale x="2.0" y="2.0" z="2.0"/>
+      <rotate axis="y" angle="-45"/>
+      <rotate axis="x" angle="-45"/>
+    </transformation>
 
-        <component id="component_planet2">
-            <transformation>
-                <translate x="15.0" y="10.0" z="5.0"/>
-                <rotate axis="x" angle="90"/>
-                <rotate axis="z" angle="90"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_planet_center"/>
-                <componentref id="component_planet_disc"/>
-            </children>
-        </component>
+    <transformation id="trans_bottle_body">
+    </transformation>
 
-        <component id="component_planet3">
-            <transformation>
-                <translate x="5.0" y="10.0" z="15.0"/>
-                <rotate axis="x" angle="90"/>
-                <rotate axis="z" angle="180"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_planet_center"/>
-                <componentref id="component_planet_disc"/>
-//this.gl.disable(this.gl.DEPTH_TEST);            </children>
-        </component>
+    <transformation id="trans_bottle_body_top">
+      <translate x="0.0" y="0.0" z="0.55"/>
+    </transformation>
 
-        <component id="component_planet4">
-            <transformation>
-                <translate x="5.0" y="10.0" z="30.0"/>
-                <rotate axis="x" angle="90"/>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="greytex"/>
-            
-            <children>
-                <componentref id="component_planet_center"/>
-                <componentref id="component_planet_disc"/>
-            </children>
-        </component>
+    <transformation id="trans_bottle_body_top2">
+      <translate x="0.0" y="0.0" z="0.09"/>
+    </transformation>
 
-        <component id="component_planet_center">
-            <transformation>
-            </transformation>
-            
-            <materials>
-                <material id="pearl" />
-            </materials>
-            
-            <texture id="tex_planet"/>
-            
-            <children>
-                <primitiveref id="ball"/>
-            </children>
-        </component>
+    <transformation id="trans_bottle_neck">
+      <translate x="0.0" y="0.0" z="0.73"/>
+    </transformation>
 
-        <component id="component_planet_disc">
-            <transformation>
-                <rotate axis="x" angle="30"/>
-                <scale x="1.0" y="1.0" z="0.1"/>
-            </transformation>
-            
-            <materials>
-                <material id="metal" />
-                <material id="rubber" />
-                <material id="glass" />
-                <material id="jade" />
-                <material id="pearl" />
-                <material id="black_rubber" />
-                <material id="material0" />
-            </materials>
-            
-            <texture id="tex_planet"/>
-            
-            <children>
-                <primitiveref id="boia"/>
-            </children>
-        </component>
+    <transformation id="trans_bottle_neck_top">
+      <translate x="0.0" y="0.0" z="0.35"/>
+    </transformation>
+
+    <transformation id="trans_pedestal">
+      <translate x="10.0" y="0.5" z="10.0"/>
+      <rotate axis="x" angle="-90"/>
+    </transformation>
+
+    <transformation id="trans_pedestal_top">
+      <translate x="0.0" y="0.0" z="3.0"/>
+    </transformation>
+
+    <transformation id="trans_pedestal_bottom">
+      <translate x="0.0" y="0.0" z="-0.5"/>
+    </transformation>
+
+  </transformations>
+
+  <animations>
+    <animation id="linear0" span="20" type="linear">
+      <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+      <controlpoint xx="10.0" yy="10.0" zz="10.0" />
+    </animation>
+    <animation id="circular0" span="15.0" type="circular" centerx="2.0" centery="2.0" centerz="2.0" radius="6.0" startang="45.0" rotang="90.0" />
+  </animations>
+  
+  
+  <primitives>
+    
+    <primitive id="rectangle0">
+      
+      <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+      
+    </primitive>
+    
+    <primitive id="antena_top">
+      <sphere radius="0.3" slices="6" stacks="6"/>
+    </primitive>
+    
+    <primitive id="antena">
+      <cylinder base="0.3" top="0.1" height="2.0" slices="6" stacks="2"/>
+    </primitive>
+    
+    <primitive id="head_top">
+      <sphere radius="2.0" slices="12" stacks="12"/>
+    </primitive>
+    
+    <primitive id="head">
+      <cylinder base="2.0" top="2.0" height="5.0" slices="12" stacks="5"/>
+    </primitive>
+    
+    <primitive id="body_top">
+      <cylinder base="3.5" top="2.0" height="1.0" slices="12" stacks="1"/>
+    </primitive>
+    
+    <primitive id="body">
+      <cylinder base="2.5" top="3.5" height="7" slices="12" stacks="7"/>
+    </primitive>
+    
+    <primitive id="shoulder">
+      <sphere radius="1.0" slices="12" stacks="12"/>
+    </primitive>
+    
+    <primitive id="member">
+      <cylinder base="0.5" top="0.5" height="8.0" slices="12" stacks="8"/>
+    </primitive>
+    
+    <primitive id="wrist">
+      <cylinder base="0.8" top="0.5" height="0.5" slices="12" stacks="1"/>
+    </primitive>
+    
+    <primitive id="finger">
+      <cylinder base="0.2" top="0.2" height="0.7" slices="12" stacks="1"/>
+    </primitive>
+    
+    <primitive id="feet">
+      <cylinder base="1.2" top="0.5" height="1.0" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="eye">
+      <sphere radius="0.8" slices="12" stacks="12"/>
+    </primitive>
+
+    <primitive id="eye_hold">
+      <torus inner="1.1" outer="1.25" slices="12" loops="24"/>
+    </primitive>
+
+    <primitive id="cigar">
+      <cylinder base="0.2" top="0.2" height="2.0" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="ash">
+      <cylinder base="0.2" top="0.2" height="0.2" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="wall">
+      <rectangle x1="0.0" x2="40.0" y1="0.0" y2="20.0"/>
+    </primitive>
+
+    <primitive id="floor">
+      <rectangle x1="0.0" x2="40.0" y1="0.0" y2="40.0"/>
+    </primitive>
+
+    <primitive id="boia">
+      <torus inner="1.2" outer="2.5" slices="12" loops="24"/>
+    </primitive>
+
+    <primitive id="ball">
+      <sphere radius="1.0" slices="24" stacks="24"/>
+    </primitive>
+
+    <primitive id="bottle">
+      <cylinder base="0.15" top="0.15" height="0.55" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="bottle_top">
+      <cylinder base="0.15" top="0.13" height="0.09" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="bottle_top2">
+      <cylinder base="0.13" top="0.08" height="0.09" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="bottle_neck">
+      <cylinder base="0.08" top="0.05" height="0.35" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="bottle_neck_top">
+      <cylinder base="0.06" top="0.05" height="0.03" slices="12" stacks="1"/>
+    </primitive>
+
+    <primitive id="pedestal">
+      <cylinder base="2" top="2" height="3" slices="12" stacks="3"/>
+    </primitive>
+
+    <primitive id="pedestal_top">
+      <cylinder base="2.5" top="2.5" height="1.0" slices="12" stacks="3"/>
+    </primitive>
+
+  </primitives>
+  
+  
+  <components>
+    
+    <component id="component_head_top">
+      <transformation>
+        <transformationref id="trans_head_top"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="head_top"/>
+      </children>
+    </component>
+    
+    <component id="component_antena_top">
+      <transformation>
+        <transformationref id="trans_antena_top"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="antena_top"/>
+      </children>
+    </component>
+    
+    <component id="component_antena">
+      <transformation>
+        <transformationref id="trans_antena"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_antena_top"/>
+        <primitiveref id="antena"/>
+      </children>
+    </component>
+
+    <component id="component_right_eye">
+      <transformation>
+        <transformationref id="trans_right_eye"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_eye"/>
+      
+      <children>
+        <primitiveref id="eye"/>
+      </children>
+    </component>
+
+    <component id="component_left_eye">
+      <transformation>
+        <transformationref id="trans_left_eye"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_eye"/>
+      
+      <children>
+        <primitiveref id="eye"/>
+      </children>
+    </component>
+
+    <component id="component_eye_hold">
+      <transformation>
+        <transformationref id="trans_eye_hold"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_eye_hold"/>
+      
+      <children>
+        <primitiveref id="eye_hold"/>
+      </children>
+    </component>
+
+    <component id="component_eyes">
+      <transformation>
+        <transformationref id="trans_eyes"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_left_eye"/>
+        <componentref id="component_right_eye"/>
+        <componentref id="component_eye_hold"/>
+      </children>
+    </component>
+
+    <component id="component_ash">
+      <transformation>
+        <transformationref id="trans_ash"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_ash"/>
+      
+      <children>
+        <primitiveref id="ash"/>
+      </children>
+    </component>
+
+    <component id="component_cigar">
+      <transformation>
+        <transformationref id="trans_cigar"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_cigar"/>
+      
+      <children>
+        <componentref id="component_ash"/>
+        <primitiveref id="cigar"/>
+      </children>
+    </component>
+
+    
+    <component id="component_head">
+      <transformation>
+        <transformationref id="trans_head"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="face"/>
+      
+      <children>
+        <componentref id="component_head_top"/>
+        <componentref id="component_antena"/>
+        <componentref id="component_eyes"/>
+        <componentref id="component_cigar"/>
+        <primitiveref id="head"/>
+      </children>
+    </component>
+    
+    <component id="component_body_top">
+      <transformation>
+        <transformationref id="trans_body_top"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="body_top"/>
+      </children>
+    </component>
+    
+    <component id="component_left_shoulder">
+      <transformation>
+        <transformationref id="trans_shoulder"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="shoulder"/>
+      </children>
+    </component>
+    
+    <component id="component_left_wrist">
+      <transformation>
+        <transformationref id="trans_wrist"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="wrist"/>
+      </children>
+    </component>
+    
+    <component id="component_left_finger1">
+      <transformation>
+        <transformationref id="trans_finger1"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="finger"/>
+      </children>
+    </component>
+    
+    <component id="component_left_finger2">
+      <transformation>
+        <transformationref id="trans_finger2"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="finger"/>
+      </children>
+    </component>
+    
+    <component id="component_left_finger3">
+      <transformation>
+        <transformationref id="trans_finger3"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="finger"/>
+      </children>
+    </component>
+    
+    <component id="component_left_fingers">
+      <transformation>
+        <transformationref id="trans_finger"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_left_finger1"/>
+        <componentref id="component_left_finger2"/>
+        <componentref id="component_left_finger3"/>
+      </children>
+    </component>
+    
+    <component id="component_left_hand">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_left_wrist"/>
+        <componentref id="component_left_fingers"/>
+      </children>
+    </component>
+    
+    <component id="component_left_arm">
+      <transformation>
+        <transformationref id="trans_left_arm"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_member"/>
+      
+      <children>
+        <componentref id="component_left_shoulder"/>
+        <componentref id="component_left_hand"/>
+        <primitiveref id="member"/>
+      </children>
+    </component>
+    
+    <component id="component_right_shoulder">
+      <transformation>
+        <transformationref id="trans_shoulder"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="shoulder"/>
+      </children>
+    </component>
+    
+    <component id="component_right_wrist">
+      <transformation>
+        <transformationref id="trans_wrist"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="wrist"/>
+      </children>
+    </component>
+    
+    <component id="component_right_finger1">
+      <transformation>
+        <transformationref id="trans_finger1"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="finger"/>
+      </children>
+    </component>
+    
+    <component id="component_right_finger2">
+      <transformation>
+        <transformationref id="trans_finger2"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="finger"/>
+      </children>
+    </component>
+    
+    <component id="component_right_finger3">
+      <transformation>
+        <transformationref id="trans_finger3"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="finger"/>
+      </children>
+    </component>
+    
+    <component id="component_right_fingers">
+      <transformation>
+        <transformationref id="trans_finger"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_right_finger1"/>
+        <componentref id="component_right_finger2"/>
+        <componentref id="component_right_finger3"/>
+      </children>
+    </component>
+    
+    <component id="component_right_hand">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_right_wrist"/>
+        <componentref id="component_right_fingers"/>
+      </children>
+    </component>
+    
+    <component id="component_right_arm">
+      <transformation>
+        <transformationref id="trans_right_arm"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_member"/>
+      
+      <children>
+        <componentref id="component_right_shoulder"/>
+        <componentref id="component_right_hand"/>
+        <primitiveref id="member"/>
+      </children>
+    </component>
+    
+    <component id="component_arm">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_left_arm"/>
+        <componentref id="component_right_arm"/>
+      </children>
+    </component>
+    
+    <component id="component_left_foot">
+      <transformation>
+        <transformationref id="trans_foot"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="feet"/>
+      </children>
+    </component>
+    
+    <component id="component_left_leg">
+      <transformation>
+        <transformationref id="trans_left_leg"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_member"/>
+      
+      <children>
+        <componentref id="component_left_foot"/>
+        <primitiveref id="member"/>
+      </children>
+    </component>
+    
+    <component id="component_right_foot">
+      <transformation>
+        <transformationref id="trans_foot"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <primitiveref id="feet"/>
+      </children>
+    </component>
+    
+    <component id="component_right_leg">
+      <transformation>
+        <transformationref id="trans_right_leg"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_member"/>
+      
+      <children>
+        <componentref id="component_right_foot"/>
+        <primitiveref id="member"/>
+      </children>
+    </component>
+    
+    <component id="component_leg">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_left_leg"/>
+        <componentref id="component_right_leg"/>
+      </children>
+    </component>
+    
+    <component id="component_body">
+      
+      <transformation>
+        <transformationref id="trans_body"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal"/>
+      </materials>
+      
+      <texture id="tex_body"/>
+      
+      <children>
+        <componentref id="component_body_top"/>
+        <componentref id="component_arm"/>
+        <componentref id="component_leg"/>
+        <primitiveref id="body"/>
+      </children>
+    </component>
+    
+    <component id="component_futurama_bender">
+      <transformation>
+        <transformationref id="trans_futurama_bender"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_head"/>
+        <componentref id="component_body"/>
+      </children>
+    </component>
+    
+    <component id="component_root">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex" />
+      
+      <children>
+        <componentref id="component_room"/>
+        <componentref id="component_boia"/>
+        <componentref id="component_futurama_bender"/>
+        <componentref id="component_ball"/>
+        <componentref id="component_bottle"/>
+        <componentref id="component_pedestal"/>
+        <componentref id="component_planet"/>
+        <componentref id="component_planet2"/>
+        <componentref id="component_planet3"/>
+        <componentref id="component_planet4"/>
+      </children>           
+    </component>
+
+    <component id="component_room">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_right_wall"/>
+        <componentref id="component_left_wall"/>
+        <componentref id="component_floor"/>
+      </children>
+    </component>
+
+    <component id="component_right_wall">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_left_wall">
+      <transformation>
+        <transformationref id="trans_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_floor">
+      <transformation>
+        <transformationref id="trans_floor"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_floor"/>
+      
+      <children>
+        <primitiveref id="floor"/>
+      </children>
+    </component>
+
+    <component id="component_boia">
+      <transformation>
+        <transformationref id="trans_boia"/>
+      </transformation>
+      
+      <materials>
+        <material id="rubber" />
+      </materials>
+      
+      <texture id="tex_boia"/>
+      
+      <children>
+        <primitiveref id="boia"/>
+      </children>
+    </component>
+
+    <component id="component_ball">
+      <transformation>
+        <transformationref id="trans_ball"/>
+      </transformation>
+      
+      <materials>
+        <material id="rubber" />
+      </materials>
+      
+      <texture id="tex_ball"/>
+      
+      <children>
+        <primitiveref id="ball"/>
+      </children>
+    </component>
+
+    <component id="component_bottle">
+      <transformation>
+        <transformationref id="trans_bottle"/>
+      </transformation>
+      
+      <materials>
+        <material id="glass" />
+      </materials>
+      
+      <texture id="tex_beer"/>
+      
+      <children>
+        <componentref id="component_bottle_body"/>
+        <componentref id="component_bottle_neck"/>
+      </children>
+    </component>
+
+    <component id="component_bottle_body">
+      <transformation>
+        <transformationref id="trans_bottle_body"/>
+      </transformation>
+      
+      <materials>
+        <material id="glass" />
+      </materials>
+      
+      <texture id="tex_beer_label"/>
+      
+      <children>
+        <componentref id="component_bottle_body_top"/>
+        <primitiveref id="bottle"/>
+      </children>
+    </component>
+
+    <component id="component_bottle_body_top">
+      <transformation>
+        <transformationref id="trans_bottle_body_top"/>
+      </transformation>
+      
+      <materials>
+        <material id="glass" />
+      </materials>
+      
+      <texture id="tex_beer"/>
+      
+      <children>
+        <componentref id="component_bottle_body_top2"/>
+        <primitiveref id="bottle_top"/>
+      </children>
+    </component>
+
+    <component id="component_bottle_body_top2">
+      <transformation>
+        <transformationref id="trans_bottle_body_top2"/>
+      </transformation>
+      
+      <materials>
+        <material id="glass" />
+      </materials>
+      
+      <texture id="inherit"/>
+      
+      <children>
+        <primitiveref id="bottle_top2"/>
+      </children>
+    </component>
+
+    <component id="component_bottle_neck">
+      <transformation>
+        <transformationref id="trans_bottle_neck"/>
+      </transformation>
+      
+      <materials>
+        <material id="glass" />
+      </materials>
+      
+      <texture id="inherit"/>
+      
+      <children>
+        <componentref id="component_bottle_neck_top"/>
+        <primitiveref id="bottle_neck"/>
         
-    </components>
+      </children>
+    </component>
+
+    <component id="component_bottle_neck_top">
+      <transformation>
+        <transformationref id="trans_bottle_neck_top"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="tex_cap"/>
+      
+      <children>
+        <primitiveref id="bottle_neck_top"/>
+      </children>
+    </component>
+
+    <component id="component_pedestal">
+      <transformation>
+        <transformationref id="trans_pedestal"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_pedestal_top"/>
+      
+      <children>
+        <componentref id="component_pedestal_body"/>
+        <componentref id="component_pedestal_top"/>
+        <componentref id="component_pedestal_bottom"/>
+      </children>
+    </component>
+
+    <component id="component_pedestal_body">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_pedestal"/>
+      
+      <children>
+        <primitiveref id="pedestal"/>
+      </children>
+    </component>
+
+    <component id="component_pedestal_top">
+      <transformation>
+        <transformationref id="trans_pedestal_top"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="inherit"/>
+      
+      <children>
+        <primitiveref id="pedestal_top"/>
+      </children>
+    </component>
+
+    <component id="component_pedestal_bottom">
+      <transformation>
+        <transformationref id="trans_pedestal_bottom"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="inherit"/>
+      
+      <children>
+        <primitiveref id="pedestal_top"/>
+      </children>
+    </component>
+
+    <component id="component_planet">
+      <transformation>
+        <translate x="30.0" y="10.0" z="5.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet2">
+      <transformation>
+        <translate x="15.0" y="10.0" z="5.0"/>
+        <rotate axis="x" angle="90"/>
+        <rotate axis="z" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet3">
+      <transformation>
+        <translate x="5.0" y="10.0" z="15.0"/>
+        <rotate axis="x" angle="90"/>
+        <rotate axis="z" angle="180"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      //this.gl.disable(this.gl.DEPTH_TEST);            </children>
+    </component>
+
+    <component id="component_planet4">
+      <transformation>
+        <translate x="5.0" y="10.0" z="30.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet_center">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_planet"/>
+      
+      <children>
+        <primitiveref id="ball"/>
+      </children>
+    </component>
+
+    <component id="component_planet_disc">
+      <transformation>
+        <rotate axis="x" angle="30"/>
+        <scale x="1.0" y="1.0" z="0.1"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+        <material id="rubber" />
+        <material id="glass" />
+        <material id="jade" />
+        <material id="pearl" />
+        <material id="black_rubber" />
+        <material id="material0" />
+      </materials>
+      
+      <texture id="tex_planet"/>
+      
+      <children>
+        <primitiveref id="boia"/>
+      </children>
+    </component>
+    
+  </components>
 
 </dsx>
