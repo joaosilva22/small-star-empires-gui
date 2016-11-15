@@ -21,6 +21,30 @@ XMLscene.prototype.init = function (application) {
 
     this.axis=new CGFaxis(this);
 
+    this.test_plane = new Plane(this, 10, 10, 20, 20);
+    var controlvertexes =
+	[	// U = 0
+	 [ // V = 0..3;
+	   [ -2.0, -2.0, 1.0, 1 ],
+	   [ -2.0, -1.0, -2.0, 1 ],
+	   [ -2.0, 1.0, 5.0, 1 ],
+	   [ -2.0, 2.0, -1.0, 1 ]
+	 ],
+	 [ // V = 0..3
+	   [ 0, -2.0, 0, 1 ],
+	   [ 0, -1.0, -1.0, 1 ],
+	   [ 0, 1.0, 1.5, 1 ],
+	   [ 0, 2.0, 0, 1 ]
+	 ],
+	 [ // V = 0..3
+	   [ 2.0, -2.0, -1.0, 1 ],
+	   [ 2.0, -1.0, 2.0, 1 ],
+	   [ 2.0, 1.0, -5.0, 1 ],
+	   [ 2.0, 2.0, 1.0, 1 ]
+	 ]
+	];
+    this.test_patch = new Patch(this, controlvertexes, 20, 20);
+
     this.enableTextures(true);
 };
 
@@ -92,7 +116,11 @@ XMLscene.prototype.display = function () {
 	this.updateLights();
 	let root = this.graph.components[this.graph.root];
 	this.displayComponent(root, true);
-    };	
+    };
+
+
+    this.test_plane.display();
+    this.test_patch.display();
 };
 
 /*

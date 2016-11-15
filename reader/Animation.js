@@ -4,7 +4,9 @@ class Animation {
 	this.span = span;
     }
 
-    apply() {}
+    push(scene) {}
+
+    pop(scene) {}
 };
 
 class LinearAnimation extends Animation {

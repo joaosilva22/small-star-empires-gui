@@ -792,6 +792,28 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 	    this.primitives[id] = new Torus(this.scene, inner, outer, slices, loops);
 	}
+
+	if (type == "plane") {
+	    var dimX = this.reader.getFloat(primitive, 'dimX', true);
+	    var dimY = this.reader.getFloat(primitive, 'dimY', true);
+	    var partsX = this.reader.getInteger(primitive, 'partsX', true);
+	    var partsY = this.reader.getInteger(primitive, 'partsY', true);
+
+	    this.primitives[id] = new Plane(this.scene, dimX, dimY, partsX, partsY);
+	}
+
+	if (type == "patch") {
+	    var orderU = this.reader.getInteger(primitive, 'orderU', true);
+	    var orderV = this.reader.getInteger(primitive, 'orderV', true);
+	    var partsU = this.reader.getInteger(primitive, 'partsU', true);
+	    var partsV = this.reader.getInteger(primitive, 'partsV', true);
+
+	    var controlpoints = primitive.getElementsByTagName('controlpoint');
+	    for (let point of controlpoints) {
+		// TODO ...
+	    }
+	}
+	
     }	
 };
 
