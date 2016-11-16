@@ -809,9 +809,23 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	    var partsV = this.reader.getInteger(primitive, 'partsV', true);
 
 	    var controlpoints = primitive.getElementsByTagName('controlpoint');
-	    for (let point of controlpoints) {
-		// TODO ...
+
+	    var controlvertexes = [];
+	    for (var u = 0; u <= orderU; u++) {
+		controlvertexes.push([]);
+		for (var v = 0; v <= orderV; v++) {
+		    var index = (u * (orderV+1)) + v;
+
+		    var vertex = [this.reader.getFloat(controlpoints[index], 'x', true),
+				  this.reader.getFloat(controlpoints[index], 'y', true),
+				  this.reader.getFloat(controlpoints[index], 'z', true),
+				  1];
+
+		    controlvertexes.push(vertex);
+		}
 	    }
+
+	    this.primitives[id] = new Patch(this.scene, controlvertexes, partsU, partsV);
 	}
 	
     }	

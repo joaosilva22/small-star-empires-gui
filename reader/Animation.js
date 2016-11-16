@@ -12,12 +12,16 @@ class Animation {
 class LinearAnimation extends Animation {
     constructor(id, span) {
 	super(id, span);
+	
 	this.controlPoints = [];
+	this.position = vec3.fromValues(0, 0, 0);
     }
     
     addControlPoint(point) {
 	this.controlPoints.push(point);
     }
+
+    
 };
 
 class CircularAnimation extends Animation {
