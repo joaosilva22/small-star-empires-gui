@@ -1,0 +1,111 @@
+<dsx>
+  
+  <scene root="component0" axis_length="10.0" />
+
+  <views default="view0">
+    
+    <perspective id="view0" near="0.1" far="100.0" angle="45.0">
+      <from x="30.0" y="20.0" z="30.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
+    
+  </views>
+
+  <illumination doublesided="1" local="0">
+
+    <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+    <background r="0.5" g="0.5" b="0.5" a="1.0" />
+
+  </illumination>
+
+  <lights>
+
+    <omni id="omni0" enabled="1">
+      <location x="5.0" y="5.0" z="5.0" w="1.0" />
+      <ambient r="0.7" g="0.0" b="0.7" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
+
+  </lights>
+
+  <textures>
+    
+    <texture id="texture0" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0" />
+    
+  </textures>
+
+  <materials>
+
+    <material id="material0" >
+      <emission r="0.7" g="0.7" b="0.7" a="1.0" />
+      <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+      <shininess value="20.0" />
+    </material>
+
+  </materials>
+
+  <transformations>
+
+    <transformation id="transformation0">
+      <translate x="0.0" y="0.0" z="0.0" />
+    </transformation>
+
+  </transformations>
+
+  <animations>
+
+    <animation id="linear0" span="5.0" type="linear">
+      <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="10.0" />
+      <controlpoint xx="10.0" yy="0.0" zz="10.0" />
+    </animation>
+
+    <animation id="linear1" span="2.0" type="linear">
+      <controlpoint xx="1.0" yy="1.0" zz="1.0" />
+      <controlpoint xx="1.0" yy="5.0" zz="1.0" />
+    </animation>
+
+    <animation id="circular0" span="5.0" type="circular" centerx="0.0" centery="5.0" centerz="0.0" radius="6.0" startang="0.0" rotang="90.0" />
+
+  </animations>
+
+  <primitives>
+
+    <primitive id="sphere0">
+      <sphere radius="1.0" slices="6" stacks="6" />
+    </primitive>
+
+  </primitives>
+
+  <components>
+
+    <component id="component0">
+
+      <transformation>
+        <transformationref id="transformation0" />
+      </transformation>
+
+      <animation>
+        <animationref id="linear0" />
+        <animationref id="linear1" />
+        <animationref id="circular0" />
+      </animation>
+
+      <materials>
+        <material id="material0" />
+      </materials>
+
+      <texture id="texture0" />
+
+      <children>
+        <primitiveref id="sphere0" />
+      </children>
+
+    </component>
+    
+  </components>
+  
+</dsx>
