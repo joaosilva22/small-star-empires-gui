@@ -913,6 +913,25 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	    }
 	}
 
+	var elems = component.getElementsByTagName('animation');
+	if (elems.length > 1) {
+	    return "more than one 'animation' element found.";
+	}
+
+	if (elems.length == 1) {
+	    // TODO: verificar se existe pelo menos uma animationref
+	    var animations = elems[0].children;
+	    if (animations.length < 1) {
+		return "at least one animationref should be present.";
+	    }
+	    
+	    for (let animation of animations) {
+		var refid = this.reader.getString(animation, 'id', true);
+		this.components[id].addAnimation(this.animations[refid]);
+	    }
+	}
+	
+
 	var elems = component.getElementsByTagName('materials');
 	if (elems == null) {
 	    return "materials block is missing.";

@@ -85,6 +85,8 @@ XMLscene.prototype.onGraphLoaded = function () {
 		    this.graph.illumination.ambient[2],
 		    this.graph.illumination.ambient[3]);
 
+    this.setUpdatePeriod(100);
+
     this.setupLights();
 };
 
@@ -186,6 +188,8 @@ XMLscene.prototype.setupLights = function() {
  */
 XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
     component.transformation.push();
+
+    component.pushAnimation(this);
     
     for (let child of component.children) {
 	var material = this.getMaterial(component, prevmat);
@@ -207,6 +211,9 @@ XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
 	    this.displayPrimitive(this.graph.primitives[child.id], texture);
 	}
     }
+
+    component.popAnimation(this);
+    
     component.transformation.pop();
     this.setDefaultAppearance();
 };
@@ -278,3 +285,14 @@ XMLscene.prototype.updateLights = function() {
 	this.lights[i].update();
     }
 };
+
+/*
+ * Method that updates the scene.
+ */
+XMLscene.prototype.update = function(currTime) {
+    for (let component in this.graph.components) {
+	var c = this.graph.components[component];
+	c.update(currTime);
+    }
+};
+

@@ -331,7 +331,7 @@
   <animations>
     <animation id="linear0" span="20" type="linear">
       <controlpoint xx="0.0" yy="0.0" zz="0.0" />
-      <controlpoint xx="10.0" yy="10.0" zz="10.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="10.0" />
     </animation>
     <animation id="circular0" span="15.0" type="circular" centerx="2.0" centery="2.0" centerz="2.0" radius="6.0" startang="45.0" rotang="90.0" />
   </animations>
@@ -630,6 +630,10 @@
       <transformation>
         <transformationref id="trans_head"/>
       </transformation>
+
+      <animation>
+        <animationref id="circular0"/>
+      </animation>
       
       <materials>
         <material id="metal"/>
