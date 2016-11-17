@@ -21,4 +21,6 @@ class Plane extends CGFnurbsObject {
 
 	super(scene, getSurfacePoint, dx, dy);
     }
+
+    setTexCoords() {}
 };

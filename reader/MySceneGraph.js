@@ -826,6 +826,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	    }
 
 	    this.primitives[id] = new Patch(this.scene, controlvertexes, partsU, partsV);
+	    console.log(this.primitives[id]);
 	}
 	
     }	

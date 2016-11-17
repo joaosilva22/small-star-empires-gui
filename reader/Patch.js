@@ -24,4 +24,6 @@ class Patch extends CGFnurbsObject {
 
 	super(scene, getSurfacePoint, dx, dy);
     }
+
+    setTexCoords() {}
 };

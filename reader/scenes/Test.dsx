@@ -78,6 +78,29 @@
       <sphere radius="1.0" slices="6" stacks="6" />
     </primitive>
 
+    <primitive id="plane0">
+      <plane dimX="10.0" dimY="10.0" partsX="10" partsY="10" />
+    </primitive>
+
+    <primitive id="patch0">
+      <patch orderU="2" orderV="3" partsU="10" partsV="10">
+        <controlpoint x="-2.0" y="-2.0" z="1.0"/>
+        <controlpoint x="-2.0" y="-1.0" z="-2.0"/>
+        <controlpoint x="-2.0" y="1.0" z="5.0"/>
+        <controlpoint x="-2.0" y="2.0" z="-1.0"/>
+        
+        <controlpoint x="0.0" y="-2.0" z="1.0"/>
+        <controlpoint x="0.0" y="-1.0" z="-2.0"/>
+        <controlpoint x="0.0" y="1.0" z="5.0"/>
+        <controlpoint x="0.0" y="2.0" z="-1.0"/>
+        
+        <controlpoint x="2.0" y="-2.0" z="-1.0"/>
+        <controlpoint x="2.0" y="-1.0" z="2.0"/>
+        <controlpoint x="2.0" y="1.0" z="-5.0"/>
+        <controlpoint x="2.0" y="2.0" z="1.0"/>
+      </patch>
+    </primitive>
+
   </primitives>
 
   <components>
@@ -102,6 +125,7 @@
 
       <children>
         <primitiveref id="sphere0" />
+        <primitiveref id="patch0" />
       </children>
 
     </component>
