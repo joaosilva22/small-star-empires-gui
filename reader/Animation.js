@@ -14,6 +14,7 @@ class LinearAnimation extends Animation {
     constructor(id, span) {
 	super(id, span);
 	this.controlPoints = [];
+	this.position = [];
     }
     
     addControlPoint(point) {
@@ -22,9 +23,9 @@ class LinearAnimation extends Animation {
 
     calcDistance() {
 	var distance = function(ver1, ver2) {
-	    return Math.sqrt(Math.pow(ver1[0]+ver2[0], 2) +
-			     Math.pow(ver1[1]+ver2[1], 2) +
-			     Math.pow(ver1[2]+ver2[2], 2));
+	    return Math.sqrt(Math.pow(ver1[0]-ver2[0], 2) +
+			     Math.pow(ver1[1]-ver2[1], 2) +
+			     Math.pow(ver1[2]-ver2[2], 2));
 	};
 
 	var total = 0;
@@ -37,7 +38,6 @@ class LinearAnimation extends Animation {
     }
 
     calcVelocity() {
-	console.log(this.calcDistance(), this.span);
 	this.velocity = this.calcDistance() / this.span;
     }
 
@@ -94,6 +94,15 @@ class LinearAnimation extends Animation {
 
 	    var atControlPoint = false;
 
+	    var arrayEquals = function(arr1, arr2) {
+		for (var i = 0; i < arr1.length; i++) {
+		    if (arr1[i] != arr2[i]) {
+			return false;
+		    }
+		}
+		return true;
+	    };
+
 	    for (var i = 0; i < 3; i++) {
 		if (this.position[i] + dirvel[i] < this.controlPoints[this.cdir+1][i]) {
 		    this.position[i] += dirvel[i];
@@ -102,7 +111,7 @@ class LinearAnimation extends Animation {
 		    this.position[i] = this.controlPoints[this.cdir+1][i];
 		}
 
-		if (this.position == this.controlPoints[this.cdir+1]) {
+		if (arrayEquals(this.position, this.controlPoints[this.cdir+1])) {
 		    atControlPoint = true;
 		}
 	    }
@@ -116,6 +125,7 @@ class LinearAnimation extends Animation {
 	}
 
 	if (this.elapsed >= this.span) {
+	    console.log("Finished in " + this.elapsed/1000 + " seconds.");
 	    this.finished = true;
 	}
     }
@@ -167,6 +177,7 @@ class CircularAnimation extends Animation {
 	}
 
 	if (this.elapsed >= this.span) {
+	    console.log("Finished in " + this.elapsed/1000 + " seconds.");
 	    this.finished = true;
 	}
     }
