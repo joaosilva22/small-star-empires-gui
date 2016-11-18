@@ -707,7 +707,6 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 	this.animations[id] = anim;
     }
 
-    console.log(this.animations);
 };
 
 /*
@@ -826,7 +825,6 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	    }
 
 	    this.primitives[id] = new Patch(this.scene, controlvertexes, partsU, partsV);
-	    console.log(this.primitives[id]);
 	}
 	
     }	

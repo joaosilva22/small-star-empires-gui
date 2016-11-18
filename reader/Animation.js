@@ -1,3 +1,4 @@
+
 class Animation {
     constructor(id, span) {
 	this.id = id;
@@ -14,7 +15,9 @@ class LinearAnimation extends Animation {
     constructor(id, span) {
 	super(id, span);
 	this.controlPoints = [];
+
 	this.position = [];
+	this.ang = 0;
     }
     
     addControlPoint(point) {
@@ -67,6 +70,27 @@ class LinearAnimation extends Animation {
 	}
     }
 
+    calcAngle(direction) {
+	var dircopy = [...direction];
+	dircopy[1] = 0;
+	
+	var dotProduct = function(vec1, vec2) {
+	    return vec1[0]*vec2[0] + vec1[1]*vec2[1] + vec1[2]*vec2[2];
+	};
+
+	var length = function(vec) {
+	    return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+	};
+
+	var vec = [0,0,1];
+
+	if (length(dircopy) == 0) {
+	    return 0;
+	}
+
+	return Math.acos(dotProduct(dircopy, vec) / (length(vec)*length(dircopy)));
+    }
+
     begin() {
 	this.position = this.controlPoints[0];
 	this.cdir = 0;
@@ -116,6 +140,8 @@ class LinearAnimation extends Animation {
 		}
 	    }
 
+	    this.ang = this.calcAngle(this.directions[this.cdir]);
+
 	    if (atControlPoint) {
 		this.cdir++;
 	    }
@@ -133,6 +159,7 @@ class LinearAnimation extends Animation {
     push(scene) {
 	scene.pushMatrix();
 	scene.translate(this.position[0], this.position[1], this.position[2]);
+	scene.rotate(this.ang, 0, 1, 0);
     }
 
     pop(scene) {
@@ -192,4 +219,3 @@ class CircularAnimation extends Animation {
 	scene.popMatrix();
     }
 };
-
