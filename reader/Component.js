@@ -78,9 +78,9 @@ Component.prototype.update = function(currTime) {
 	    animation.update(currTime);
 	}
 	else {
+	    animation.applyFinalTransformations(this);
 	    this.currentAnimation++;
 	}
-	//console.log(animation.position);
     }
 };
 

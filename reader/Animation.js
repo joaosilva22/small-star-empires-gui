@@ -165,6 +165,11 @@ class LinearAnimation extends Animation {
     pop(scene) {
 	scene.popMatrix();
     }
+
+    applyFinalTransformations(component) {
+	component.transformation.translate(this.position[0], this.position[1], this.position[2]);
+	component.transformation.rotate('y', this.ang);
+    }
 };
 
 class CircularAnimation extends Animation {
@@ -218,4 +223,6 @@ class CircularAnimation extends Animation {
     pop(scene) {
 	scene.popMatrix();
     }
+
+    applyFinalTransformations(component) {}
 };

@@ -64,7 +64,7 @@
     </animation>
 
     <animation id="linear1" span="2.0" type="linear">
-      <controlpoint xx="1.0" yy="1.0" zz="1.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="0.0" />
       <controlpoint xx="1.0" yy="5.0" zz="1.0" />
     </animation>
 
