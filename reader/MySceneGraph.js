@@ -820,9 +820,10 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				  this.reader.getFloat(controlpoints[index], 'z', true),
 				  1];
 
-		    controlvertexes.push(vertex);
+		    controlvertexes[u].push(vertex);
 		}
 	    }
+	    console.log(controlvertexes);
 
 	    this.primitives[id] = new Patch(this.scene, controlvertexes, partsU, partsV);
 	}

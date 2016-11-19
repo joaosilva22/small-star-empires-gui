@@ -121,7 +121,8 @@
       <texture id="texture0" />
 
       <children>
-        <primitiveref id="sphere0" />
+        <!-- <primitiveref id="sphere0" /> -->
+        <!-- <primitiveref id="plane0" /> -->
         <primitiveref id="patch0" />
       </children>
 
