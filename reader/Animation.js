@@ -168,7 +168,8 @@ class LinearAnimation extends Animation {
 
     applyFinalTransformations(component) {
 	component.transformation.translate(this.position[0], this.position[1], this.position[2]);
-	component.transformation.rotate('y', this.ang);
+	var degree = (this.ang*180)/Math.PI;
+	component.transformation.rotate('y', degree);
     }
 };
 
@@ -188,8 +189,6 @@ class CircularAnimation extends Animation {
 	this.endang = this.startang+this.rotang;
 	this.velocity = (this.startang-this.endang)/this.span;
 	this.ang = this.startang;
-
-	this.position = [this.center[0]+this.radius, this.center[1], this.center[2]];
     }
 
     update(currTime) {
@@ -216,13 +215,19 @@ class CircularAnimation extends Animation {
 
     push(scene) {
 	scene.pushMatrix();
+	scene.translate(this.center[0], this.center[1], this.center[2]);
 	scene.rotate(this.ang, 0, 1, 0);
-	scene.translate(this.position[0], this.position[1], this.position[2]);
+	scene.translate(this.radius, 0, 0);
     }
 
     pop(scene) {
 	scene.popMatrix();
     }
 
-    applyFinalTransformations(component) {}
+    applyFinalTransformations(component) {
+	var degree = (this.ang*180)/Math.PI;
+	component.transformation.translate(this.center[0], this.center[1], this.center[2]);
+	component.transformation.rotate('y', degree);
+	component.transformation.translate(this.radius, 0, 0);
+    }
 };

@@ -59,23 +59,22 @@
 
     <animation id="linear0" span="5.0" type="linear">
       <controlpoint xx="0.0" yy="0.0" zz="0.0" />
-      <controlpoint xx="0.0" yy="0.0" zz="10.0" />
-      <controlpoint xx="10.0" yy="0.0" zz="10.0" />
+      <controlpoint xx="10.0" yy="0.0" zz="0.0" />
     </animation>
 
     <animation id="linear1" span="2.0" type="linear">
       <controlpoint xx="0.0" yy="0.0" zz="0.0" />
-      <controlpoint xx="1.0" yy="5.0" zz="1.0" />
+      <controlpoint xx="0.0" yy="5.0" zz="0.0" />
     </animation>
 
-    <animation id="circular0" span="5.0" type="circular" centerx="0.0" centery="5.0" centerz="0.0" radius="6.0" startang="0.0" rotang="90.0" />
+    <animation id="circular0" span="5.0" type="circular" centerx="0.0" centery="0.0" centerz="5.0" radius="2.0" startang="0.0" rotang="180.0" />
 
   </animations>
 
   <primitives>
 
     <primitive id="sphere0">
-      <sphere radius="1.0" slices="6" stacks="6" />
+      <sphere radius="1.0" slices="16" stacks="16" />
     </primitive>
 
     <primitive id="plane0">
@@ -112,8 +111,6 @@
       </transformation>
 
       <animation>
-        <animationref id="linear0" />
-        <animationref id="linear1" />
         <animationref id="circular0" />
       </animation>
 
