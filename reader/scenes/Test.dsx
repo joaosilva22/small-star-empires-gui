@@ -104,6 +104,14 @@
       <vehicle />
     </primitive>
 
+    <primitive id="chessboard0">
+      <chessboard du="10" dv="10" textureref="texture0" su="1" sv="1">
+        <c1 r="1.0" g="0.0" b="0.0" a="1.0"/>
+        <c2 r="0.0" g="1.0" b="0.0" a="1.0"/>
+        <cs r="0.0" g="0.0" b="1.0" a="1.0"/>
+      </chessboard>
+    </primitive>
+
   </primitives>
 
   <components>
@@ -122,16 +130,42 @@
         <material id="material0" />
       </materials>
 
-      <texture id="none" />
+      <texture id="texture0" />
 
       <children>
         <primitiveref id="sphere0" />
         <primitiveref id="vehicle0" />
+        <componentref id="component1"/>
         <!-- <primitiveref id="plane0" /> -->
         <!-- <primitiveref id="patch0" /> -->
       </children>
 
     </component>
+
+    <component id="component1">
+
+      <transformation>
+        <translate x="-10.0" y="0.0" z="0.0" />
+      </transformation>
+
+      <animation>
+        <animationref id="circular0" />
+      </animation>
+
+      <materials>
+        <material id="material0" />
+      </materials>
+
+      <texture id="texture0" />
+
+      <children>
+        <primitiveref id="chessboard0"/>
+        <!-- <primitiveref id="plane0" /> -->
+        <!-- <primitiveref id="patch0" /> -->
+      </children>
+
+    </component>
+    
     
   </components>
   
