@@ -1,3 +1,4 @@
+
 class Patch extends CGFnurbsObject {
     constructor(scene, controlvertexes, dx, dy) {
 	var degree1 = controlvertexes.length-1;
