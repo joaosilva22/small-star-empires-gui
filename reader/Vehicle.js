@@ -1,52 +1,4 @@
 
-class Trapezoid extends CGFobject {
-    constructor(scene, x1, y1, x2, y2, x3, y3, x4, y4) {
-	super(scene);
-
-	this.x1 = x1;
-	this.y1 = y1;
-	this.x2 = x2;
-	this.y2 = y2;
-	this.x3 = x3;
-	this.y3 = y3;
-	this.x4 = x4;
-	this.y4 = y4;
-
-	this.initBuffers();
-    }
-
-    initBuffers() {
-	this.vertices = [
-	    this.x1, this.y1, 0,
-	    this.x2, this.y2, 0,
-	    this.x3, this.y3, 0,
-	    this.x4, this.y4, 0
-	];
-
-	this.indices = [
-	    0, 1, 2,
-	    2, 3, 0
-	];
-
-	this.normals = [
-	    0, 0, 1,
-	    0, 0, 1,
-	    0, 0, 1,
-	    0, 0, 1
-	];
-
-	this.texCoords = [
-	    0, 1,
-	    1, 1,
-	    1, 0,
-	    0, 0
-	];
-
-	this.primitiveType = this.scene.gl.TRIANGLES;
-	this.initGLBuffers();
-    }
-};
-
 class Box extends CGFobject {
     constructor(scene, width, height, depth) {
 	super(scene);
@@ -95,35 +47,6 @@ class Box extends CGFobject {
 	this.scene.rotate(-Math.PI/2, 0, 1, 0);
 	this.scene.translate(0, 0, this.w/2);
 	this.base.display();
-	this.scene.popMatrix();
-	
-    }
-    
-};
-
-
-class VehicleBody extends CGFobject {
-    constructor(scene) {
-	super(scene);
-
-	this.side = new Rectangle(scene, -2.5, -1, 2.5, 1);
-	this.top = new Rectangle(scene, 2.5, 4, -2.5, 0);
-    }
-
-    display() {
-	
-	this.scene.pushMatrix();
-	this.scene.translate(0, 0, 2);
-	this.side.display();
-	this.scene.rotate(Math.PI, 0, 1, 0);
-	this.scene.translate(0, 0, 4);
-	this.side.display();
-	this.scene.popMatrix();
-
-	this.scene.pushMatrix();
-	this.scene.translate(0, 1, 2);
-	this.scene.rotate(-Math.PI/2, 1, 0, 0);
-	this.top.display();
 	this.scene.popMatrix();
 	
     }
@@ -182,7 +105,24 @@ class Vehicle extends CGFobject {
 	    ]
 	];
 	this.exaust = new Patch(scene, controlvertexes, 10, 10);
-			
+
+	this.wing = new Triangle(scene,
+				-this.body.w/2, 0, -5,
+				-this.body.w/2, 0, 5,
+				 this.body.w/2, 0, 0);
+	this.wing.setTexCoords();
+
+	this.finLeft = new Triangle(scene,
+				    0, 0, 0,
+				    2, 0, 0,
+				    0, 2, 0);
+	this.finRight = new Triangle(scene,
+				     2, 0, 0,
+				     0, 0, 0,
+				     0, 2, 0);
+	this.finLeft.setTexCoords();
+	this.finRight.setTexCoords();
+	
     }
 
     display() {
@@ -217,6 +157,32 @@ class Vehicle extends CGFobject {
 	this.scene.translate(-1.25, 0, 1.5);
 	this.exaust.display();
 	this.scene.popMatrix();
-	
+
+	this.scene.pushMatrix();
+	this.scene.translate(-1.25, 0, -1.5);
+	this.scene.rotate(Math.PI, 0, 1, 0);
+	this.exaust.display();
+	this.scene.popMatrix();
+
+	this.scene.pushMatrix();
+	this.wing.display();
+	this.scene.popMatrix();
+
+	this.scene.pushMatrix();
+	this.scene.rotate(Math.PI, 1, 0, 0);
+	this.wing.display();
+	this.scene.popMatrix();
+
+	this.scene.pushMatrix();
+	this.scene.translate(-this.body.w/2, this.body.h/2 + this.bodyTop.h, 0);
+	this.finLeft.display();
+	this.scene.popMatrix();
+
+	this.scene.pushMatrix();
+	this.scene.translate(-this.body.w/2, this.body.h/2 + this.bodyTop.h, 0);
+	this.finRight.display();
+	this.scene.popMatrix();
     }
+
+    setTexCoords() {}
 };

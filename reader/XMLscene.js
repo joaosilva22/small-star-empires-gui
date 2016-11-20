@@ -21,8 +21,6 @@ XMLscene.prototype.init = function (application) {
 
     this.axis=new CGFaxis(this);
 
-    this.vehicle = new Vehicle(this);
-
     this.enableTextures(true);
 };
 
@@ -96,8 +94,6 @@ XMLscene.prototype.display = function () {
 	this.updateLights();
 	let root = this.graph.components[this.graph.root];
 	this.displayComponent(root, true);
-
-	this.vehicle.display();
     };
 };
 

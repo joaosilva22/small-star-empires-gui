@@ -100,6 +100,10 @@
       </patch>
     </primitive>
 
+    <primitive id="vehicle0">
+      <vehicle />
+    </primitive>
+
   </primitives>
 
   <components>
@@ -118,10 +122,11 @@
         <material id="material0" />
       </materials>
 
-      <texture id="texture0" />
+      <texture id="none" />
 
       <children>
-        <primitiveref id="sphere0" />s
+        <primitiveref id="sphere0" />
+        <primitiveref id="vehicle0" />
         <!-- <primitiveref id="plane0" /> -->
         <!-- <primitiveref id="patch0" /> -->
       </children>

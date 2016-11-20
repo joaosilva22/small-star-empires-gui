@@ -826,6 +826,10 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 	    this.primitives[id] = new Patch(this.scene, controlvertexes, partsU, partsV);
 	}
+
+	if (type == "vehicle") {
+	    this.primitives[id] = new Vehicle(this.scene);
+	}
 	
     }	
 };
