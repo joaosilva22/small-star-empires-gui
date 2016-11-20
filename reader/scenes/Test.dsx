@@ -32,6 +32,7 @@
   <textures>
     
     <texture id="texture0" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="texture1" file="resources/wood.jpg" length_s="1.0" length_t="1.0"/>
     
   </textures>
 
@@ -105,7 +106,7 @@
     </primitive>
 
     <primitive id="chessboard0">
-      <chessboard du="10" dv="10" textureref="texture0" su="1" sv="1">
+      <chessboard du="10" dv="10" textureref="texture1" su="1" sv="1">
         <c1 r="1.0" g="0.0" b="0.0" a="1.0"/>
         <c2 r="0.0" g="1.0" b="0.0" a="1.0"/>
         <cs r="0.0" g="0.0" b="1.0" a="1.0"/>
@@ -156,7 +157,7 @@
         <material id="material0" />
       </materials>
 
-      <texture id="texture0" />
+      <texture id="texture1" />
 
       <children>
         <primitiveref id="chessboard0"/>
