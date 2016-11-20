@@ -830,6 +830,34 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	if (type == "vehicle") {
 	    this.primitives[id] = new Vehicle(this.scene);
 	}
+
+	if (type == "chessboard") {
+	    var du = this.reader.getInteger(primitive, 'du', true);
+	    var dv = this.reader.getInteger(primitive, 'dv', true);
+	    var textureref = this.reader.getString(primitive, 'textureref', true);
+	    var su = this.reader.getInteger(primitive, 'su', true);
+	    var sv = this.reader.getInteger(primitive, 'sv', true);
+
+	    var c1 = primitive.getElementsByTagName('c1');
+	    var color1 = 	[this.reader.getFloat(c1[0],'r',true),
+	    				 this.reader.getFloat(c1[0],'g',true),
+	    				 this.reader.getFloat(c1[0],'b',true),
+	    				 this.reader.getFloat(c1[0],'a',true),];
+
+	    var c2 = primitive.getElementsByTagName('c2');
+	    var color2 = 	[this.reader.getFloat(c2[0],'r',true),
+	    				 this.reader.getFloat(c2[0],'g',true),
+	    				 this.reader.getFloat(c2[0],'b',true),
+	    				 this.reader.getFloat(c2[0],'a',true),];
+
+	    var cs = primitive.getElementsByTagName('cs');
+	    var colors = 	[this.reader.getFloat(cs[0],'r',true),
+	    				 this.reader.getFloat(cs[0],'g',true),
+	    				 this.reader.getFloat(cs[0],'b',true),
+	    				 this.reader.getFloat(cs[0],'a',true),];
+
+	    this.primitives[id] = new Chessboard(this.scene, du,dv,color1,color2,colors,su,sv, textureref);
+	}
 	
     }	
 };
