@@ -67,7 +67,7 @@
       <controlpoint xx="0.0" yy="5.0" zz="0.0" />
     </animation>
 
-    <animation id="circular0" span="5.0" type="circular" centerx="0.0" centery="0.0" centerz="5.0" radius="2.0" startang="0.0" rotang="180.0" />
+    <animation id="circular0" span="5.0" type="circular" centerx="0.0" centery="0.0" centerz="0.0" radius="0.0" startang="0.0" rotang="360.0" />
 
   </animations>
 
@@ -107,7 +107,7 @@
     <component id="component0">
 
       <transformation>
-        <transformationref id="transformation0" />
+        <translate x="10.0" y="0.0" z="0.0" />
       </transformation>
 
       <animation>
@@ -121,9 +121,9 @@
       <texture id="texture0" />
 
       <children>
-        <!-- <primitiveref id="sphere0" /> -->
+        <primitiveref id="sphere0" />s
         <!-- <primitiveref id="plane0" /> -->
-        <primitiveref id="patch0" />
+        <!-- <primitiveref id="patch0" /> -->
       </children>
 
     </component>

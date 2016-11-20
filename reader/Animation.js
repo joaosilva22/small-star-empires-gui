@@ -151,7 +151,7 @@ class LinearAnimation extends Animation {
 	}
 
 	if (this.elapsed >= this.span) {
-	    console.log("Finished in " + this.elapsed/1000 + " seconds.");
+	    console.log(`Finished in ${this.elapsed/1000} seconds.`);
 	    this.finished = true;
 	}
     }
@@ -208,7 +208,7 @@ class CircularAnimation extends Animation {
 	}
 
 	if (this.elapsed >= this.span) {
-	    console.log("Finished in " + this.elapsed/1000 + " seconds.");
+	    console.log(`Finished in ${this.elapsed/1000} seconds.`);
 	    this.finished = true;
 	}
     }
