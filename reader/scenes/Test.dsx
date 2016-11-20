@@ -149,15 +149,11 @@
         <translate x="-10.0" y="0.0" z="0.0" />
       </transformation>
 
-      <animation>
-        <animationref id="circular0" />
-      </animation>
-
       <materials>
         <material id="material0" />
       </materials>
 
-      <texture id="texture1" />
+      <texture id="none" />
 
       <children>
         <primitiveref id="chessboard0"/>

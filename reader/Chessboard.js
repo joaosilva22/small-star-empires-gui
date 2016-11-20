@@ -22,23 +22,21 @@ function Chessboard(scene,du,dv,c1,c2,cs,su,sv,textureref) {
 
     this.shader = new CGFshader(this.scene.gl,"shaders/shader.vert","shaders/shader.frag");
     this.shader.setUniformsValues({du:this.du, dv:this.dv, c1:this.c1, c2:this.c2, cs:this.cs, su:this.su, sv:this.sv});
-    this.initBuffers();
 }
 
 Chessboard.prototype = Object.create(CGFobject.prototype);
 Chessboard.prototype.constructor = Chessboard;
 
-Chessboard.prototype.setTexCoords = function(length_s,length_t) {
+Chessboard.prototype.setTexCoords = function(length_s, length_t) {
     this.plane.setTexCoords();
 };
 
 Chessboard.prototype.display = function(){
+    this.scene.enableTextures(true);
+    this.appearance.apply();
     this.scene.setActiveShader(this.shader);
     this.scene.pushMatrix();
-    this.scene.graph.textures[this.textureref].texture.bind(0);
-    this.appearance.apply();
     this.plane.display();
-
     this.scene.popMatrix();
     this.scene.setActiveShader(this.scene.defaultShader);
 }
