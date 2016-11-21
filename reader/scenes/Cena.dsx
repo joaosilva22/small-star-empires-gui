@@ -87,6 +87,8 @@
     <texture id="tex_pedestal" file="resources/column.jpg" length_s="1.0" length_t="1.0"/>
     <texture id="tex_pedestal_top" file="resources/tampas.png" length_s="1.0" length_t="1.0"/>
     <texture id="tex_planet" file="resources/jupiter.png" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_wood" file="resources/wood.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_flag" file="resources/flag.png" length_s="1.0" length_t="1.0"/>
   </textures>
 
   
@@ -145,6 +147,14 @@
     <material id="black_rubber">
       <emission r="0.0" g="0.0" b="0.0" a="1.0" />
       <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+      <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+      <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+      <shininess value="10.0" />
+    </material>
+
+    <material id="ship_hull">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="1.0" g="1.0" b="0.0" a="1.0" />
       <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
       <specular r="0.6" g="0.6" b="0.6" a="1.0" />
       <shininess value="10.0" />
@@ -328,21 +338,30 @@
 
   </transformations>
 
+  
   <animations>
-    <animation id="linear0" span="20" type="linear">
+
+    <animation id="anim0" span="8.0" type="linear">
       <controlpoint xx="0.0" yy="0.0" zz="0.0" />
-      <controlpoint xx="0.0" yy="0.0" zz="10.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="-37.5" />
     </animation>
-    <animation id="circular0" span="15.0" type="circular" centerx="2.0" centery="2.0" centerz="2.0" radius="6.0" startang="45.0" rotang="90.0" />
+
+    <animation id="anim1" span="8.0" type="circular" centerx="-10.0" centery="0.0" centerz="0.0" radius="10" startang="0.0" rotang="445.0" />
+
+    <animation id="anim2" span="8.0" type="linear">
+      <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="36.0" />
+    </animation>
+
+    <animation id="anim3" span="30.0" type="circular" centerx="0.0" centery="0.0" centerz="0.0" radius="0" startang="0.0" rotang="1080.0" />
+    
   </animations>
   
   
   <primitives>
     
-    <primitive id="rectangle0">
-      
+    <primitive id="rectangle0">    
       <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
-      
     </primitive>
     
     <primitive id="antena_top">
@@ -454,22 +473,41 @@
     </primitive>
 
     <primitive id="patch0">
-      <patch orderU="2" orderV="3" partsU="10" partsV="10">
-        <controlpoint x="-2.0" y="-2.0" z="1.0"/>
-        <controlpoint x="-2.0" y="-1.0" z="-2.0"/>
-        <controlpoint x="-2.0" y="1.0" z="5.0"/>
-        <controlpoint x="-2.0" y="2.0" z="-1.0"/>
-        
-        <controlpoint x="0.0" y="-2.0" z="1.0"/>
-        <controlpoint x="0.0" y="-1.0" z="-2.0"/>
-        <controlpoint x="0.0" y="1.0" z="5.0"/>
-        <controlpoint x="0.0" y="2.0" z="-1.0"/>
-        
-        <controlpoint x="2.0" y="-2.0" z="-1.0"/>
-        <controlpoint x="2.0" y="-1.0" z="2.0"/>
-        <controlpoint x="2.0" y="1.0" z="-5.0"/>
-        <controlpoint x="2.0" y="2.0" z="1.0"/>
+      <patch orderU="5" orderV="1" partsU="10" partsV="10">
+
+        <controlpoint x="-6.0" y="-3.0" z="1.0" />
+        <controlpoint x="-6.0" y="3.5" z="1.0" />
+
+        <controlpoint x="-4.0" y="-3.5" z="0.0" />
+        <controlpoint x="-4.0" y="3.5" z="0.0" />
+
+        <controlpoint x="-2.0" y="-3.5" z="1.0" />
+        <controlpoint x="-2.0" y="3.5" z="1.0" />
+
+        <controlpoint x="0.0" y="-3.5" z="0.0" />
+        <controlpoint x="0.0" y="3.5" z="0.0" />
+
+        <controlpoint x="2.0" y="-3.5" z="1.0" />
+        <controlpoint x="2.0" y="3.5" z="1.0" />
+
+        <controlpoint x="4.0" y="-3.5" z="0.0" />
+        <controlpoint x="4.0" y="3.5" z="0.0" />
+
+        <controlpoint x="6.0" y="-3.5" z="1.0" />
+        <controlpoint x="6.0" y="3.5" z="1.0" />
       </patch>
+    </primitive>
+
+    <primitive id="vehicle0">
+      <vehicle />
+    </primitive>
+
+    <primitive id="chessboard0">
+      <chessboard du="10" dv="10" textureref="tex_wood" su="1" sv="1">
+        <c1 r="0.7" g="0.5" b="0.0" a="1.0"/>
+        <c2 r="1.0" g="1.0" b="1.0" a="1.0"/>
+        <cs r="1.0" g="0.0" b="0.0" a="1.0"/>
+      </chessboard>
     </primitive>
 
   </primitives>
@@ -630,10 +668,6 @@
       <transformation>
         <transformationref id="trans_head"/>
       </transformation>
-
-      <animation>
-        <animationref id="circular0"/>
-      </animation>
       
       <materials>
         <material id="metal"/>
@@ -1086,6 +1120,10 @@
         <componentref id="component_planet2"/>
         <componentref id="component_planet3"/>
         <componentref id="component_planet4"/>
+        <componentref id="component_vehicle"/>
+        <componentref id="component_plane" />
+        <componentref id="component_patch" />
+        <componentref id="component_chessboard" />
       </children>           
     </component>
 
@@ -1404,7 +1442,7 @@
       <children>
         <componentref id="component_planet_center"/>
         <componentref id="component_planet_disc"/>
-      //this.gl.disable(this.gl.DEPTH_TEST);            </children>
+      </children>
     </component>
 
     <component id="component_planet4">
@@ -1460,6 +1498,82 @@
       
       <children>
         <primitiveref id="boia"/>
+      </children>
+    </component>
+
+    <component id="component_vehicle">
+      <transformation>
+        <translate x="5.0" y="5.0" z="30.0" />
+        <scale x="0.5" y="0.5" z="0.5" />
+      </transformation>
+
+      <materials>
+        <material id="metal" />
+      </materials>
+
+      <animation>
+        <animationref id="anim0" />
+        <animationref id="anim1" />
+        <animationref id="anim2" />
+      </animation>
+
+      <texture id="tex_body" />
+
+      <children>
+        <primitiveref id="vehicle0" />
+      </children>
+    </component>
+
+    <component id="component_plane">
+      <transformation>
+        <rotate axis="y" angle="45" />
+        <translate x="0.0" y="5.0" z="5.0" />
+      </transformation>
+
+      <materials>
+        <material id="inherit" />
+      </materials>
+
+      <texture id="tex_wood" />
+
+      <children>
+        <primitiveref id="plane0" />
+      </children>
+    </component>
+
+    <component id="component_patch">
+      <transformation>
+        <translate x="15.0" y="15.0" z="0.0" />
+        <rotate axis="z" angle="90" />
+      </transformation>
+
+      <materials>
+        <material id="inherit" />
+      </materials>
+
+      <texture id="tex_flag" />
+
+      <children>
+        <primitiveref id="patch0" />
+      </children>
+    </component>
+
+    <component id="component_chessboard">
+      <transformation>
+        <rotate axis="y" angle="45" />
+        <translate x="0.0" y="5.1" z="5.1" />
+        <scale x="7.0" y="7.0" z="7.0" />
+
+      </transformation>
+
+      <materials>
+        <material id="inherit" />
+      </materials>
+
+      <texture id="none" />
+
+      <children>
+        <primitiveref id="chessboard0" />
       </children>
     </component>
     

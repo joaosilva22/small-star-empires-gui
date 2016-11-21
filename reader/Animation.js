@@ -18,6 +18,8 @@ class LinearAnimation extends Animation {
 
 	this.position = [];
 	this.ang = 0;
+
+	this.id = id;
     }
     
     addControlPoint(point) {
@@ -99,7 +101,7 @@ class LinearAnimation extends Animation {
 	this.calcDirections();
     }
 
-    update(currTime) {
+    update(currTime) {	
 	if (this.prev == 0) {
 	    this.prev = currTime;
 	    this.begin();
@@ -115,7 +117,7 @@ class LinearAnimation extends Animation {
 	    var dirvel = [vel * this.directions[this.cdir][0],
 			  vel * this.directions[this.cdir][1],
 			  vel * this.directions[this.cdir][2]];
-
+	    
 	    var atControlPoint = false;
 
 	    var arrayEquals = function(arr1, arr2) {
@@ -128,7 +130,7 @@ class LinearAnimation extends Animation {
 	    };
 
 	    for (var i = 0; i < 3; i++) {
-		if (this.position[i] + dirvel[i] < this.controlPoints[this.cdir+1][i]) {
+		if (this.position[i] + dirvel[i] < Math.abs(this.controlPoints[this.cdir+1][i])) {
 		    this.position[i] += dirvel[i];
 		}
 		else {

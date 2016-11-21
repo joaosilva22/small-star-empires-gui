@@ -80,6 +80,12 @@ Component.prototype.update = function(currTime) {
 	else {
 	    animation.applyFinalTransformations(this);
 	    this.currentAnimation++;
+	    if (this.animations[this.currentAnimation]) {
+		this.animations[this.currentAnimation].prev = 0;
+		this.animations[this.currentAnimation].elapsed = 0;
+		this.animations[this.currentAnimation].cdir = 0;
+		this.animations[this.currentAnimation].finished = false;
+	    }
 	}
     }
 };
