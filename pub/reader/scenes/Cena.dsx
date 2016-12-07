@@ -341,16 +341,16 @@
   
   <animations>
 
-    <animation id="anim0" span="8.0" type="linear">
+    <animation id="anim0" span="3.0" type="linear">
       <controlpoint xx="0.0" yy="0.0" zz="0.0" />
       <controlpoint xx="0.0" yy="0.0" zz="-37.5" />
     </animation>
 
-    <animation id="anim1" span="8.0" type="circular" centerx="-10.0" centery="0.0" centerz="0.0" radius="10" startang="0.0" rotang="445.0" />
+    <animation id="anim1" span="4.0" type="circular" centerx="-10.0" centery="0.0" centerz="0.0" radius="10" startang="0.0" rotang="445.0" />
 
-    <animation id="anim2" span="8.0" type="linear">
+    <animation id="anim2" span="3.0" type="linear">
       <controlpoint xx="0.0" yy="0.0" zz="0.0" />
-      <controlpoint xx="0.0" yy="0.0" zz="36.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="45.0" />
     </animation>
 
     <animation id="anim3" span="30.0" type="circular" centerx="0.0" centery="0.0" centerz="0.0" radius="0" startang="0.0" rotang="1080.0" />
@@ -503,7 +503,7 @@
     </primitive>
 
     <primitive id="chessboard0">
-      <chessboard du="10" dv="10" textureref="tex_wood" su="1" sv="1">
+      <chessboard du="10" dv="10" textureref="tex_wood" su="4" sv="4">
         <c1 r="0.7" g="0.5" b="0.0" a="1.0"/>
         <c2 r="1.0" g="1.0" b="1.0" a="1.0"/>
         <cs r="1.0" g="0.0" b="0.0" a="1.0"/>

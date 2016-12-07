@@ -858,6 +858,10 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 	    this.primitives[id] = new Chessboard(this.scene, du,dv,color1,color2,colors,su,sv, textureref);
 	}
+
+	if (type == "board") {
+	    this.primitives[id] = new Board(this.scene);
+	}
 	
     }	
 };

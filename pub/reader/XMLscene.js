@@ -94,7 +94,7 @@ XMLscene.prototype.display = function () {
 	this.updateLights();
 	let root = this.graph.components[this.graph.root];
 	this.displayComponent(root, true);
-    };
+    }
 };
 
 /*
@@ -267,4 +267,3 @@ XMLscene.prototype.update = function(currTime) {
 	c.update(currTime);
     }
 };
-
