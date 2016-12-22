@@ -2,6 +2,11 @@
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
 
+:- initialization(['board.pl',
+		   'game.pl',
+		   'rules.pl',
+		   'display.pl']).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                        Server                                                   %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,3 +118,19 @@ parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
+
+
+parse_input(moveShipL(Faction,Board,X1,Z1,X2,Z2), NewBoard) :- moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard).
+parse_input(placeStructureL(Faction, Board, Structure, X2, Z2), NewBoard) :- placeStructureL(Faction, Board, Structure, X2, Z2, NewBoard).
+parse_input(getBoard, Board) :- getBoard(Board).
+
+
+moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard):-
+	moveShip(Faction,Board,X1,Z1,X2,Z2,NewBoard),
+	printboard(NewBoard).
+
+placeStructureL(Faction, Board, Structure, X2, Z2, NewBoard):-
+	placeStructure(Faction, Board, Structure, X2, Z2, NewBoard),
+	printboard(NewBoard).
+
+getBoard(X) :- board(X).

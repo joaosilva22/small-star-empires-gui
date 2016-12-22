@@ -1,15 +1,21 @@
 
 class Connection {
-	getPrologRequest(requestString, onSuccess, onError, port) {
+	getPrologRequest(requestString, onSuccess, Board, onError, port) {
 		var requestPort = port || 8081
 		var request = new XMLHttpRequest();
-		request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+		request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, false);
 
-		request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
+		request.onload = function(data){
+			Board.setBoard(parseStringArray(data.target.response));
+			console.log(Board.board);
+			console.log("Request successful. Reply: " + data.target.response);
+		};
 		request.onerror = onError || function(){console.log("Error waiting for response");};
 
 		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		request.send();
+		console.log("END");
+		console.log(Board.board);
 	}
 	
 	makeRequest()
@@ -20,16 +26,38 @@ class Connection {
 		getPrologRequest(requestString, handleReply);
 	}
 	
-	handleReply(data){
-		document.querySelector("#query_result").innerHTML=data.target.response;
-		board = parseStringArray(data.target.response);
-
-		for (let i = 0; i < board[0].length; i++) {
-			console.log(board[0][i]);
-		}
+	moveShipRequest(faction, board, x1, z1, x2, z2){
+	    let requestString = `moveShipL(${faction},${board},${x1},${z1},${x2},${z2})`;
+	    this.getPrologRequest(requestString, this.handleReply, board);
 	}
 
-	parseStringArray(string) {
+	placeStructureRequest(faction, board, x1, z1, x2, z2){
+	    let requestString = `placeStructureL(${faction},${board},${x2},${z2})`;
+	    this.getPrologRequest(requestString, this.handleReply, board);
+	}
+
+	getBoardRequest(Board){
+	    this.getPrologRequest('getBoard', this.handleReply, Board);
+	}
+
+	handleReply(data){
+		console.log("ANTES de setvalue");
+		console.log(Board.board);
+		Board.board = parseStringArray(data.target.response);
+		console.log("depois");
+		console.log(Board.board);
+		/*document.querySelector("#query_result").innerHTML=Board.board.toString();
+		for(let j = 0 ; j < Board.board[0].length ; j++){
+			for (let i = 0 ; i < Board.board[j][0].length ; i++) {
+				console.log(Board.board[j][i]);
+			}
+		}*/
+	}
+
+
+}
+
+	function parseStringArray(string) {
 		let array = [];
 		let element = '';
 		for (let i = 1; i < string.length; i++) {
@@ -51,7 +79,7 @@ class Connection {
 		return array;
 	}
 
-	getStringArrayLen(string) {
+	function getStringArrayLen(string) {
 		let length = 0;
 		let num = 0;
 		for (let i = 0; i < string.length; i++) {
@@ -65,4 +93,3 @@ class Connection {
 		}
 		return -1;
 	}
-}
