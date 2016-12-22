@@ -50,4 +50,19 @@ class Connection {
 		}
 		return array;
 	}
+
+	getStringArrayLen(string) {
+		let length = 0;
+		let num = 0;
+		for (let i = 0; i < string.length; i++) {
+			if (string.charAt(i) === '[') num ++;
+			
+			if (string.charAt(i) === ']') {
+				num --;
+				if (num === 0) return length;
+			}
+			length += 1;
+		}
+		return -1;
+	}
 }
