@@ -11,7 +11,6 @@ class Board {
 		this.distance = Math.sqrt(3)/2;
 
 		this.objects = [];
-		this.initBoard();
     }
 
 	initBoard() {
