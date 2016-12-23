@@ -110,6 +110,10 @@ print_header_line(_).
 :- ensure_loaded('board.pl').
 :- ensure_loaded('rules.pl').
 
+parse_input(getBoard, Board) :- getBoard(Board).
+parse_input(getAllPossibleBoardsFrom(Faction, Board, X, Z), PossibleBoards) :- getAllPossibleBoardsFrom(Faction, Board, X, Z, PossibleBoards).
+
+
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
@@ -122,7 +126,6 @@ test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
 
 parse_input(moveShipL(Faction,Board,X1,Z1,X2,Z2), NewBoard) :- moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard).
 parse_input(placeStructureL(Faction, Board, Structure, X2, Z2), NewBoard) :- placeStructureL(Faction, Board, Structure, X2, Z2, NewBoard).
-parse_input(getBoard, Board) :- getBoard(Board).
 
 
 moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard):-

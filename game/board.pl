@@ -5,7 +5,7 @@ board([[[' ',v,' '],[' ',v,' '],[' ',v,' '],['A',g,' '],['A',g,' '],[' ',2,' '],
        [[' ',v,' '],[' ',v,' '],[' ',0,' '],[' ',1,' '],[' ',3,' '],[' ',z,' '],[' ',3,' '],[' ',w,' '],[' ',0,' ']],
        [[' ',v,' '],[' ',1,' '],[' ',w,' '],[' ',2,' '],[' ',1,' '],[' ',2,' '],[' ',1,' '],[' ',1,' '],[' ',v,' ']],
        [[' ',v,' '],[' ',3,' '],[' ',1,' '],[' ',1,' '],[' ',z,' '],[' ',1,' '],[' ',1,' '],[' ',0,' '],[' ',v,' ']],
-       [[' ',v,' '],[' ',0,' '],[' ',1,' '],[' ',1,' '],[' ',2,' '],[' ',1,' '],[' ',w,' '],[' ',3,' '],[' ',v,' ']],
+       [[' ',v,' '],[' ',0,' '],[' ',1,' '],[' ',1,' '],[' ',2,' '],[' ',1,' '],[' ',b,' '],[' ',3,' '],[' ',v,' ']],
        [[' ',3,' '],[' ',b,' '],[' ',2,' '],[' ',3,' '],[' ',1,' '],[' ',1,' '],[' ',2,' '],[' ',v,' '],[' ',v,' ']],
        [[' ',1,' '],[' ',0,' '],[' ',z,' '],[' ',w,' '],[' ',1,' '],['B',h,' '],['B',h,' '],[' ',v,' '],[' ',v,' ']],
        [[' ',v,' '],[' ',v,' '],[' ',1,' '],[' ',0,' '],['B',h,' '],['B',h,' '],[' ',v,' '],[' ',v,' '],[' ',v,' ']]]).
@@ -280,4 +280,13 @@ getAllPossibleBoards(Faction, Board, X, Z, Current, PossibleBoards) :-
     NX is X+1,
     NZ is Z+1,
     getAllPossibleBoards(Faction, Board, NX, NZ, NCurrent, PossibleBoards).
+
+getAllPossibleBoardsFrom(Faction, Board, X, Z, PossibleBoards) :-
+	getAllPossibleBoardsFrom(Faction, Board, X, Z, [], PossibleBoards).
+
+getAllPossibleBoardsFrom(Faction, Board, X, Z, Current, PossibleBoards) :-
+	testAllMoves(Faction, Board, X, Z, MovesColony, 'colony'),
+	append(Current, MovesColony, TempCurrent),
+	testAllMoves(Faction, Board, X, Z, MovesTradeStation, 'trade station'),
+	append(TempCurrent, MovesTradeStation, PossibleBoards).
     
