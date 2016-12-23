@@ -13,6 +13,15 @@ class LoadingState extends State {
 	}
 }
 
+class MovePickingState extends State {
+	constructor(stateManager, scene, board) {
+		super(stateManager, scene);
+		this.board = board;
+	}
+
+	update(dt) {
+	}
+
 class EmptyState extends State {
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
