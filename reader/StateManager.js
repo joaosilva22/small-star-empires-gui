@@ -1,6 +1,7 @@
 class State {
-    constructor(stateManager) {
+    constructor(stateManager, scene) {
 		this.stateManager = stateManager;
+		this.scene = scene;
     }
 
     draw() {}
@@ -34,6 +35,7 @@ class StateManager {
     }
 
     update(dt) {
+		let current = this.states.length-1;
 		this.states[current].update(dt);
     }
 

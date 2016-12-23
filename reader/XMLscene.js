@@ -22,6 +22,11 @@ XMLscene.prototype.init = function (application) {
     this.axis=new CGFaxis(this);
 
     this.enableTextures(true);
+
+	/* Game Setup */
+	this.stateManager = new StateManager();
+	this.stateManager.pushState(new Game(this.stateManager, this));
+	this.prevTime = 0;
 };
 
 XMLscene.prototype.initLights = function () {
@@ -52,14 +57,14 @@ XMLscene.prototype.onGraphLoaded = function () {
     this.interface.setActiveCamera(this.camera);
     
     this.gl.clearColor(this.graph.illumination.background[0],
-		       this.graph.illumination.background[1],
-		       this.graph.illumination.background[2],
-		       this.graph.illumination.background[3]);
+		this.graph.illumination.background[1],
+		this.graph.illumination.background[2],
+		this.graph.illumination.background[3]);
 
     this.setAmbient(this.graph.illumination.ambient[0],
-		    this.graph.illumination.ambient[1],
-		    this.graph.illumination.ambient[2],
-		    this.graph.illumination.ambient[3]);
+		this.graph.illumination.ambient[1],
+		this.graph.illumination.ambient[2],
+		this.graph.illumination.ambient[3]);
 
     this.setUpdatePeriod(100);
 
@@ -91,9 +96,12 @@ XMLscene.prototype.display = function () {
     // only get executed after the graph has loaded correctly.
     // This is one possible way to do it
     if (this.graph.loadedOk) {
-	this.updateLights();
-	let root = this.graph.components[this.graph.root];
-	this.displayComponent(root, true);
+		this.updateLights();
+		//let root = this.graph.components[this.graph.root];
+		//this.displayComponent(root, true);
+
+		/* Game Render */
+		this.stateManager.draw();
     }
 };
 
@@ -102,55 +110,55 @@ XMLscene.prototype.display = function () {
  */
 XMLscene.prototype.setupLights = function() {
     for (var i = 0; i < 8; i++) {
-	if (i != 7) {
-	    this['light'+i] = false;
-	}
-	else {
-	    this['light'+i] = true;
-	}
+		if (i != 7) {
+			this['light'+i] = false;
+		}
+		else {
+			this['light'+i] = true;
+		}
     }
     
     var i = 0;
     for (let light in this.graph.lights.omni) {
-	var l = this.graph.lights.omni[light];
-	this.lights[i].setPosition(l.position.x, l.position.y, l.position.z, l.position.w);
-	this.lights[i].setAmbient(l.ambient.r, l.ambient.g, l.ambient.b, l.ambient.a);
-	this.lights[i].setDiffuse(l.diffuse.r, l.diffuse.g, l.diffuse.b, l.diffuse.a);
-	this.lights[i].setSpecular(l.specular.r, l.specular.g, l.specular.b, l.specular.a);
-	if (l.enabled) {
-	    this.lights[i].enable();
-	    this['light'+i] = true;
-	}
-	else {
-	    this.lights[i].disable();
-	    this['light'+i] = false;
-	}
-	this.interface.omni.add(this, 'light'+i);
-	this.lights[i].setVisible(true);
-	this.lights[i].update();
-	i++;
+		var l = this.graph.lights.omni[light];
+		this.lights[i].setPosition(l.position.x, l.position.y, l.position.z, l.position.w);
+		this.lights[i].setAmbient(l.ambient.r, l.ambient.g, l.ambient.b, l.ambient.a);
+		this.lights[i].setDiffuse(l.diffuse.r, l.diffuse.g, l.diffuse.b, l.diffuse.a);
+		this.lights[i].setSpecular(l.specular.r, l.specular.g, l.specular.b, l.specular.a);
+		if (l.enabled) {
+			this.lights[i].enable();
+			this['light'+i] = true;
+		}
+		else {
+			this.lights[i].disable();
+			this['light'+i] = false;
+		}
+		this.interface.omni.add(this, 'light'+i);
+		this.lights[i].setVisible(true);
+		this.lights[i].update();
+		i++;
     }
     for (let light in this.graph.lights.spot) {
-	var l = this.graph.lights.spot[light];
-	this.lights[i].setPosition(l.position.x, l.position.y, l.position.z, l.position.w);
-	this.lights[i].setAmbient(l.ambient.r, l.ambient.g, l.ambient.g, l.ambient.a);
-	this.lights[i].setDiffuse(l.diffuse.r, l.diffuse.g, l.diffuse.b, l.diffuse.a);
-	this.lights[i].setSpecular(l.specular.r, l.specular.g, l.specular.b, l.specular.a);
-	if (l.enabled) {
-	    this.lights[i].enable();
-	    this['light'+i] = true;
-	}
-	else {
-	    this.lights[i].disable();
-	    this['light'+i] = false;
-	}
-	this.interface.spot.add(this, 'light'+i);
-	this.lights[i].setSpotDirection(l.target.x - l.position.x, l.target.y - l.position.y, l.target.z - l.position.z);
-	this.lights[i].setSpotExponent(l.exponent);
-	this.lights[i].setSpotCutOff(l.angle); 
-	this.lights[i].setVisible(true);
-	this.lights[i].update();	
-	i++;
+		var l = this.graph.lights.spot[light];
+		this.lights[i].setPosition(l.position.x, l.position.y, l.position.z, l.position.w);
+		this.lights[i].setAmbient(l.ambient.r, l.ambient.g, l.ambient.g, l.ambient.a);
+		this.lights[i].setDiffuse(l.diffuse.r, l.diffuse.g, l.diffuse.b, l.diffuse.a);
+		this.lights[i].setSpecular(l.specular.r, l.specular.g, l.specular.b, l.specular.a);
+		if (l.enabled) {
+			this.lights[i].enable();
+			this['light'+i] = true;
+		}
+		else {
+			this.lights[i].disable();
+			this['light'+i] = false;
+		}
+		this.interface.spot.add(this, 'light'+i);
+		this.lights[i].setSpotDirection(l.target.x - l.position.x, l.target.y - l.position.y, l.target.z - l.position.z);
+		this.lights[i].setSpotExponent(l.exponent);
+		this.lights[i].setSpotCutOff(l.angle); 
+		this.lights[i].setVisible(true);
+		this.lights[i].update();	
+		i++;
     }
     this.numLights = i;
 };
@@ -164,24 +172,24 @@ XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
     component.pushAnimation(this);
     
     for (let child of component.children) {
-	var material = this.getMaterial(component, prevmat);
-	var texture = this.getTexture(component, prevtex);
-	if (texture) {
-	    material.setTexture(texture.texture);
-	    material.setTextureWrap('REPEAT', 'REPEAT');
-	    //console.log(material);
-	}
-	material.apply();
-	
-	if (child.type == "component") {
-	    this.displayComponent(this.graph.components[child.id], texture, material);
-	}
-	else {
-	    if (texture) {
-		this.graph.primitives[child.id].setTexCoords(texture.s, texture.t);
-	    }
-	    this.displayPrimitive(this.graph.primitives[child.id], texture);
-	}
+		var material = this.getMaterial(component, prevmat);
+		var texture = this.getTexture(component, prevtex);
+		if (texture) {
+			material.setTexture(texture.texture);
+			material.setTextureWrap('REPEAT', 'REPEAT');
+			//console.log(material);
+		}
+		material.apply();
+		
+		if (child.type == "component") {
+			this.displayComponent(this.graph.components[child.id], texture, material);
+		}
+		else {
+			if (texture) {
+				this.graph.primitives[child.id].setTexCoords(texture.s, texture.t);
+			}
+			this.displayPrimitive(this.graph.primitives[child.id], texture);
+		}
     }
 
     component.popAnimation(this);
@@ -195,7 +203,7 @@ XMLscene.prototype.displayComponent = function(component, prevtex, prevmat) {
  */
 XMLscene.prototype.displayPrimitive = function(primitive, texture) {
     if (!texture) {
-	this.enableTextures(false);
+		this.enableTextures(false);
     }
     primitive.display();
     this.enableTextures(true);
@@ -207,12 +215,12 @@ XMLscene.prototype.displayPrimitive = function(primitive, texture) {
 XMLscene.prototype.getMaterial = function(component, prevmat) {
     var material = component.materials[component.currentMaterial];
     if (material instanceof CGFappearance) {
-	return material;
+		return material;
     }
     else {
-	if (prevmat != null) {
-	    return prevmat;
-	}
+		if (prevmat != null) {
+			return prevmat;
+		}
     }
 };
 
@@ -222,10 +230,10 @@ XMLscene.prototype.getMaterial = function(component, prevmat) {
 XMLscene.prototype.getTexture = function(component, prevtex) {
     var texture = component.texture;
     if (texture.texture instanceof CGFtexture) {
-	return texture;
+		return texture;
     }
     else if (texture == "inherit") {
-	return prevtex;
+		return prevtex;
     }
     return null;
 };
@@ -235,8 +243,8 @@ XMLscene.prototype.getTexture = function(component, prevtex) {
  */
 XMLscene.prototype.nextMaterials = function() {
     for (let component in this.graph.components) {
-	var c = this.graph.components[component];
-	c.nextMaterial();
+		var c = this.graph.components[component];
+		c.nextMaterial();
     }
 };
 
@@ -245,16 +253,16 @@ XMLscene.prototype.nextMaterials = function() {
  */
 XMLscene.prototype.updateLights = function() {
     for (var i = 0; i < this.numLights; i++) {
-	if (this['light'+i]) {
-	    this.lights[i].enable();
-	}
-	else {
-	    this.lights[i].disable();
-	}
+		if (this['light'+i]) {
+			this.lights[i].enable();
+		}
+		else {
+			this.lights[i].disable();
+		}
     }
 
     for (var i = 0; i < this.lights.length; i++) {
-	this.lights[i].update();
+		this.lights[i].update();
     }
 };
 
@@ -263,7 +271,15 @@ XMLscene.prototype.updateLights = function() {
  */
 XMLscene.prototype.update = function(currTime) {
     for (let component in this.graph.components) {
-	var c = this.graph.components[component];
-	c.update(currTime);
+		var c = this.graph.components[component];
+		c.update(currTime);
     }
+
+	/* Game Update */
+	if (this.prevTime === 0) {
+		this.prevTime = currTime;
+	}
+	let dt = currTime - this.prevTime;
+	this.prevTime = currTime;
+	this.stateManager.update(dt);
 };

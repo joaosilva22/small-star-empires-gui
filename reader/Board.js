@@ -1,3 +1,4 @@
+
 class Cell extends CGFobject {
     constructor(scene, type, position) {
 		super(scene);
@@ -11,10 +12,10 @@ class Cell extends CGFobject {
 	display(textures) {
 		let initial = Math.PI/6;
 		for (let i = 0; i < 6; i++) {
-			let angle = Math.PI/6 + i*Math.PI/3;
+			let angle = Math.PI/6 + i * Math.PI / 3;
 			this.scene.pushMatrix();
 			this.scene.rotate(angle, 0, 1, 0);
-			this.scene.translate(0, 0, Math.sqrt(3)/4);
+			this.scene.translate(0, 0, Math.sqrt(3) / 4);
 			textures['base'].bind();
 			this.side.display();
 			this.scene.popMatrix();
@@ -72,6 +73,8 @@ class Board extends CGFobject{
 			'w': new CGFtexture(this.scene, 'resources/relaig/wormhole.png'),
 			'b': new CGFtexture(this.scene, 'resources/relaig/blackhole.png')
 		}
+
+		this.loaded = false;
     }
 
 	initBoard() {
@@ -93,14 +96,20 @@ class Board extends CGFobject{
 				}
 			}
 		}
+
+		this.loaded = true;
 	}
 
+	getMovementLayer(cell) {
+		return cell[0];
+	}
+	
     getMapLayer(cell) {
 		return cell[1];
     }
 
-	getMovementLayer(cell) {
-		return cell[0];
+	getStructureLayer(cell) {
+		return cell[2];
 	}
 
     display() {
@@ -144,7 +153,7 @@ class Board extends CGFobject{
 
 	setTexCoords() {};
 
-    setBoard(board){
-    	this.board=board;
+    setBoard(board) {
+    	this.board = board;
     }
 }
