@@ -56,7 +56,7 @@ class Connection {
 	getPrologRequest(requestString, onSuccess, onError, port) {
 		var requestPort = port || 8081
 		var request = new XMLHttpRequest();
-		request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+		request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, false);
 
 		request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
 		request.onerror = onError || function(){console.log("Error waiting for response");};
@@ -82,6 +82,24 @@ class Connection {
 			board.board = parseStringArray(data.target.response);
 			board.initBoard();
 		});
+	}
+
+	moveShipRequest(board, faction, x1, z1, x2, z2) {
+		let boardString = parseArrayString(board.board);
+	    let requestString = `moveShipL(${faction},${boardString},${x1},${z1},${x2},${z2})`;
+	    this.getPrologRequest(requestString, function(data) {
+		   board.board = parseStringArray(data.target.response);
+		   board.initBoard();
+	    });
+	}
+
+	placeStructureRequest(faction, board, x1, z1, x2, z2) {
+		let boardString = parseArrayString(board.board);
+	    let requestString = `placeStructureL(${faction},${boardString},${x2},${z2})`;
+	    this.getPrologRequest(requestString, function(data) {
+		   board.board = parseStringArray(data.target.response);
+		   board.initBoard();
+	   });
 	}
 
 }
@@ -121,4 +139,27 @@ function getStringArrayLen(string) {
 		length += 1;
 	}
 	return -1;
+}
+
+function parseArrayString(array){
+	let string = "[";
+	for(let i=0; i<array.length; i++){
+		if(i!=0) string += ",";
+		string += "[";
+		for(let j=0; j<array[i].length;j++){
+			if(j!=0) string += ",";
+			string += "[";
+			for(let k=0; k<array[i][j].length;k++){
+				if(k!=0) string += ",";
+				string += "'";
+				string += array[i][j][k];
+				string += "'";
+			}
+			string += "]";
+		}
+		string += "]";
+	}
+	string += "]";
+
+	return string;
 }
