@@ -30,17 +30,23 @@ class StateManager {
     }
 
     draw() {
-		let current = this.states.length-1;
-		this.states[current].draw();
+		if (this.states.length > 0) {
+			let current = this.states.length-1;
+			this.states[current].draw();
+		}
     }
 
     update(dt) {
-		let current = this.states.length-1;
-		this.states[current].update(dt);
+		if (this.states.length > 0) {
+			let current = this.states.length-1;
+			this.states[current].update(dt);
+		}
     }
 
-    handleInput() {
-		let current = this.states.length-1;
-		this.states[current].handleInput();
+	handleInput() {
+		if (this.states.length > 0) {
+			let current = this.states.length-1;
+			this.states[current].handleInput();
+		}
     }
 }
