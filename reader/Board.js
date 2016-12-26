@@ -107,15 +107,12 @@ class Colony extends CGFobject {
 class Board extends CGFobject{
     constructor(scene) {
 		super(scene);
-		this.connection = new Connection();
 
 		this.board = [];
 		this.cells = [];
 		this.ships = [];
 		
-		this.connection.getBoardRequest(this);
 		this.distance = Math.sqrt(3)/2;
-
 		this.textures = {
 			'factionOne' : new CGFtexture(this.scene, 'resources/relaig/base.png'),
 			'factionTwo' : new CGFtexture(this.scene, 'resources/relaig/base.png'),
@@ -130,9 +127,17 @@ class Board extends CGFobject{
 			'w': new CGFtexture(this.scene, 'resources/relaig/wormhole.png'),
 			'b': new CGFtexture(this.scene, 'resources/relaig/blackhole.png')
 		}
-
-		this.loaded = false;
     }
+
+	load(onLoad) {
+		let connection = new Connection();
+		let self = this;
+		connection.getBoardRequest(function(data) {
+			self.board = parseStringArray(data.target.response);
+			self.initBoard();
+			onLoad();
+		});
+	}
 
 	initBoard() {
 		this.cells = [];
@@ -232,7 +237,6 @@ class Board extends CGFobject{
 				self.scene.translate(cell.position.x * self.distance + self.distance / 2 + offset, 0, cell.position.z * 0.75);
 			}
 
-			//self.scene.registerForPick(cell.position.x, cell);
 			cell.display(self.textures);
 			self.scene.popMatrix();
 		});

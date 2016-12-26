@@ -25,20 +25,14 @@ class Connection {
 		document.querySelector("#query_result").innerHTML=data.target.response;
 	}
 
-	getBoardRequest(board) {
-		this.getPrologRequest('getBoard', function(data) {
-			board.board = parseStringArray(data.target.response);
-			board.initBoard();
-		});
+	getBoardRequest(onSuccess) {
+		this.getPrologRequest('getBoard', onSuccess);
 	}
 
-	moveShipRequest(board, faction, x1, z1, x2, z2) {
+	moveShipRequest(board, faction, x1, z1, x2, z2, onSuccess) {
 		let boardString = parseArrayString(board.board);
 	    let requestString = `moveShipL(${faction},${boardString},${x1},${z1},${x2},${z2})`;
-	    this.getPrologRequest(requestString, function(data) {
-		   board.board = parseStringArray(data.target.response);
-		   board.initBoard();
-	    });
+	    this.getPrologRequest(requestString, onSuccess);
 	}
 
 	placeStructureRequest(faction, board, x1, z1, x2, z2) {
@@ -60,7 +54,7 @@ class Connection {
 	playerPossibleBoardsRequest(faction, board, onSuccess){
 		let boardString = parseArrayString(board.board);
 	    let requestString = `playerPossibleBoards(${faction},${boardString})`;
-	    this.getPrologRequest(requestString,onSuccess); 
+	    this.getPrologRequest(requestString, onSuccess); 
 	}
 
 	playerBestBoardRequest(faction, board){
