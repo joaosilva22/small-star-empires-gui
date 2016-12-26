@@ -62,6 +62,48 @@ class Ship extends CGFobject {
 	}
 }
 
+class TradeStation extends CGFobject {
+	constructor(scene, faction, position) {
+		super(scene);
+		this.geometry = new Sphere(scene, 0.2, 6, 6);
+		this.scene = scene;
+
+		this.faction = faction;
+		this.position = position;
+
+		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
+		this.pickable = false;
+	}
+
+	display(textures) {
+		this.scene.pushMatrix();
+		textures[this.faction].bind();
+		this.geometry.display();
+		this.scene.popMatrix();
+	}
+}
+
+class Colony extends CGFobject {
+	constructor(scene, faction, position) {
+		super(scene);
+		this.geometry = new Cylinder(scene, 0.2, 0.2, 1, 6, 6);
+		this.scene = scene;
+
+		this.faction = faction;
+		this.position = position;
+
+		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
+		this.pickable = false;
+	}
+
+	display(textures) {
+		this.scene.pushMatrix();
+		textures[this.faction].bind();
+		this.geometry.display();
+		this.scene.popMatrix();
+	}
+}
+
 class Board extends CGFobject{
     constructor(scene) {
 		super(scene);
