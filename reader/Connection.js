@@ -60,7 +60,7 @@ class Connection {
 
 	playerPossibleBoardsRequest(faction,board,possibleBoards){
 		let boardString = parseArrayString(board.board);
-	    let requestString = `playerPossibleBoards(${faction},${boardString},${x},${z})`;
+	    let requestString = `playerPossibleBoards(${faction},${boardString})`;
 	    this.getPrologRequest(requestString, function(data) {
 		   possibleBoards = parseStringArray(data.target.response);
 	   });
@@ -68,7 +68,7 @@ class Connection {
 
 	playerBestBoardRequest(faction,board,bestBoard){
 		let boardString = parseArrayString(board.board);
-	    let requestString = `playerBestBoard(${faction},${boardString},${x},${z})`;
+	    let requestString = `playerBestBoard(${faction},${boardString})`;
 	    this.getPrologRequest(requestString, function(data) {
 		   bestBoard = parseStringArray(data.target.response);
 	   });
