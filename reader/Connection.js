@@ -1,6 +1,5 @@
 
 class Connection {
-
 	getPrologRequest(requestString, onSuccess, onError, port) {
 		var requestPort = port || 8081
 		var request = new XMLHttpRequest();
@@ -11,19 +10,7 @@ class Connection {
 
 		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		request.send();
-	}
-
-	makeRequest() {
-		// Get Parameter Values
-		var requestString = document.querySelector("#query_field").value;
-		// Make Request
-		getPrologRequest(requestString, handleReply);
-	}
-
-	//Handle the Reply
-	handleReply(data) {
-		document.querySelector("#query_result").innerHTML=data.target.response;
-	}
+	} 
 
 	getBoardRequest(onSuccess) {
 		this.getPrologRequest('getBoard', onSuccess);
@@ -63,6 +50,12 @@ class Connection {
 	    this.getPrologRequest(requestString, function(data) {
 		   board.board = parseStringArray(data.target.response);
 	   });
+	}
+
+	isGameOverRequest(board, onSuccess) {
+		let boardString = parseArrayString(board.board);
+		let requestString = `isTheGameOver(${boardString})`;
+		this.getPrologRequest(requestString, onSuccess);
 	}
 
 }
