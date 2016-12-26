@@ -112,8 +112,7 @@ print_header_line(_).
 
 parse_input(getBoard, Board) :- getBoard(Board).
 parse_input(getAllPossibleBoardsFrom(Faction, Board, X, Z), PossibleBoards) :- getAllPossibleBoardsFrom(Faction, Board, X, Z, PossibleBoards).
-
-
+parse_input(isTheGameOver(Board), Answer) :- hasTheGameEnded(Board, Answer).
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).

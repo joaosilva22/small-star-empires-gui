@@ -89,6 +89,18 @@ isGameOver(Board) :-
     length(FactionTwo, FactionTwoBoards),
     FactionTwoBoards==0,!.
 
+hasTheGameEnded(Board, HasIt) :-
+	getAllPossibleBoards(factionOne, Board, 0, 0, [], FactionOne),
+	length(FactionOne, FactionOneBoards),
+	FactionOneBoards == 0,
+	HasIt is 1,!.
+hasTheGameEnded(Board, HasIt) :-
+    getAllPossibleBoards(factionTwo, Board, 0, 0, [], FactionTwo),
+    length(FactionTwo, FactionTwoBoards),
+    FactionTwoBoards==0,
+	Hasit is 1,!.
+hasTheGameEnded(_, 0).
+
 printWinner(Points, Points) :-
     write('Faction One: '), write(Points), write(' Points\n'),
     write('Faction Two: '), write(Points), write(' Points\n'),
