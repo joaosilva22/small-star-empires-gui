@@ -10,8 +10,10 @@ class Cell extends CGFobject {
 
 		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
 		this.pickable = false;
+		this.selected = false;
 
 		this.pickableShader = new CGFshader(this.scene.gl, 'shaders/pickable.vert', 'shaders/pickable.frag');
+		this.selectedShader = new CGFshader(this.scene.gl, 'shaders/selected.vert', 'shaders/selected.frag');
 	}
 
 	display(textures) {
@@ -29,6 +31,7 @@ class Cell extends CGFobject {
 		this.scene.pushMatrix();
 		textures[this.type].bind();
 		if (this.pickable) this.scene.setActiveShader(this.pickableShader);
+		if (this.selected) this.scene.setActiveShader(this.selectedShader);
 		this.scene.registerForPick(this.pickId, this.hex);
 		this.hex.display();
 		this.scene.popMatrix();
@@ -138,6 +141,26 @@ class Board extends CGFobject{
 			if (ship.faction === faction) {
 				self.registerCellForPicking(ship.position);
 			}
+		});
+	}
+
+	resetPickRegistration() {
+		this.cells.forEach(function(cell) {
+			cell.pickable = false;
+		});
+	}
+
+	selectCell(position) {
+		this.cells.forEach(function(cell) {
+			if (cell.position.x === position.x && cell.position.z === position.z) {
+				cell.selected = true;
+			}
+		});
+	}
+
+	resetSelection() {
+		this.cells.forEach(function(cell) {
+			cell.selected = false;
 		});
 	}
 

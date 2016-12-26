@@ -26,32 +26,26 @@ class MovePickingState extends State {
 		this.board.display();
 	}
 
-	update(dt) {
-	}
-
 	handleInput() {
-		this.logPicking();
+		let selectedCell = this.getSelectedCell();
+		if (selectedCell !== null && selectedCell.pickable) {
+			this.board.resetPickRegistration();
+			this.board.selectCell(selectedCell.position);
+			this.stateManager.changeState(new EmptyState(this.stateManager, this.scene, this.board));
+		}
 	}
 
-	logPicking() {
-		if (this.scene.pickMode === false) {
-			if (this.scene.pickResults !== null) {
-				for (let i = 0; i < this.scene.pickResults.length; i++) {
-					let obj = this.scene.pickResults[i][0];
-					if (obj) {
-						let pickId = this.scene.pickResults[i][1];
-						//console.log(`Picked object ${obj} with pick id ${pickId}`);
-
-						let pickedCell = this.board.getCellByPickId(pickId);
-						if (pickedCell !== null && pickedCell.pickable) {
-							console.log(`Pickable object! (id = ${pickId})`);
-						}
-					}
-					
-				}
-				this.scene.pickResults.splice(0, this.scene.pickResults.length);
-			}
+	getSelectedCell() {
+		let self = this;
+		let cell = null;
+		if (this.scene.pickMode === false && this.scene.pickResults !== null) {
+			this.scene.pickResults.forEach(function(result) {
+				let pickId = result[1];
+				cell = self.board.getCellByPickId(pickId);
+			});
+			this.scene.pickResults.splice(0, this.scene.pickResults.length);
 		}
+		return cell;
 	}
 }
 
