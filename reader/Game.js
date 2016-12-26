@@ -17,6 +17,7 @@ class ShipPickingState extends State {
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
 		this.board = board;
+		this.faction = faction;
 
 		this.board.registerShipsForPicking(faction);
 	}
