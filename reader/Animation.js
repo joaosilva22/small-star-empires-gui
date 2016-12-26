@@ -233,3 +233,38 @@ class CircularAnimation extends Animation {
 	component.transformation.translate(this.radius, 0, 0);
     }
 };
+
+class MoveShipAnimation {
+	constructor(span, xi, zi, xd, zd) {
+		this.span=span;
+		this.cellSize=2*Math.sqrt(Math.pow(0.5,2)-Math.pow(0.25,2));
+		this.xi=xi;
+		this.zi=zi;
+		this.xd=xd;
+		this.zd=zd;
+		this.height = 1;
+		this.distance = [ (this.xi-this.xd)*this.cellSize, this.height, (this.zi-this.zd)*this.cellSize ]
+		this.finished=false;
+		this.elapsed=0;
+	}
+
+	update(currTime){
+		this.elapsed += currTime;
+		if (this.elapsed >= this.span){
+			this.finished=true;
+			this.elapsed = this.span;
+		}
+
+	}
+
+	reset(){
+		this.elapsed=0;
+		this.finished=false;
+	}
+
+	currentPosition(){
+		let perc = this.elapsed/this.span;
+		let position = [ this.distance[0]*perc, this.distance[1]* Math.cos(perc*(-Math.PI) + Math.PI/2), this.distance[2]*perc];
+		return position;
+	}
+}
