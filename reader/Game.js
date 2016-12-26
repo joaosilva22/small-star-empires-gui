@@ -8,12 +8,12 @@ class LoadingState extends State {
 	update(dt) {
 		if (this.board.loaded) {
 			console.log('Board loading complete');
-			this.stateManager.changeState(new MovePickingState(this.stateManager, this.scene, this.board, 'factionOne'));
+			this.stateManager.changeState(new ShipPickingState(this.stateManager, this.scene, this.board, 'factionOne'));
 		}
 	}
 }
 
-class MovePickingState extends State {
+class ShipPickingState extends State {
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
 		this.board = board;
@@ -31,7 +31,7 @@ class MovePickingState extends State {
 		if (selectedCell !== null && selectedCell.pickable) {
 			this.board.resetPickRegistration();
 			this.board.selectCell(selectedCell.position);
-			this.stateManager.changeState(new EmptyState(this.stateManager, this.scene, this.board));
+			this.stateManager.changeState(new MovePickingState(this.stateManager, this.scene, this.board, this.faction, selectedCell));
 		}
 	}
 
@@ -46,6 +46,26 @@ class MovePickingState extends State {
 			this.scene.pickResults.splice(0, this.scene.pickResults.length);
 		}
 		return cell;
+	}
+}
+
+class MovePickingState extends State {
+	constructor(stateManager, scene, board, faction, selected) {
+		super(stateManager, scene);
+		this.board = board;
+		this.selected = selected;
+
+		this.connection = new Connection();
+		this.possibleBoards = null;
+		this.loaded = false;
+		this.connection.shipPossibleMovementsRequest(faction, board, this.possibleBoards);
+	}
+
+	update(dt) {
+		if (this.possibleBoards) {
+			this.loaded = true;
+			console.log('Has loaded');
+		}
 	}
 }
 
