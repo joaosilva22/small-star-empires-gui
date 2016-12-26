@@ -139,6 +139,11 @@ class Board extends CGFobject{
 		});
 	}
 
+	reload(onLoad) {
+		this.initBoard();
+		onLoad();
+	}
+
 	initBoard() {
 		this.cells = [];
 		this.ships = [];

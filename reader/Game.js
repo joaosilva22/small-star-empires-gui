@@ -1,17 +1,31 @@
-class LoadingState extends State {
+class LoadState extends State {
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
 		console.log('Entered loading state');
+		this.board = board;
 
 		let self = this;
-		board.load(function() {
-			console.log('Board loading complete');
-			self.stateManager.changeState(new ShipPickingState(self.stateManager, self.scene, board, 'factionOne'));
-		});
+		if (board.board.length === 0) {
+			board.load(function() {
+				console.log('Board loading complete');
+				self.stateManager.changeState(new ShipPickState(self.stateManager, self.scene, board, 'factionOne'));
+			});
+		} else {
+			board.reload(function() {
+				console.log('Board reloading complete');
+				self.stateManager.changeState(new ShipPickState(self.stateManager, self.scene, board, 'factionOne'));
+			});
+		}
+	}
+
+	draw() {
+		if (this.board.board) {
+			this.board.display();
+		}
 	}
 }
 
-class ShipPickingState extends State {
+class ShipPickState extends State {
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
 		this.board = board;
@@ -32,7 +46,7 @@ class ShipPickingState extends State {
 		if (selectedCell !== null && selectedCell.pickable) {
 			this.board.resetPickRegistration();
 			this.board.selectCell(selectedCell.position);
-			this.stateManager.changeState(new MovePickingState(this.stateManager, this.scene, this.board, this.faction, selectedCell));
+			this.stateManager.changeState(new MovePickState(this.stateManager, this.scene, this.board, this.faction, selectedCell));
 		}
 	}
 
@@ -50,7 +64,7 @@ class ShipPickingState extends State {
 	}
 }
 
-class MovePickingState extends State {
+class MovePickState extends State {
 	constructor(stateManager, scene, board, faction, selected) {
 		super(stateManager, scene);
 		this.board = board;
@@ -78,14 +92,13 @@ class MovePickingState extends State {
 	handleInput() {
 		let selectedCell = this.getPickedCell();
 		if (selectedCell !== null && selectedCell.pickable) {
-			// TODO:
-			// movimentar a nave
+			this.stateManager.changeState(new MoveShipState(this.stateManager, this.scene, this.board, this.faction, this.selected.position, selectedCell.position));
 			console.log('Clicked in');
 		}
 		if (selectedCell !== null && !selectedCell.pickable) {
 			this.board.resetPickRegistration();
 			this.board.resetSelection();
-			this.stateManager.changeState(new ShipPickingState(this.stateManager, this.scene, this.board, this.faction));
+			this.stateManager.changeState(new ShipPickState(this.stateManager, this.scene, this.board, this.faction));
 		}
 	}
 
@@ -124,8 +137,19 @@ class MovePickingState extends State {
 class MoveShipState extends State {
 	constructor(stateManager, scene, board, faction, from, to) {
 		super(stateManager, scene);
+		this.board = board;
 
-		let connection = new Connection();		
+		let connection = new Connection();
+		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
+			board.board = parseStringArray(data.target.response);
+			board.resetPickRegistration();
+			board.resetSelection();
+			stateManager.changeState(new LoadState(stateManager, scene, board));
+		});
+	}
+
+	draw() {
+		this.board.display();
 	}
 }
 
@@ -145,7 +169,7 @@ class Game extends State {
 	constructor(stateManager, scene) {
 		super(stateManager, scene);
 		this.gameStateManager = new StateManager();
-		this.gameStateManager.pushState(new LoadingState(stateManager, scene, new Board(scene)));
+		this.gameStateManager.pushState(new LoadState(stateManager, scene, new Board(scene)));
 	}
 
 	draw() {
