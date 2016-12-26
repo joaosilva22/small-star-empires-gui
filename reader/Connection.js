@@ -31,7 +31,6 @@ class Connection {
 
 	moveShipRequest(board, faction, x1, z1, x2, z2, onSuccess) {
 		let boardString = parseArrayString(board.board);
-		console.log('BoardString:' + boardString);
 	    let requestString = `moveShipL(${faction},${boardString},${x1},${z1},${x2},${z2})`;
 	    this.getPrologRequest(requestString, onSuccess);
 	}
@@ -47,7 +46,6 @@ class Connection {
 
 	shipPossibleMovementsRequest(faction, board, position, onSuccess){
 		let boardString = parseArrayString(board.board);
-		console.log('BoardString:' + boardString);
 		let {x, z} = position;
 	    let requestString = `shipPossibleMovements(${faction},${boardString},${x},${z})`;
 	    this.getPrologRequest(requestString, onSuccess);

@@ -3,19 +3,23 @@ class LoadState extends State {
 		super(stateManager, scene);
 		console.log('Entered loading state');
 		this.board = board;
+		this.loaded = false;
 
 		let self = this;
-		console.log('Loading board...');
-
 		if (board.board.length === 0) {
 			board.load(function() {
-				console.log('Board loading complete');
 				self.stateManager.changeState(new ShipPickState(self.stateManager, self.scene, board, 'factionOne'));
 			});
 		} else {
-			self.stateManager.changeState(new EmptyState(self.stateManager, self.scene));
+			board.initBoard();
+			this.loaded = true;
 		}
-		
+	}
+
+	update(dt) {
+		if (this.loaded) {
+			this.stateManager.changeState(new ShipPickState(this.stateManager, this.scene, this.board, 'factionOne'));
+		}
 	}
 
 	draw() {
@@ -40,11 +44,13 @@ class ShipPickState extends State {
 	}
 
 	handleInput() {
-		let selectedCell = this.getPickedCell();
-		if (selectedCell !== null && selectedCell.pickable) {
-			this.board.resetPickRegistration();
-			this.board.selectCell(selectedCell.position);
-			this.stateManager.changeState(new MovePickState(this.stateManager, this.scene, this.board, this.faction, selectedCell));
+		if (this.faction === 'factionOne') {
+			let selectedCell = this.getPickedCell();
+			if (selectedCell !== null && selectedCell.pickable) {
+				this.board.resetPickRegistration();
+				this.board.selectCell(selectedCell.position);
+				this.stateManager.changeState(new MovePickState(this.stateManager, this.scene, this.board, this.faction, selectedCell));
+			}
 		}
 	}
 
@@ -60,23 +66,6 @@ class ShipPickState extends State {
 		}
 		return cell;
 	}
-
-	logPicking() {
-		if (this.pickMode == false) {
-			if (this.pickResults != null && this.pickResults.length > 0) {
-				for (var i=0; i< this.pickResults.length; i++) {
-					var obj = this.pickResults[i][0];
-					if (obj)
-						{
-							var customId = this.pickResults[i][1];				
-							console.log("Picked object: " + obj + ", with pick id " + customId);
-						}
-				}
-				this.pickResults.splice(0,this.pickResults.length);
-			}		
-		}
-	}
-
 }
 
 class MovePickState extends State {
@@ -159,7 +148,7 @@ class MoveShipState extends State {
 
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
-			board.board = parseStringArray(data.target.response);
+			board.board = parseStringArray(data.target.response.replace(/%20/g, " "));
 			board.resetPickRegistration();
 			board.resetSelection();
 			stateManager.changeState(new LoadState(stateManager, scene, board));
@@ -171,23 +160,11 @@ class MoveShipState extends State {
 	}
 }
 
-class EmptyState extends State {
-	constructor(stateManager, scene) {
-		super(stateManager, scene);
-		console.log(this.stateManager);
-		console.log('Entered empty state');
-	}
-
-	draw() {
-		console.log('Hello');
-	}
-}
-
 class Game extends State {
 	constructor(stateManager, scene) {
 		super(stateManager, scene);
 		this.gameStateManager = new StateManager();
-		this.gameStateManager.pushState(new LoadState(this.gameStateManager, scene, new Board(scene)));
+		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, new Board(scene)));
 	}
 
 	draw() {
