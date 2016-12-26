@@ -60,16 +60,12 @@ class Ship extends CGFobject {
 }
 
 class TradeStation extends CGFobject {
-	constructor(scene, faction, position) {
+	constructor(scene, faction) {
 		super(scene);
 		this.geometry = new Sphere(scene, 0.2, 6, 6);
 		this.scene = scene;
 
 		this.faction = faction;
-		this.position = position;
-
-		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
-		this.pickable = false;
 	}
 
 	display(textures) {
@@ -84,17 +80,14 @@ class Colony extends CGFobject {
 	constructor(scene, faction, position) {
 		super(scene);
 		this.geometry = new Cylinder(scene, 0.2, 0.2, 1, 6, 6);
-		this.scene = scene;
 
 		this.faction = faction;
-		this.position = position;
-
-		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
-		this.pickable = false;
+		this.position = position
 	}
 
 	display(textures) {
 		this.scene.pushMatrix();
+		this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 		textures[this.faction].bind();
 		this.geometry.display();
 		this.scene.popMatrix();
@@ -129,6 +122,9 @@ class Board extends CGFobject{
 			'pickable': new CGFshader(this.scene.gl, 'shaders/pickable.vert', 'shaders/pickable.frag'),
 			'selected': new CGFshader(this.scene.gl, 'shaders/selected.vert', 'shaders/selected.frag')
 		};
+
+		this.colonyFactionOne = new Colony(this.scene, 'factionOne');
+		this.colonyFactionTwo = new Colony(this.scene, 'factionTwo');
     }
 
 	load(onLoad) {
@@ -221,6 +217,24 @@ class Board extends CGFobject{
 		return ret;
 	}
 
+	placeColony(position, faction) {
+		if (faction === 'factionOne') {
+			this.board[position.z][position.x][2] = 'o';
+		}
+		if (faction === 'factionTwo') {
+			this.board[position.z][position.x][2] = 'p';
+		}
+	}
+
+	placeTradeStation(faction) {
+		if (faction === 'factionOne') {
+			this.board[position.z][position.x][2] === 'l';
+		}
+		if (faction === 'factionTwo') {
+			this.board[position.z][position.x][2] === 'k';
+		}
+	}
+
     display() {
 		let self = this;
 		
@@ -257,6 +271,34 @@ class Board extends CGFobject{
 			ship.display(self.textures);
 			self.scene.popMatrix();
 		});
+
+		for (let i = 0; i < this.board.length; i++) {
+			for (let j = 0; j < this.board.length; j++) {
+				this.scene.pushMatrix();
+				this.scene.scale(5, 5, 5);
+//				this.scene.translate(-5,5 * this.distance, 0, -3.5 * this.distance);
+
+				if (i % 2 === 0) {
+					let offset = i * this.distance / 2;
+//					this.scene.translate(j * this.distance + offset, 0, i * 0.75);
+				} else {
+					let offset = (i * this.distance - this.distance) / 2;
+//					this.scene.translate(j * this.distance + this.distance / 2 + offset, 0, i * 0.75);
+				}
+				
+				switch (this.board[i][j][2]) {
+					case 'o':
+						console.log('displaying colony');
+						this.colonyFactionOne.display(this.textures);
+						break;
+					case 'p':
+						this.colonyFactionTwo.display(this.textures);
+						break;
+				}
+
+				this.scene.popMatrix();
+			}
+		}
     }
 
 	setTexCoords() {};

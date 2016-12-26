@@ -43,10 +43,10 @@ class StateManager {
 		}
     }
 
-	handleInput() {
+	handleInput(keycode) {
 		if (this.states.length > 0) {
 			let current = this.states.length-1;
-			this.states[current].handleInput();
+			this.states[current].handleInput(keycode);
 		}
     }
 }

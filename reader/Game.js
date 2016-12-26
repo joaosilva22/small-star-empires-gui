@@ -156,12 +156,47 @@ class MoveShipState extends State {
 			board.board = parseStringArray(data.target.response.replace(/%20/g, " "));
 			board.resetPickRegistration();
 			board.resetSelection();
-			stateManager.changeState(new TestEndState(stateManager, scene, board, faction));
+			stateManager.changeState(new StructureBuildState(stateManager, scene, board, faction, to));
 		});
 	}
 
 	draw() {
 		this.board.display();
+	}
+}
+
+class StructureBuildState extends State {
+	constructor(stateManager, scene, board, faction, position) {
+		super(stateManager, scene);
+		console.log('Entered structure pick state');
+		this.board = board;
+		this.faction = faction;
+		this.position = position;
+
+		this.board.initBoard();
+		this.board.selectCell(position);
+	}
+
+	draw() {
+		this.board.display();
+	}
+
+	handleInput(keycode) {
+		if (keycode) {
+			switch (keycode) {
+				case 67:
+				case 99:
+					console.log('COLONY');
+					this.board.placeColony(this.position, this.faction);
+					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+					break;
+				case 84:
+				case 116:
+					console.log('TRADE-STATION');
+					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+					break;
+			}
+		}
 	}
 }
 
@@ -216,8 +251,8 @@ class Game extends State {
 		this.gameStateManager.update(dt);
 	}
 
-	handleInput() {
-		this.gameStateManager.handleInput();
+	handleInput(keycode) {
+		this.gameStateManager.handleInput(keycode);
 	}
 	
 }
