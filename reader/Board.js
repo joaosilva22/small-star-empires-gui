@@ -7,6 +7,11 @@ class Cell extends CGFobject {
 
 		this.type = type;
 		this.position = position;
+
+		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
+		this.pickable = false;
+
+		this.pickableShader = new CGFshader(this.scene.gl, 'shaders/pickable.vert', 'shaders/pickable.frag');
 	}
 
 	display(textures) {
@@ -23,8 +28,11 @@ class Cell extends CGFobject {
 
 		this.scene.pushMatrix();
 		textures[this.type].bind();
+		if (this.pickable) this.scene.setActiveShader(this.pickableShader);
+		this.scene.registerForPick(this.pickId, this.hex);
 		this.hex.display();
 		this.scene.popMatrix();
+		this.scene.setActiveShader(this.scene.defaultShader);
     }
 }
 
@@ -36,12 +44,16 @@ class Ship extends CGFobject {
 
 		this.faction = faction;
 		this.position = position;
+
+		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
+		this.pickable = false;
 	}
 
 	display(textures) {
 		this.scene.pushMatrix();
 		this.scene.rotate(-Math.PI/2, 1, 0, 0);
 		textures[this.faction].bind();
+		this.scene.registerForPick(this.pickId, this.geometry);
 		this.geometry.display();
 		this.scene.popMatrix();
 	}
@@ -112,6 +124,33 @@ class Board extends CGFobject{
 		return cell[2];
 	}
 
+	registerCellForPicking(position) {
+		this.cells.forEach(function(cell) {
+			if (cell.position.x === position.x && cell.position.z === position.z) {
+				cell.pickable = true;
+			}
+		});
+	}
+
+	registerShipsForPicking(faction) {
+		let self = this;
+		this.ships.forEach(function(ship) {
+			if (ship.faction === faction) {
+				self.registerCellForPicking(ship.position);
+			}
+		});
+	}
+
+	getCellByPickId(pickId) {
+		let ret = null;
+		this.cells.forEach(function(cell) {
+			if (cell.pickId === pickId) {
+				ret = cell;
+			}
+		});
+		return ret;
+	}
+
     display() {
 		let self = this;
 		
@@ -128,6 +167,7 @@ class Board extends CGFobject{
 				self.scene.translate(cell.position.x * self.distance + self.distance / 2 + offset, 0, cell.position.z * 0.75);
 			}
 
+			//self.scene.registerForPick(cell.position.x, cell);
 			cell.display(self.textures);
 			self.scene.popMatrix();
 		});
@@ -148,7 +188,6 @@ class Board extends CGFobject{
 			ship.display(self.textures);
 			self.scene.popMatrix();
 		});
-		
     }
 
 	setTexCoords() {};
