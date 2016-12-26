@@ -57,19 +57,17 @@ class Connection {
 	    this.getPrologRequest(requestString, onSuccess);
 	}
 
-	playerPossibleBoardsRequest(faction,board,possibleBoards){
+	playerPossibleBoardsRequest(faction, board, onSuccess){
 		let boardString = parseArrayString(board.board);
 	    let requestString = `playerPossibleBoards(${faction},${boardString})`;
-	    this.getPrologRequest(requestString, function(data) {
-		   possibleBoards = parseStringArray(data.target.response);
-	   });
+	    this.getPrologRequest(requestString,onSuccess); 
 	}
 
-	playerBestBoardRequest(faction,board,bestBoard){
+	playerBestBoardRequest(faction, board){
 		let boardString = parseArrayString(board.board);
 	    let requestString = `playerBestBoard(${faction},${boardString})`;
 	    this.getPrologRequest(requestString, function(data) {
-		   bestBoard = parseStringArray(data.target.response);
+		   board.board = parseStringArray(data.target.response);
 	   });
 	}
 
