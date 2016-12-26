@@ -50,12 +50,11 @@ class Connection {
 	   });
 	}
 
-	shipPossibleMovementsRequest(faction,board,x,z,possibleBoards){
+	shipPossibleMovementsRequest(faction, board, position, onSuccess){
 		let boardString = parseArrayString(board.board);
+		let {x, z} = position;
 	    let requestString = `shipPossibleMovements(${faction},${boardString},${x},${z})`;
-	    this.getPrologRequest(requestString, function(data) {
-		   possibleBoards = parseStringArray(data.target.response);
-	   });
+	    this.getPrologRequest(requestString, onSuccess);
 	}
 
 	playerPossibleBoardsRequest(faction,board,possibleBoards){
