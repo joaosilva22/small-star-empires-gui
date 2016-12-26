@@ -11,12 +11,9 @@ class Cell extends CGFobject {
 		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
 		this.pickable = false;
 		this.selected = false;
-
-		this.pickableShader = new CGFshader(this.scene.gl, 'shaders/pickable.vert', 'shaders/pickable.frag');
-		this.selectedShader = new CGFshader(this.scene.gl, 'shaders/selected.vert', 'shaders/selected.frag');
 	}
 
-	display(textures) {
+	display(textures, shaders) {
 		let initial = Math.PI/6;
 		for (let i = 0; i < 6; i++) {
 			let angle = Math.PI/6 + i * Math.PI / 3;
@@ -30,8 +27,8 @@ class Cell extends CGFobject {
 
 		this.scene.pushMatrix();
 		textures[this.type].bind();
-		if (this.pickable) this.scene.setActiveShader(this.pickableShader);
-		if (this.selected) this.scene.setActiveShader(this.selectedShader);
+		if (this.pickable) this.scene.setActiveShader(shaders['pickable']);
+		if (this.selected) this.scene.setActiveShader(shaders['selected']);
 		this.scene.registerForPick(this.pickId, this.hex);
 		this.hex.display();
 		this.scene.popMatrix();
@@ -126,7 +123,12 @@ class Board extends CGFobject{
 			'z': new CGFtexture(this.scene, 'resources/relaig/red-nebula.png'),
 			'w': new CGFtexture(this.scene, 'resources/relaig/wormhole.png'),
 			'b': new CGFtexture(this.scene, 'resources/relaig/blackhole.png')
-		}
+		};
+
+		this.shaders = {
+			'pickable': new CGFshader(this.scene.gl, 'shaders/pickable.vert', 'shaders/pickable.frag'),
+			'selected': new CGFshader(this.scene.gl, 'shaders/selected.vert', 'shaders/selected.frag')
+		};
     }
 
 	load(onLoad) {
@@ -137,11 +139,6 @@ class Board extends CGFobject{
 			self.initBoard();
 			onLoad();
 		});
-	}
-
-	reload(onLoad) {
-		this.initBoard();
-		onLoad();
 	}
 
 	initBoard() {
@@ -163,8 +160,6 @@ class Board extends CGFobject{
 				}
 			}
 		}
-
-		this.loaded = true;
 	}
 
 	getMovementLayer(cell) {
@@ -242,7 +237,7 @@ class Board extends CGFobject{
 				self.scene.translate(cell.position.x * self.distance + self.distance / 2 + offset, 0, cell.position.z * 0.75);
 			}
 
-			cell.display(self.textures);
+			cell.display(self.textures, self.shaders);
 			self.scene.popMatrix();
 		});
 		

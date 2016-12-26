@@ -46,6 +46,7 @@ class Connection {
 
 	shipPossibleMovementsRequest(faction, board, position, onSuccess){
 		let boardString = parseArrayString(board.board);
+		console.log('BoardString:' + boardString);
 		let {x, z} = position;
 	    let requestString = `shipPossibleMovements(${faction},${boardString},${x},${z})`;
 	    this.getPrologRequest(requestString, onSuccess);
