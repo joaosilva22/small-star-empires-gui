@@ -7,10 +7,15 @@ class LoadState extends State {
 		let self = this;
 		console.log('Loading board...');
 
-		board.load(function() {
-			console.log('Board loading complete');
-			self.stateManager.changeState(new ShipPickState(self.stateManager, self.scene, board, 'factionOne'));
-		});
+		if (board.board.length === 0) {
+			board.load(function() {
+				console.log('Board loading complete');
+				self.stateManager.changeState(new ShipPickState(self.stateManager, self.scene, board, 'factionOne'));
+			});
+		} else {
+			self.stateManager.changeState(new EmptyState(self.stateManager, self.scene));
+		}
+		
 	}
 
 	draw() {
