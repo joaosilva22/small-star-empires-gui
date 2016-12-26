@@ -59,7 +59,7 @@ class MovePickingState extends State {
 		this.connection = new Connection();
 		this.possibleBoards = null;
 		this.loaded = false;
-		this.connection.shipPossibleMovementsRequest(faction, board, this.possibleBoards);
+		this.connection.shipPossibleMovementsRequest(faction, board, selected.position.x, selected.position.z, this.possibleBoards);
 	}
 
 	update(dt) {
