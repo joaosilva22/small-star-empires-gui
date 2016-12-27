@@ -5,10 +5,10 @@ class LoadState extends State {
 		this.board = board;
 
 		if (faction === 'factionOne') {
-			this.stateManager.rotateCamera(Math.PI);
+			this.stateManager.beginCameraRotation();
 			this.faction = 'factionTwo';
 		} else {
-			this.stateManager.rotateCamera(Math.PI);
+			this.stateManager.beginCameraRotation();
 			this.faction = 'factionOne';
 		}
 
@@ -282,23 +282,26 @@ class PvP extends State {
 		
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();
-		let from = vec3.fromValues(to[0], to[1] + 20, to[2] + 20);
+		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 20);
 
 		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
 
 		let self = this;
-		this.gameStateManager.rotateCamera = function(angle) {
-			self.gameStateManager.camera.orbit(CGFcameraAxis.Y, Math.PI);
+		this.gameStateManager.beginCameraRotation = function(angle) {
+			self.angle = 0;
 		}
 		
 		this.scene.graph.views.order.push('defaultgamecam');
 		this.scene.graph.views.perspectives['defaultgamecam'] = this.gameStateManager.camera;
 
-		this.scene.interface.setActiveCamera(this.gameStateManager.camera)
-
+		this.scene.interface.setActiveCamera(null);
+		this.scene.camera = this.gameStateManager.camera;
 		this.currentFaction = 'factionOne';
 		
 		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, this.board, this.currentFaction));
+
+		this.angle = 1000;
+		this.angularstep = 0.10;
 	}
 
 	draw() {
@@ -309,6 +312,17 @@ class PvP extends State {
 	update(dt) {
 		this.gameStateManager.update(dt);
 		this.currentFaction = this.gameStateManager.getCurrentState().faction;
+
+		if (this.angle < Math.PI) {
+			if (this.angle + this.angularstep <= Math.PI) {
+				this.gameStateManager.camera.orbit(CGFcameraAxis.Y, this.angularstep);
+				this.angle += this.angularstep;
+			} else {
+				let diff = Math.PI - this.angle;
+				this.gameStateManager.camera.orbit(CGFcameraAxis.Y, diff);
+				this.angle += this.angularstep;
+			}
+		} 
 	}
 
 	handleInput(keycode) {

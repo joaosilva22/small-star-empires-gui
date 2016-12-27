@@ -56,7 +56,7 @@ XMLscene.prototype.onGraphLoaded = function () {
     this.axis = new CGFaxis(this, this.graph.axisLenght);
 
     this.camera = this.graph.views.default;
-    this.interface.setActiveCamera(this.camera);
+//    this.interface.setActiveCamera(this.camera);
     
     this.gl.clearColor(this.graph.illumination.background[0],
 		this.graph.illumination.background[1],
