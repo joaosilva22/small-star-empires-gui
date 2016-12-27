@@ -75,14 +75,23 @@ class TradeStation extends CGFobject {
 		this.scene = scene;
 
 		this.faction = faction;
+
+		this.animation = new HopAnimation(100, {x:0,y:0,z:0}, {x:0,y:0,z:0}); 
 	}
 
 	display(textures) {
 		this.scene.pushMatrix();
+		if (!this.animation.finished) {
+			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
+		}
 		this.scene.translate(0.3,0.1,-0.2);
 		textures[this.faction].bind();
 		this.geometry.display();
 		this.scene.popMatrix();
+	}
+
+	update(dt) {
+		this.animation.update(dt);
 	}
 }
 
@@ -92,16 +101,26 @@ class Colony extends CGFobject {
 		this.geometry = new Cylinder(scene, 0.1, 0.1, 0.25, 6, 6);
 
 		this.faction = faction;
+
+		this.animation = new HopAnimation(100, {x:0,y:0,z:0}, {x:0,y:0,z:0}); 
 	}
 
 	display(textures) {
 		this.scene.pushMatrix();
+		if (!this.animation.finished) {
+			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
+		}
 		this.scene.translate(-0.3,0,0.2);
 		this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 		textures[this.faction].bind();
 		this.geometry.display();
 		this.scene.popMatrix();
 	}
+
+	update(dt) {
+		this.animation.update(dt);
+	}
+
 }
 
 class Board extends CGFobject{
@@ -137,6 +156,9 @@ class Board extends CGFobject{
 		this.colonyFactionTwo = new Colony(this.scene, 'factionTwo');
 		this.tradeStationFactionOne = new TradeStation(this.scene, 'factionOne');
 		this.tradeStationFactionTwo = new TradeStation(this.scene, 'factionTwo');
+
+		this.aux = new AuxiliaryBoard(scene, this, 'factionOne');
+		this.aux1 = new AuxiliaryBoard(scene, this, 'factionTwo');
 
     }
 
@@ -318,12 +340,21 @@ class Board extends CGFobject{
 				this.scene.popMatrix();
 			}
 		}
+
+		this.scene.pushMatrix();
+		this.scene.scale(5, 5, 5);
+		this.aux.display();
+		this.scene.translate(-1, 0, 0);
+		this.aux1.display();
+		this.scene.popMatrix();
     }
 
 	update(dt) {
 		this.ships.forEach(function(ship) {
 			ship.update(dt);
 		});
+		this.aux.update(dt);
+		this.aux1.update(dt);
 	}
 
 	setTexCoords() {};
@@ -354,5 +385,119 @@ class Board extends CGFobject{
 			}
 		});
 		return ret;
+	}
+
+	getAuxColony(faction) {
+		if (faction === 'factionOne') {
+			return this.aux.colonies[this.aux.colonies.length-1];
+		} else {
+			return this.aux1.colonies[this.aux1.colonies.length-1];
+		}
+	}
+
+	getAuxTradeStation(faction) {
+		if (faction === 'factionOne') {
+			return this.aux.tradeStations[this.aux.tradeStations.length-1];
+		} else {
+			return this.aux1.tradeStations[this.aux1.tradeStations.length-1];
+		}
+	}
+
+	getAuxColonyPosition(faction) {
+		if (faction === 'factionOne') {
+			return this.aux.getColonyScenePosition();
+		} else {
+			let position = this.aux1.getColonyScenePosition();
+			position.x = position.x - 1;
+			return position;
+		}
+	}
+
+	getAuxTradeStationPosition(faction) {
+		if (faction === 'factionOne') {
+			return this.aux.getTradeStationScenePosition();
+		} else {
+			let position = this.aux1.getTradeStationScenePosition();
+			position.x = position.x -1
+			return position;
+		}
+	}
+
+	popAuxColony(faction) {
+		if (faction === 'factionOne') {
+			this.aux.popColony();
+		} else {
+			this.aux1.popColony();
+		}
+	}
+
+	popAuxTradeStation(faction) {
+		if (faction === 'factionOne') {
+			this.aux.popTradeStation();
+		} else {
+			this.aux1.popTradeStation();
+		}
+	}
+}
+
+class AuxiliaryBoard extends CGFobject {
+	constructor(scene, board, faction) {
+		super(scene);
+		this.board = board;
+
+		this.colonies = [];
+		for (let i = 0; i < 16; i++) {
+			this.colonies.push(new Colony(scene, faction));
+		}
+
+		this.tradeStations = [];
+		for (let i = 0; i < 16; i++) {
+			this.tradeStations.push(new TradeStation(scene, faction));
+		}
+	}
+
+	display() {
+		for (let i = 0; i < this.colonies.length; i++) {
+			this.scene.pushMatrix();
+			this.scene.translate(0, 0, 1 + i * 0.3);
+			this.colonies[i].display(this.board.textures);
+			this.scene.popMatrix();
+		}
+
+		for (let i = 0; i < this.tradeStations.length; i++) {
+			this.scene.pushMatrix();
+			this.scene.translate(0, 0, 1 + i * 0.3);
+			this.tradeStations[i].display(this.board.textures);
+			this.scene.popMatrix();
+		}
+	}
+
+	update(dt) {
+		for (let i = 0; i < this.colonies.length; i++) {
+			this.colonies[i].update(dt);
+		}
+		for (let i = 0; i < this.tradeStations.length; i++) {
+			this.tradeStations[i].update(dt);
+		}
+	}
+
+	getColonyScenePosition() {
+		let current = this.colonies.length - 1;
+		let position = {x: 0, y: 0, z: 1 + current * 0.3};
+		return position;
+	}
+
+	getTradeStationScenePosition() {
+		let current = this.tradeStations.length - 1;
+		let position = {x: 0, y: 0, z: 1 +  current * 0.3};
+		return position;
+	}
+
+	popColony() {
+		this.colonies.pop();
+	}
+
+	popTradeStation() {
+		this.tradeStations.pop();
 	}
 }

@@ -190,6 +190,9 @@ class StructureBuildState extends State {
 		this.faction = faction;
 		this.position = position;
 
+		this.beganColonyAnimation = false;
+		this.beganTradeStationAnimation = false;
+
 		this.board.initBoard();
 		this.board.selectCell(position);
 	}
@@ -198,18 +201,36 @@ class StructureBuildState extends State {
 		this.board.display();
 	}
 
+	update(dt) {
+		this.board.update(dt);
+
+		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
+			this.board.popAuxColony(this.faction);
+			this.board.placeColony(this.position, this.faction);
+			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+		}
+
+		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
+			this.board.popAuxTradeStation(this.faction);
+			this.board.placeTradeStation(this.position, this.faction);
+			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+		}
+	}
+
 	handleInput(keycode) {
 		if (keycode) {
 			switch (keycode) {
 				case 67:
 				case 99:
-					this.board.placeColony(this.position, this.faction);
-					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+					this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
+					this.board.getAuxColony(this.faction).animation.play();
+					this.beganColonyAnimation = true;
 					break;
 				case 84:
 				case 116:
-					this.board.placeTradeStation(this.position, this.faction);
-					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+					this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
+					this.board.getAuxTradeStation(this.faction).animation.play();
+					this.beganTradeStationAnimation = true;
 					break;
 			}
 		}
