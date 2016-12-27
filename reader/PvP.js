@@ -284,13 +284,16 @@ class PvP extends State {
 		
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();
-		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 20);
+		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
 
 		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
 
 		let self = this;
 		this.gameStateManager.beginCameraRotation = function(angle) {
-			self.angle = 0;
+			console.log(self.gameStateManager.camera._up);
+			if (self.gameStateManager.camera._up[1] === 1) {
+				self.angle = 0;
+			}
 		}
 		
 		this.scene.graph.views.order.push('defaultgamecam');
@@ -339,9 +342,9 @@ class PvP extends State {
 		let to = this.board.getBoardCenter();
 		let from = null;
 		if (this.currentFaction === 'factionOne') {
-			from = vec3.fromValues(to[0], to[1] + 20, to[2] - 20);
+			from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
 		} else {
-			from = vec3.fromValues(to[0], to[1] + 20, to[2] + 20);
+			from = vec3.fromValues(to[0], to[1] + 20, to[2] + 15);
 		}
 		let camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
 		this.gameStateManager.camera.position = camera.position;
