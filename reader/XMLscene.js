@@ -56,7 +56,7 @@ XMLscene.prototype.onGraphLoaded = function () {
     this.axis = new CGFaxis(this, this.graph.axisLenght);
 
     this.camera = this.graph.views.default;
-//    this.interface.setActiveCamera(this.camera);
+    this.interface.setActiveCamera(this.camera);
     
     this.gl.clearColor(this.graph.illumination.background[0],
 		this.graph.illumination.background[1],
@@ -75,6 +75,8 @@ XMLscene.prototype.onGraphLoaded = function () {
 	this.stateManager = new StateManager();
 	this.stateManager.pushState(new PvP(this.stateManager, this));
 	this.prevTime = 0;
+
+	this.interface.setActiveCamera(this.camera);
 };
 
 XMLscene.prototype.display = function () {

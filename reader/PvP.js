@@ -221,19 +221,21 @@ class StructureBuildState extends State {
 
 	handleInput(keycode) {
 		if (keycode) {
-			switch (keycode) {
-				case 67:
-				case 99:
-					this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
-					this.board.getAuxColony(this.faction).animation.play();
-					this.beganColonyAnimation = true;
-					break;
-				case 84:
-				case 116:
-					this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
-					this.board.getAuxTradeStation(this.faction).animation.play();
-					this.beganTradeStationAnimation = true;
-					break;
+			if (!this.beganColonyAnimation && !this.beganTradeStationAnimation) {
+				switch (keycode) {
+					case 67:
+					case 99:
+						this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
+						this.board.getAuxColony(this.faction).animation.play();
+						this.beganColonyAnimation = true;
+						break;
+					case 84:
+					case 116:
+						this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
+						this.board.getAuxTradeStation(this.faction).animation.play();
+						this.beganTradeStationAnimation = true;
+						break;
+				}
 			}
 		}
 	}
@@ -301,7 +303,7 @@ class PvP extends State {
 		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, this.board, this.currentFaction));
 
 		this.angle = 1000;
-		this.angularstep = 0.10;
+		this.angularstep = 0.15;
 	}
 
 	draw() {
