@@ -150,18 +150,38 @@ class MoveShipState extends State {
 		super(stateManager, scene);
 		console.log('Entered ship moving state');
 		this.board = board;
+		this.faction = faction;
+		this.from = from;
+		this.to = to;
 
+		this.beganAnimation = false;
+
+		let self = this;
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response.replace(/%20/g, " "));
-			board.resetPickRegistration();
-			board.resetSelection();
-			stateManager.changeState(new StructureBuildState(stateManager, scene, board, faction, to));
+
+			board.getShipAt(from).animation = new HopAnimation(2, board.getScenePosition(from), board.getScenePosition(to));
+			board.getShipAt(from).animation.play();
+			self.beganAnimation = true;
+			//board.resetPickRegistration();
+			//board.resetSelection();
+			//stateManager.changeState(new StructureBuildState(stateManager, scene, board, faction, to));
 		});
 	}
 
 	draw() {
 		this.board.display();
+	}
+
+	update(dt) {
+		this.board.update(dt);
+
+		if (this.beganAnimation && this.board.getShipAt(this.from).animation.finished) {
+			this.board.resetPickRegistration();
+			this.board.resetSelection();
+			this.stateManager.changeState(new StructureBuildState(this.stateManager, this.scene, this.board, this.faction, this.to));
+		}
 	}
 }
 

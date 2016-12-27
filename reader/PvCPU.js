@@ -120,6 +120,10 @@ class ShipPickStatePvCPU extends State {
 		this.board.display();
 	}
 
+	update(dt) {
+		this.board.update(dt);
+	}
+
 	handleInput() {
 		let selectedCell = this.getPickedCell();
 		if (selectedCell !== null && selectedCell.pickable) {

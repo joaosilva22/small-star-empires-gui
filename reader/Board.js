@@ -47,15 +47,24 @@ class Ship extends CGFobject {
 
 		this.pickId = (this.position.x + 1) * 10 + this.position.z + 1;
 		this.pickable = false;
+
+		this.animation = new HopAnimation(100, {x:0,y:0,z:0}, {x:0,y:0,z:0}); 
 	}
 
 	display(textures) {
 		this.scene.pushMatrix();
-		this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		if (!this.animation.finished) {
+			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
+		}
+		this.scene.rotate(-Math.PI/2, 1, 0, 0);		
 		textures[this.faction].bind();
 		this.scene.registerForPick(this.pickId, this.geometry);
 		this.geometry.display();
 		this.scene.popMatrix();
+	}
+
+	update(dt) {
+		this.animation.update(dt);
 	}
 }
 
@@ -245,7 +254,7 @@ class Board extends CGFobject{
 		this.cells.forEach(function(cell) {
 			self.scene.pushMatrix();
 			self.scene.scale(5, 5, 5);
-			self.scene.translate(-5.5 * self.distance, 0, -3.5 * self.distance);
+//			self.scene.translate(-5.5 * self.distance, 0, -3.5 * self.distance);
 
 			if (cell.position.z % 2 === 0) {
 				let offset = cell.position.z * self.distance / 2;
@@ -262,7 +271,7 @@ class Board extends CGFobject{
 		this.ships.forEach(function(ship) {
 			self.scene.pushMatrix();
 			self.scene.scale(5, 5, 5);
-			self.scene.translate(-5.5 * self.distance, 0, -3.5 * self.distance);
+//			self.scene.translate(-5.5 * self.distance, 0, -3.5 * self.distance);
 			
 			if (ship.position.z % 2 === 0) {
 				let offset = ship.position.z * self.distance / 2;
@@ -280,7 +289,7 @@ class Board extends CGFobject{
 			for (let j = 0; j < this.board.length; j++) {
 				this.scene.pushMatrix();
 				this.scene.scale(5, 5, 5);
-				this.scene.translate(-5.5 * this.distance, 0, -3.5 * this.distance);
+//				this.scene.translate(-5.5 * this.distance, 0, -3.5 * this.distance);
 				var posX;
 				var posZ;
 				if (i % 2 === 0) {
@@ -311,9 +320,39 @@ class Board extends CGFobject{
 		}
     }
 
+	update(dt) {
+		this.ships.forEach(function(ship) {
+			ship.update(dt);
+		});
+	}
+
 	setTexCoords() {};
 
     setBoard(board) {
     	this.board = board;
     }
+
+	getScenePosition(position) {
+		let scenepos = {x: 0, y: 0, z: 0};
+		if (position.z % 2 === 0) {
+			let offset = position.z * this.distance / 2;
+			scenepos.x += position.x * this.distance + offset;
+			scenepos.z += position.z * 0.75;
+		} else {
+			let offset = (position.z * this.distance - this.distance) / 2;
+			scenepos.x += position.x * this.distance + this.distance / 2 + offset;
+			scenepos.z += position.z * 0.75;
+		}
+		return scenepos;
+	}
+
+	getShipAt(position) {
+		let ret = null;
+		this.ships.forEach(function(ship) {
+			if (ship.position.x === position.x && ship.position.z === position.z) {
+				ret = ship;
+			}
+		});
+		return ret;
+	}
 }
