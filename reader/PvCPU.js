@@ -223,18 +223,37 @@ class BotMoveShipStatePvCPU extends State {
 		super(stateManager, scene);
 		console.log('Entered BotMoveShipStatePvCPU ...');
 		this.board = board;
+		this.faction = faction;
+		this.difficulty = difficulty;
+		this.from = from;
+		this.to = to;
+		this.structure = structure;
 
+		this.beganAnimation = false;
+
+		let self = this;
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response);
-			board.resetPickRegistration();
-			board.resetSelection();
-			stateManager.changeState(new BotStructBuildStatePvCPU(stateManager, scene, board, faction, difficulty, to, structure));
+
+			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
+			board.getShipAt(from).animation.play();
+			self.beganAnimation = true;
 		});
 	}
 
 	draw() {
 		this.board.display();
+	}
+
+	update(dt) {
+		this.board.update(dt);
+
+		if (this.beganAnimation && this.board.getShipAt(this.from).animation.finished) {
+			this.board.resetPickRegistration();
+			this.board.resetSelection();
+			this.stateManager.changeState(new BotStructBuildStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty, this.to, this.structure));
+		}
 	}
 }
 
@@ -243,18 +262,36 @@ class MoveShipStatePvCPU extends State {
 		super(stateManager, scene);
 		console.log('Entered MoveShipStatePvCPU ...');
 		this.board = board;
+		this.faction = faction;
+		this.difficulty = difficulty;
+		this.from = from;
+		this.to = to;
 
+		this.beganAnimation = false;
+
+		let self = this;
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response);
-			board.resetPickRegistration();
-			board.resetSelection();
-			stateManager.changeState(new StructBuildStatePvCPU(stateManager, scene, board, faction, difficulty, to));
+
+			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
+			board.getShipAt(from).animation.play();
+			self.beganAnimation = true;
 		});
 	}
 
 	draw() {
 		this.board.display();
+	}
+
+	update(dt) {
+		this.board.update(dt);
+
+		if (this.beganAnimation && this.board.getShipAt(this.from).animation.finished) {
+			this.board.resetPickRegistration();
+			this.board.resetSelection();
+			this.stateManager.changeState(new StructBuildStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty, this.to));
+		}
 	}
 }
 

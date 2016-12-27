@@ -161,12 +161,9 @@ class MoveShipState extends State {
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response.replace(/%20/g, " "));
 
-			board.getShipAt(from).animation = new HopAnimation(2, board.getScenePosition(from), board.getScenePosition(to));
+			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
 			board.getShipAt(from).animation.play();
 			self.beganAnimation = true;
-			//board.resetPickRegistration();
-			//board.resetSelection();
-			//stateManager.changeState(new StructureBuildState(stateManager, scene, board, faction, to));
 		});
 	}
 
