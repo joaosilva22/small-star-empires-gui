@@ -62,6 +62,12 @@ class Connection {
 		this.getPrologRequest(requestString, onSuccess);
 	}
 
+	calculateTotalPointsRequest(faction, board, onSuccess) {
+		let boardString = parseArrayString(board.board);
+		let requestString = `calculateTotalPoints(${faction},${boardString})`;
+		this.getPrologRequest(requestString, onSuccess);
+	}
+
 }
 
 function parseStringArray(string) {

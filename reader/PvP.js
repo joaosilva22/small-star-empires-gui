@@ -197,6 +197,13 @@ class StructureBuildState extends State {
 
 		this.board.initBoard();
 		this.board.selectCell(position);
+
+		let connection = new Connection();
+		connection.calculateTotalPointsRequest(faction, board, function(data) {
+			stateManager.updateScore(faction, data.target.response);
+		});
+
+		stateManager.updateTip('Press c/C to place a Colony, or t/T to place a Trade Station');
 	}
 
 	draw() {
@@ -209,12 +216,14 @@ class StructureBuildState extends State {
 		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
 			this.board.popAuxColony(this.faction);
 			this.board.placeColony(this.position, this.faction);
+			this.stateManager.updateTip('');
 			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 		}
 
 		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
 			this.board.popAuxTradeStation(this.faction);
 			this.board.placeTradeStation(this.position, this.faction);
+			this.stateManager.updateTip('');
 			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 		}
 	}
@@ -290,11 +299,10 @@ class PvP extends State {
 
 		let self = this;
 		this.gameStateManager.beginCameraRotation = function(angle) {
-			console.log(self.gameStateManager.camera._up);
 			if (self.gameStateManager.camera._up[1] === 1) {
 				self.angle = 0;
 			}
-		}
+		};
 		
 		this.scene.graph.views.order.push('defaultgamecam');
 		this.scene.graph.views.perspectives['defaultgamecam'] = this.gameStateManager.camera;
@@ -307,6 +315,44 @@ class PvP extends State {
 
 		this.angle = 1000;
 		this.angularstep = 0.15;
+
+		// TODO: Passar isto para um sitio mais adequado
+		// Mudar o sitio onde e feito o update do score
+		this.scoreFactionOneElement = document.getElementById('score-one');
+		this.scoreFactionTwoElement = document.getElementById('score-two');
+
+		this.scoreFactionOneNode = document.createTextNode('');
+		this.scoreFactionTwoNode = document.createTextNode('');
+
+		this.scoreFactionOneElement.appendChild(this.scoreFactionOneNode);
+		this.scoreFactionTwoElement.appendChild(this.scoreFactionTwoNode);
+
+		this.scoreFactionOneNode.nodeValue = 0;
+		this.scoreFactionTwoNode.nodeValue = 0;
+
+		this.gameStateManager.updateScore = function(faction, value) {
+			if (faction === 'factionOne') {
+				self.scoreFactionOneNode.nodeValue = value;
+			} else {
+				self.scoreFactionTwoNode.nodeValue = value;
+			}
+		};
+
+		this.tipElement = document.getElementById('tip');
+		this.tipTextElement = document.getElementById('tip-text');
+		this.tipTextNode = document.createTextNode('');
+		this.tipTextElement.appendChild(this.tipTextNode);
+
+		this.gameStateManager.updateTip = function(value) {
+			if (value === '') {
+				self.tipElement.style.display = 'none';
+			} else {
+				self.tipElement.style.display = 'block';
+			}
+			self.tipTextNode.nodeValue = value;
+		};
+
+		this.gameStateManager.updateTip('');
 	}
 
 	draw() {

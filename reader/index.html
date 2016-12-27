@@ -1,26 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>CGFexample</title>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>CGFexample</title>
 
-<style>
-body, html {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-}
+		<style>
+		body, html {
+			border: 0;
+			padding: 0;
+			margin: 0;
+			overflow: hidden;
+			position: relative;
+		}
 
-canvas {
-    width: 100%;
-    height: 100%;
-}
-</style>
-</head>
-<body>
+		canvas {
+			width: 100%;
+			height: 100%;
+		}
 
-<script src="main.js"></script>
+		#overlay {
+			width: 100%;
+			position: absolute;
+			text-align: center;
+		}
 
-</body>
+		#scores {
+			margin: 10px;
+			padding: 10px;
+			width: 200px;
+			color: white;
+			background: rgba(0, 0, 0, 0.5);
+			font-size: 1.2em;
+			text-align: left;
+		}
+
+		#tip {
+			color: white;
+			background: rgba(0, 0, 0, 0.5);
+			font-size: 1.2em;
+			
+			padding: 10px;
+			text-align: center;
+			width: 100%;
+
+			position: fixed;
+			bottom: 10px;
+		}
+	
+		</style>
+	</head>
+	<body>
+
+		<div id="overlay">
+			<div id="scores">
+				<div>Blue Faction: <span id="score-one"></span></div>
+				<div>Yellow Faction: <span id="score-two"></span></div>
+			</div>
+			<div id="tip">
+				<span id="tip-text"></span>
+			</div>
+		</div>
+		
+		<script src="main.js"></script>
+
+	</body>
 </html>
