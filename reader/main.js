@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }	 
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'Views.js', 'Illumination.js', 'Transformations.js', 'Lights.js', 'Component.js', 'Triangle.js', 'Rectangle.js', 'Cylinder.js', 'Sphere.js', 'Interface.js', 'Torus.js', 'Animation.js', 'Plane.js', 'Patch.js', 'Vehicle.js', 'Chessboard.js', 'Connection.js', 'Hexagon.js', 'Board.js', 'StateManager.js', 'PvP.js', 'PvCPU.js', 'CPUvCPU.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'Views.js', 'Illumination.js', 'Transformations.js', 'Lights.js', 'Component.js', 'Triangle.js', 'Rectangle.js', 'Cylinder.js', 'Sphere.js', 'Interface.js', 'Torus.js', 'Animation.js', 'Plane.js', 'Patch.js', 'Vehicle.js', 'Chessboard.js', 'Connection.js', 'Hexagon.js', 'Board.js', 'StateManager.js', 'PvP.js', 'PvCPU.js', 'CPUvCPU.js','SpaceStation.js','SpaceColony.js',
 
 main=function()
 {

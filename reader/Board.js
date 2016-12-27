@@ -39,7 +39,7 @@ class Cell extends CGFobject {
 class Ship extends CGFobject {
 	constructor(scene, faction, position) {
 		super(scene);
-		this.geometry = new Cylinder(scene, 0.2, 0, 1, 6, 6);
+		this.geometry = new Vehicle(scene, 0.2, 0, 1, 6, 6);
 		this.scene = scene;
 
 		this.faction = faction;
@@ -53,10 +53,11 @@ class Ship extends CGFobject {
 
 	display(textures) {
 		this.scene.pushMatrix();
+		this.scene.translate(0,0.2,0);
 		if (!this.animation.finished) {
 			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
 		}
-		this.scene.rotate(-Math.PI/2, 1, 0, 0);		
+		this.scene.scale(0.025,0.025,0.025);	
 		textures[this.faction].bind();
 		this.scene.registerForPick(this.pickId, this.geometry);
 		this.geometry.display();
@@ -71,7 +72,7 @@ class Ship extends CGFobject {
 class TradeStation extends CGFobject {
 	constructor(scene, faction) {
 		super(scene);
-		this.geometry = new Sphere(scene, 0.1, 24, 24);
+		this.geometry = new SpaceStation(scene);
 		this.scene = scene;
 
 		this.faction = faction;
@@ -98,7 +99,7 @@ class TradeStation extends CGFobject {
 class Colony extends CGFobject {
 	constructor(scene, faction) {
 		super(scene);
-		this.geometry = new Cylinder(scene, 0.1, 0.1, 0.25, 6, 6);
+		this.geometry = new SpaceColony(scene);
 
 		this.faction = faction;
 
@@ -111,7 +112,7 @@ class Colony extends CGFobject {
 			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
 		}
 		this.scene.translate(-0.3,0,0.2);
-		this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+		//this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 		textures[this.faction].bind();
 		this.geometry.display();
 		this.scene.popMatrix();
