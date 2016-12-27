@@ -62,7 +62,7 @@ class Ship extends CGFobject {
 class TradeStation extends CGFobject {
 	constructor(scene, faction) {
 		super(scene);
-		this.geometry = new Sphere(scene, 0.2, 6, 6);
+		this.geometry = new Sphere(scene, 0.1, 24, 24);
 		this.scene = scene;
 
 		this.faction = faction;
@@ -70,6 +70,7 @@ class TradeStation extends CGFobject {
 
 	display(textures) {
 		this.scene.pushMatrix();
+		this.scene.translate(0.3,0.1,-0.2);
 		textures[this.faction].bind();
 		this.geometry.display();
 		this.scene.popMatrix();
@@ -77,16 +78,16 @@ class TradeStation extends CGFobject {
 }
 
 class Colony extends CGFobject {
-	constructor(scene, faction, position) {
+	constructor(scene, faction) {
 		super(scene);
-		this.geometry = new Cylinder(scene, 0.2, 0.2, 1, 6, 6);
+		this.geometry = new Cylinder(scene, 0.1, 0.1, 0.25, 6, 6);
 
 		this.faction = faction;
-		this.position = position
 	}
 
 	display(textures) {
 		this.scene.pushMatrix();
+		this.scene.translate(-0.3,0,0.2);
 		this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 		textures[this.faction].bind();
 		this.geometry.display();
@@ -125,6 +126,9 @@ class Board extends CGFobject{
 
 		this.colonyFactionOne = new Colony(this.scene, 'factionOne');
 		this.colonyFactionTwo = new Colony(this.scene, 'factionTwo');
+		this.tradeStationFactionOne = new TradeStation(this.scene, 'factionOne');
+		this.tradeStationFactionTwo = new TradeStation(this.scene, 'factionTwo');
+
     }
 
 	load(onLoad) {
@@ -226,12 +230,13 @@ class Board extends CGFobject{
 		}
 	}
 
-	placeTradeStation(faction) {
+	placeTradeStation(position, faction) {
 		if (faction === 'factionOne') {
-			this.board[position.z][position.x][2] === 'l';
+			this.board[position.z][position.x][2] = 'l';
+			console.log(this.board[position.z][position.x][2]);
 		}
 		if (faction === 'factionTwo') {
-			this.board[position.z][position.x][2] === 'k';
+			this.board[position.z][position.x][2] = 'k';
 		}
 	}
 
@@ -276,13 +281,16 @@ class Board extends CGFobject{
 			for (let j = 0; j < this.board.length; j++) {
 				this.scene.pushMatrix();
 				this.scene.scale(5, 5, 5);
-//				this.scene.translate(-5,5 * this.distance, 0, -3.5 * this.distance);
-
+				this.scene.translate(-5.5 * this.distance, 0, -3.5 * this.distance);
+				var posX;
+				var posZ;
 				if (i % 2 === 0) {
 					let offset = i * this.distance / 2;
+					this.scene.translate(j * this.distance + offset, 0, i * 0.75);
 //					this.scene.translate(j * this.distance + offset, 0, i * 0.75);
 				} else {
 					let offset = (i * this.distance - this.distance) / 2;
+					this.scene.translate(j * this.distance + this.distance / 2 + offset, 0, i * 0.75);
 //					this.scene.translate(j * this.distance + this.distance / 2 + offset, 0, i * 0.75);
 				}
 				
@@ -293,6 +301,13 @@ class Board extends CGFobject{
 						break;
 					case 'p':
 						this.colonyFactionTwo.display(this.textures);
+						break;
+					case 'l':
+						console.log('displaying tradeStation');
+						this.tradeStationFactionOne.display(this.textures);
+						break;
+					case 'k':
+						this.tradeStationFactionTwo.display(this.textures);
 						break;
 				}
 

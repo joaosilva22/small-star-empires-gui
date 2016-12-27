@@ -193,6 +193,7 @@ class StructureBuildState extends State {
 				case 84:
 				case 116:
 					console.log('TRADE-STATION');
+					this.board.placeTradeStation(this.position, this.faction);
 					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 					break;
 			}
