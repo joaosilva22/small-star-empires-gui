@@ -105,8 +105,8 @@ class Board extends CGFobject{
 		
 		this.distance = Math.sqrt(3)/2;
 		this.textures = {
-			'factionOne' : new CGFtexture(this.scene, 'resources/relaig/base.png'),
-			'factionTwo' : new CGFtexture(this.scene, 'resources/relaig/base.png'),
+			'factionOne' : new CGFtexture(this.scene, 'resources/relaig/factionOne.png'),
+			'factionTwo' : new CGFtexture(this.scene, 'resources/relaig/factionTwo.png'),
 			'base' : new CGFtexture(this.scene, 'resources/relaig/base.png'),
 			'0': new CGFtexture(this.scene, 'resources/relaig/empty.png'),
 			'1': new CGFtexture(this.scene, 'resources/relaig/one-planet.png'),
@@ -287,23 +287,19 @@ class Board extends CGFobject{
 				if (i % 2 === 0) {
 					let offset = i * this.distance / 2;
 					this.scene.translate(j * this.distance + offset, 0, i * 0.75);
-//					this.scene.translate(j * this.distance + offset, 0, i * 0.75);
 				} else {
 					let offset = (i * this.distance - this.distance) / 2;
 					this.scene.translate(j * this.distance + this.distance / 2 + offset, 0, i * 0.75);
-//					this.scene.translate(j * this.distance + this.distance / 2 + offset, 0, i * 0.75);
 				}
 				
 				switch (this.board[i][j][2]) {
 					case 'o':
-						console.log('displaying colony');
 						this.colonyFactionOne.display(this.textures);
 						break;
 					case 'p':
 						this.colonyFactionTwo.display(this.textures);
 						break;
 					case 'l':
-						console.log('displaying tradeStation');
 						this.tradeStationFactionOne.display(this.textures);
 						break;
 					case 'k':
