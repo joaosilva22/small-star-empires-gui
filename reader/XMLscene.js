@@ -27,7 +27,7 @@ XMLscene.prototype.init = function (application) {
 
 	/* Game Setup */
 	this.stateManager = new StateManager();
-	this.stateManager.pushState(new PvP(this.stateManager, this));
+	this.stateManager.pushState(new CPUvCPU(this.stateManager, this));
 	this.prevTime = 0;
 };
 

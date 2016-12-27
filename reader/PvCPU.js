@@ -17,7 +17,7 @@ class LoadStatePvCPU extends State {
 				if (faction === 'factionOne') {
 					self.stateManager.changeState(new ShipPickStatePvCPU(self.stateManager, self.scene, self.board, faction, self.difficulty));
 				} else {
-					self.stateManager.changeState(new BotPickStatePvCPU(self.stateManager, self.scene, self.board, self.faction, self.difficulty));
+					self.stateManager.changeState(new BotPickStatePvCPU(self.stateManager, self.scene, self.board, faction, self.difficulty));
 				}
 			});
 		} else {
