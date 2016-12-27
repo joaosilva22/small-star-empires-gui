@@ -57,7 +57,7 @@ class Ship extends CGFobject {
 		if (!this.animation.finished) {
 			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
 		}
-		this.scene.scale(0.025,0.025,0.025);	
+		this.scene.scale(0.04,0.04,0.04);	
 		textures[this.faction].bind();
 		this.scene.registerForPick(this.pickId, this.geometry);
 		this.geometry.display();
