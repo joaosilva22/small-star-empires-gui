@@ -217,8 +217,20 @@ class CPUvCPU extends State {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
+
+		this.board = new Board(scene);
+		let to = this.board.getBoardCenter();
+		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
+
+		this.camera = new CGFcamera(Math.PI / 2, 0.1, 100.0, from, to);
+		this.scene.graph.views.order.push('defaultgamecam');
+		this.scene.graph.views.perspectives['defaultgamecam'] = this.camera;
+		
+		this.scene.interface.setActiveCamera(null);
+		this.scene.camera = this.camera;
+		
 		// FIXME: A dificuldade deve ser passada como parametro
-		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.stateManager, this.scene, new Board(scene), 'factionOne', 'hard'));
+		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, new Board(scene), 'factionOne', 'hard'));
 	}
 
 	draw() {
@@ -227,5 +239,21 @@ class CPUvCPU extends State {
 
 	update(dt) {
 		this.gameStateManager.update(dt);
+	}
+
+	handleInput(keycode) {	
+		if (keycode === 82 || keycode === 114) {
+			this.resetCamera();
+		}
+	}
+
+	resetCamera() {
+		let to = this.board.getBoardCenter();
+		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
+		let camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
+		this.camera.position = camera.position;
+		this.camera.target = camera.target;
+		this.camera.direction = camera.direction;
+		this.camera._up = camera._up;
 	}
 }
