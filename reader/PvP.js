@@ -186,13 +186,11 @@ class StructureBuildState extends State {
 			switch (keycode) {
 				case 67:
 				case 99:
-					console.log('COLONY');
 					this.board.placeColony(this.position, this.faction);
 					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 					break;
 				case 84:
 				case 116:
-					console.log('TRADE-STATION');
 					this.board.placeTradeStation(this.position, this.faction);
 					this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 					break;
@@ -236,9 +234,10 @@ class GameOverState extends State {
 	}
 }
 
-class Game extends State {
+class PvP extends State {
 	constructor(stateManager, scene) {
 		super(stateManager, scene);
+		
 		this.gameStateManager = new StateManager();
 		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, new Board(scene), 'factionOne'));
 	}

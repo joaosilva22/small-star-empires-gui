@@ -233,7 +233,6 @@ class Board extends CGFobject{
 	placeTradeStation(position, faction) {
 		if (faction === 'factionOne') {
 			this.board[position.z][position.x][2] = 'l';
-			console.log(this.board[position.z][position.x][2]);
 		}
 		if (faction === 'factionTwo') {
 			this.board[position.z][position.x][2] = 'k';

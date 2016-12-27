@@ -44,17 +44,21 @@ class Connection {
 	    this.getPrologRequest(requestString, onSuccess); 
 	}
 
-	playerBestBoardRequest(faction, board){
+	playerBestBoardRequest(faction, board, onSuccess){
 		let boardString = parseArrayString(board.board);
 	    let requestString = `playerBestBoard(${faction},${boardString})`;
-	    this.getPrologRequest(requestString, function(data) {
-		   board.board = parseStringArray(data.target.response);
-	   });
+	    this.getPrologRequest(requestString, onSuccess);
 	}
 
 	isGameOverRequest(board, onSuccess) {
 		let boardString = parseArrayString(board.board);
 		let requestString = `isTheGameOver(${boardString})`;
+		this.getPrologRequest(requestString, onSuccess);
+	}
+
+	getRandomBoardRequest(faction, board, onSuccess) {
+		let boardString = parseArrayString(board.board);
+		let requestString = `getARandomBoard(${faction},${boardString})`;
 		this.getPrologRequest(requestString, onSuccess);
 	}
 

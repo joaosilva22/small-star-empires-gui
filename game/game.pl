@@ -425,3 +425,10 @@ getBestBoard(Faction, Board, NewBoard) :-
     getAllPossiblePoints(Faction, Result, 0, [], Points),
     getHighestValue(Points, _, Index),
     nth0(Index, Result, NewBoard).
+
+getRandomBoard(Faction, Board, NewBoard) :-
+	getAllPossibleBoards(Faction, Board, 0, 0, [], PossibleBoards),
+    length(PossibleBoards, Length),
+    random(0, Length, BoardNumber),
+    nth0(BoardNumber, PossibleBoards, NewBoard).
+
