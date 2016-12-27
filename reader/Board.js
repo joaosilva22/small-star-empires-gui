@@ -39,7 +39,7 @@ class Cell extends CGFobject {
 class Ship extends CGFobject {
 	constructor(scene, faction, position) {
 		super(scene);
-		this.geometry = new Vehicle(scene, 0.2, 0, 1, 6, 6);
+		this.geometry = new Ovni(scene);
 		this.scene = scene;
 
 		this.faction = faction;
@@ -57,7 +57,7 @@ class Ship extends CGFobject {
 		if (!this.animation.finished) {
 			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
 		}
-		this.scene.scale(0.04,0.04,0.04);	
+		//this.scene.scale(0.04,0.04,0.04);	
 		textures[this.faction].bind();
 		this.scene.registerForPick(this.pickId, this.geometry);
 		this.geometry.display();
