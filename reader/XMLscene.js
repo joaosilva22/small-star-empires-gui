@@ -26,9 +26,9 @@ XMLscene.prototype.init = function (application) {
 	this.setPickEnabled(true);
 
 	/* Game Setup */
-	this.stateManager = new StateManager();
-	this.stateManager.pushState(new CPUvCPU(this.stateManager, this));
-	this.prevTime = 0;
+	//this.stateManager = new StateManager();
+	//this.stateManager.pushState(new PvP(this.stateManager, this));
+	//this.prevTime = 0;
 };
 
 XMLscene.prototype.initLights = function () {
@@ -71,6 +71,10 @@ XMLscene.prototype.onGraphLoaded = function () {
     this.setUpdatePeriod(50);
 
     this.setupLights();
+
+	this.stateManager = new StateManager();
+	this.stateManager.pushState(new PvP(this.stateManager, this));
+	this.prevTime = 0;
 };
 
 XMLscene.prototype.display = function () {

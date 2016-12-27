@@ -124,6 +124,8 @@ class Colony extends CGFobject {
 }
 
 class Board extends CGFobject{
+	// FIXME: Receber o fator de escala como argumento
+	// Do DSX se for possivel
     constructor(scene) {
 		super(scene);
 
@@ -437,6 +439,11 @@ class Board extends CGFobject{
 		} else {
 			this.aux1.popTradeStation();
 		}
+	}
+
+	getBoardCenter() {
+		let pos = this.getScenePosition({x: 4, z: 4});
+		return vec3.fromValues(pos.x * 5, pos.y * 5, pos.z * 5);
 	}
 }
 

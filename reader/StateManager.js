@@ -49,4 +49,12 @@ class StateManager {
 			this.states[current].handleInput(keycode);
 		}
     }
+
+	getCurrentState() {
+		if (this.states.length > 0) {
+			let current = this.states.length - 1;
+			return this.states[current];
+		}
+		return null;
+	}
 }

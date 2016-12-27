@@ -21,7 +21,7 @@ Views.prototype.addPerspective = function(id, near, far, angle, from, to) {
  */
 Views.prototype.getById = function(id) {
     if (this.perspectives[id] != null) {
-	return this.perspectives[id];
+		return this.perspectives[id];
     }
     this.perspectives[id] = new CGFcamera();
     return this.perspectives[id];
@@ -48,16 +48,16 @@ Views.prototype.getNext = function(camera) {
     var id = this.getKeyByValue(camera);
     var index = -1;
     for (var i = 0; i < this.order.length; i++) {
-	if (this.order[i] == id) {
-	    index = i;
-	    break;
-	}
+		if (this.order[i] == id) {
+			index = i;
+			break;
+		}
     }
     if (index+1 >= this.order.length) {
-	index = 0;
+		index = 0;
     }
     else {
-	index++;
+		index++;
     }
     return this.perspectives[this.order[index]];
 };
@@ -68,9 +68,9 @@ Views.prototype.getNext = function(camera) {
 Views.prototype.getKeyByValue = function( value ) {
     for(var perspective in this.perspectives) {
         var id = perspective;
-	if (this.perspectives[id] == value) {
-	    return id;
-	}
+		if (this.perspectives[id] == value) {
+			return id;
+		}
     }
 }
 

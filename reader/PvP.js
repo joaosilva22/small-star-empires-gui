@@ -5,8 +5,10 @@ class LoadState extends State {
 		this.board = board;
 
 		if (faction === 'factionOne') {
+			this.stateManager.rotateCamera(Math.PI);
 			this.faction = 'factionTwo';
 		} else {
+			this.stateManager.rotateCamera(Math.PI);
 			this.faction = 'factionOne';
 		}
 
@@ -275,9 +277,28 @@ class GameOverState extends State {
 class PvP extends State {
 	constructor(stateManager, scene) {
 		super(stateManager, scene);
-		
+
 		this.gameStateManager = new StateManager();
-		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, new Board(scene), 'factionOne'));
+		
+		this.board = new Board(scene);
+		let to = this.board.getBoardCenter();
+		let from = vec3.fromValues(to[0], to[1] + 20, to[2] + 20);
+
+		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
+
+		let self = this;
+		this.gameStateManager.rotateCamera = function(angle) {
+			self.gameStateManager.camera.orbit(CGFcameraAxis.Y, Math.PI);
+		}
+		
+		this.scene.graph.views.order.push('defaultgamecam');
+		this.scene.graph.views.perspectives['defaultgamecam'] = this.gameStateManager.camera;
+
+		this.scene.interface.setActiveCamera(this.gameStateManager.camera)
+
+		this.currentFaction = 'factionOne';
+		
+		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, this.board, this.currentFaction));
 	}
 
 	draw() {
@@ -287,11 +308,30 @@ class PvP extends State {
 
 	update(dt) {
 		this.gameStateManager.update(dt);
+		this.currentFaction = this.gameStateManager.getCurrentState().faction;
 	}
 
 	handleInput(keycode) {
 		this.gameStateManager.handleInput(keycode);
+
+		if (keycode === 82 || keycode === 114) {
+			this.resetCamera();
+		}
 	}
-	
+
+	resetCamera() {
+		let to = this.board.getBoardCenter();
+		let from = null;
+		if (this.currentFaction === 'factionOne') {
+			from = vec3.fromValues(to[0], to[1] + 20, to[2] - 20);
+		} else {
+			from = vec3.fromValues(to[0], to[1] + 20, to[2] + 20);
+		}
+		let camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
+		this.gameStateManager.camera.position = camera.position;
+		this.gameStateManager.camera.target = camera.target;
+		this.gameStateManager.camera.direction = camera.direction;
+		this.gameStateManager.camera._up = camera._up;
+	}
 }
 
