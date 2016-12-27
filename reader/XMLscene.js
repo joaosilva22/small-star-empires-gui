@@ -109,8 +109,8 @@ XMLscene.prototype.display = function () {
     // This is one possible way to do it
     if (this.graph.loadedOk) {
 		this.updateLights();
-		//let root = this.graph.components[this.graph.root];
-		//this.displayComponent(root, true);
+		let root = this.graph.components[this.graph.root];
+		this.displayComponent(root, true);
 
 		/* Game Render */
 		// handleInput MUST come before draw

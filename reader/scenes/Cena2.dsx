@@ -1,0 +1,374 @@
+<dsx>
+
+  <scene root="component_root" axis_length="2.0" />
+  
+  
+  <views default="view0" >
+    
+    <perspective id="view0" near="0.1" far="1000.0" angle="45.0">
+      <from x="30.0" y="20.0" z="30.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
+    
+    <perspective id="view1" near="0.1" far="1000.0" angle="40.0">
+      <from x="30.0" y="0.5" z="30.0" />
+      <to x="0.0" y="10" z="0.0" />
+    </perspective>
+
+    <perspective id="view2" near="0.1" far="1000.0" angle="45.0">
+      <from x="40.0" y="20.0" z="10.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
+
+    <perspective id="view3" near="0.1" far="1000.0" angle="45.0">
+      <from x="10.0" y="20.0" z="40.0" />
+      <to x="0.0" y="1.0" z="0.0" />
+    </perspective>
+
+    <perspective id="view4" near="0.1" far="1000.0" angle="45.0">
+      <from x="0.0" y="25.0" z="00.0" />
+      <to x="10.0" y="10.0" z="10.0" />
+    </perspective>
+
+  </views>
+  
+
+  <illumination doublesided="1" local="0" >
+    
+    <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+    <background r="0.6" g="0.6" b="0.6" a="1.0" />
+    
+  </illumination>
+  
+  
+  <lights>
+    
+    <omni id="omni1" enabled="1" >
+      <location x="0.0" y="50.0" z="0.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
+    
+    <omni id="omni2" enabled="1" >
+      <location x="50.0" y="50.0" z="0.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
+    
+    <omni id="omni3" enabled="1" >
+      <location x="50.0" y="50.0" z="50.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
+
+    <omni id="omni4" enabled="1" >
+      <location x="0.0" y="50.0" z="50.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+    </omni>
+
+    <omni id="omni5" enabled="1" >
+      <location x="20.0" y="20.0" z="20.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+      <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+    </omni>
+
+    <spot id="spot0" enabled="1" angle="60" exponent="10">
+      <target x="20.0" y="0.0" z="20.0" />
+      <location x="0.0" y="20.0" z="0.0" />
+      <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+      <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+    </spot>
+    
+  </lights>
+  
+  
+  <textures>
+    <texture id="tex_right_wall" file="resources/sor_borg/borg_rt.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_left_wall" file="resources/sor_borg/borg_lf.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_top_wall" file="resources/sor_borg/borg_up.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_front_wall" file="resources/sor_borg/borg_ft.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_back_wall" file="resources/sor_borg/borg_bk.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_floor" file="resources/sor_borg/borg_dn.JPG" length_s="1.0" length_t="1.0" />
+  </textures>
+
+  
+  <materials>
+    
+    <!-- Deve existir um ou mais blocos "material" -->
+    <!-- Os identificadores "id" nao podem ser repetidos -->
+    <material id="material0" >
+      <emission r="0.7" g="0.7" b="0.7" a="1.0" />
+      <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+      <shininess value="20.0" />
+    </material>
+    
+    <material id="metal">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.23125" g="0.23125" b="0.23125" a="1.0" />
+      <diffuse r="0.2775" g="0.2775" b="0.2775" a="1.0" />
+      <specular r="0.773911" g="0.773911" b="0.773911" a="1.0" />
+      <shininess value="1.0" />
+    </material>
+
+    <material id="glass">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.588235" g="0.670588" b="0.729412" a="1.0" />
+      <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+      <shininess value="4.0" />
+    </material>
+
+    <material id="jade"> <!-- troca -->
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.135" g="0.2225" b="0.1575" a="1.0" />
+      <diffuse r="0.54" g="0.89" b="0.63" a="0.1" />
+      <specular r="0.316228" g="0.316228" b="0.316228" a="0.95" />
+      <shininess value="10.0" />
+    </material>
+
+    <material id="pearl"> <!-- troca -->
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.25" g="0.20725" b="0.20725" a="0.922" />
+      <diffuse r="1.0" g="0.829" b="0.829" a="0.5" />
+      <specular r="0.296648" g="0.296648" b="0.296648" a="0.95" />
+      <shininess value="10.0" />
+    </material>
+
+    <material id="rubber">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
+      <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+      <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+      <shininess value="10.0" />
+    </material>
+
+    <material id="black_rubber">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+      <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+      <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+      <shininess value="10.0" />
+    </material>
+
+    <material id="ship_hull">
+      <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+      <ambient r="1.0" g="1.0" b="0.0" a="1.0" />
+      <diffuse r="0.01" g="0.01" b="0.01" a="1.0" />
+      <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+      <shininess value="10.0" />
+    </material>
+    
+  </materials>
+  
+  
+  <transformations>
+
+    <transformation id="trans_room">
+      <translate x="-20.0" y="-20.0" z="-20.0"/>
+    </transformation>
+
+   <transformation id="trans_floor">
+      <rotate axis="x" angle="-90"/>
+      <translate x="0.0" y="-80.0" z="0.0"/>
+    </transformation>
+
+    <transformation id="trans_wall">
+      <rotate axis="y" angle="90"/>
+      <translate x="-80.0" y="0.0" z="0.0"/>
+    </transformation>
+
+    <transformation id="trans_top_wall">
+      <rotate axis="x" angle="90"/>
+      <translate x="0.0" y="0.0" z="-80.0"/>
+    </transformation>
+
+    <transformation id="trans_front_wall">
+      <rotate axis="y" angle="-90"/>
+      <translate x="0.0" y="0.0" z="-80.0"/>
+    </transformation>
+
+    <transformation id="trans_back_wall">
+      <rotate axis="y" angle="180"/>
+      <translate x="-80.0" y="0.0" z="-80.0"/>
+    </transformation>
+
+  </transformations>
+
+  
+  <animations>
+
+    <animation id="anim0" span="3.0" type="linear">
+      <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="-37.5" />
+    </animation>
+
+    <animation id="anim1" span="4.0" type="circular" centerx="-10.0" centery="0.0" centerz="0.0" radius="10" startang="0.0" rotang="445.0" />
+
+    <animation id="anim2" span="3.0" type="linear">
+      <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+      <controlpoint xx="0.0" yy="0.0" zz="45.0" />
+    </animation>
+
+    <animation id="anim3" span="30.0" type="circular" centerx="0.0" centery="0.0" centerz="0.0" radius="0" startang="0.0" rotang="1080.0" />
+    
+  </animations>
+  
+  
+  <primitives>
+    
+    <primitive id="wall">
+      <rectangle x1="0.0" x2="80.0" y1="0.0" y2="80.0"/>
+    </primitive>
+
+    <primitive id="floor">
+      <rectangle x1="0.0" x2="80.0" y1="0.0" y2="80.0"/>
+    </primitive>
+
+  </primitives>
+  
+  
+  <components>
+    
+    <component id="component_root">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="none" />
+      
+      <children>
+        <componentref id="component_room"/>
+      </children>           
+    </component>
+
+    <component id="component_room">
+      <transformation>
+        <transformationref id="trans_room"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="none"/>
+      
+      <children>
+        <componentref id="component_right_wall"/>
+        <componentref id="component_left_wall"/>
+        <componentref id="component_front_wall"/>
+        <componentref id="component_back_wall"/>
+        <componentref id="component_top_wall"/>
+        <componentref id="component_floor"/>
+      </children>
+    </component>
+
+    <component id="component_right_wall">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_right_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_left_wall">
+      <transformation>
+        <transformationref id="trans_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_left_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_front_wall">
+      <transformation>
+        <transformationref id="trans_front_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_front_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_back_wall">
+      <transformation>
+        <transformationref id="trans_back_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_back_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_top_wall">
+      <transformation>
+        <transformationref id="trans_top_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_top_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_floor">
+      <transformation>
+        <transformationref id="trans_floor"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_floor"/>
+      
+      <children>
+        <primitiveref id="floor"/>
+      </children>
+    </component>
+
+  </components>
+
+</dsx>
