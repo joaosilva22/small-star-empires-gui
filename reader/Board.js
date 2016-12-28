@@ -83,6 +83,9 @@ class TradeStation extends CGFobject {
 	display(textures) {
 		this.scene.pushMatrix();
 		if (!this.animation.finished) {
+			if (this.undoAnimationOffset) {
+				this.scene.translate(this.undoAnimationOffset.x, this.undoAnimationOffset.y, this.undoAnimationOffset.z);
+			}
 			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
 		}
 		this.scene.translate(0.3,0.1,-0.2);
@@ -109,6 +112,9 @@ class Colony extends CGFobject {
 	display(textures) {
 		this.scene.pushMatrix();
 		if (!this.animation.finished) {
+			if (this.undoAnimationOffset) {
+				this.scene.translate(this.undoAnimationOffset.x, this.undoAnimationOffset.y, this.undoAnimationOffset.z);
+			}
 			this.scene.translate(this.animation.position.x, this.animation.position.y, this.animation.position.z);
 		}
 		this.scene.translate(-0.3,0,0.2);
@@ -390,6 +396,16 @@ class Board extends CGFobject{
 		return ret;
 	}
 
+	getCellAt(position) {
+		let ret = null;
+		this.cells.forEach(function(cell) {
+			if (cell.position.x === position.x && cell.position.z === position.z) {
+				ret = cell;
+			}
+		});
+		return ret;
+	}
+
 	getAuxColony(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.colonies[this.aux.colonies.length-1];
@@ -416,29 +432,65 @@ class Board extends CGFobject{
 		}
 	}
 
+	getAuxColonyPositionAt(faction, index) {
+		if (faction === 'factionOne') {
+			return this.aux.getColonyScenePositionAt(index);
+		} else {
+			let position =  this.aux1.getColonyScenePositionAt(index);
+			position.x = position.x - 1;
+			return position;
+		}
+	}
+
 	getAuxTradeStationPosition(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.getTradeStationScenePosition();
 		} else {
 			let position = this.aux1.getTradeStationScenePosition();
-			position.x = position.x -1
+			position.x = position.x - 1;
+			return position;
+		}
+	}
+
+	getAuxTradeStationPositionAt(faction, index) {
+		if (faction === 'factionOne') {
+			return this.aux.getTradeStationScenePositionAt(index);
+		} else {
+			let position = this.aux1.getTradeStationScenePositionAt(index);
+			position.x = position.x - 1;
 			return position;
 		}
 	}
 
 	popAuxColony(faction) {
 		if (faction === 'factionOne') {
-			this.aux.popColony();
+			return this.aux.popColony();
 		} else {
-			this.aux1.popColony();
+			return this.aux1.popColony();
+		}
+	}
+
+	pushAuxColony(faction) {
+		if (faction === 'factionOne') {
+			this.aux.pushColony();
+		} else {
+			this.aux1.pushColony();
 		}
 	}
 
 	popAuxTradeStation(faction) {
 		if (faction === 'factionOne') {
-			this.aux.popTradeStation();
+			return this.aux.popTradeStation();
 		} else {
-			this.aux1.popTradeStation();
+			return this.aux1.popTradeStation();
+		}
+	}
+
+	pushAuxTradeStation(faction) {
+		if (faction === 'factionOne') {
+			this.aux.pushTradeStation();
+		} else {
+			this.aux1.pushTradeStation();
 		}
 	}
 
@@ -452,6 +504,7 @@ class AuxiliaryBoard extends CGFobject {
 	constructor(scene, board, faction) {
 		super(scene);
 		this.board = board;
+		this.faction = faction;
 
 		this.colonies = [];
 		for (let i = 0; i < 18; i++) {
@@ -495,17 +548,37 @@ class AuxiliaryBoard extends CGFobject {
 		return position;
 	}
 
+	getColonyScenePositionAt(index) {
+		let position = {x: 0, y: 0, z: 1 + index * 0.3};
+		return position;
+	}
+
 	getTradeStationScenePosition() {
 		let current = this.tradeStations.length - 1;
 		let position = {x: 0, y: 0, z: 1 +  current * 0.3};
 		return position;
 	}
 
+	getTradeStationScenePositionAt(index) {
+		let position = {x: 0, y: 0, z: 1 + index * 0.4}
+		return position;
+	}
+
 	popColony() {
 		this.colonies.pop();
+		return this.colonies.length;
+	}
+
+	pushColony() {
+		this.colonies.push(new Colony(this.scene, this.faction));
 	}
 
 	popTradeStation() {
 		this.tradeStations.pop();
+		return this.colonies.length;
+	}
+
+	pushTradeStation() {
+		this.tradeStations.push(new TradeStation(this.scene, this.faction));
 	}
 }

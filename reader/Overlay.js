@@ -29,6 +29,16 @@ class Overlay {
 		this.elapsed = 0;
 		this.timerEnabled = false;
 
+		this.alertElement = document.getElementById('alert');
+		this.alertTextElement = document.getElementById('alert-text');
+		this.alertTextNode = document.createTextNode('');
+		this.alertTextElement.appendChild(this.alertTextNode);
+
+		this.alertDuration = 0;
+		this.alertElapsed = 10000;
+		this.alertEnabled = false;
+		this.alertElement.style.display = 'none';
+
 		this.updateTip('');
 		this.updateWinner('');
 	}
@@ -41,6 +51,15 @@ class Overlay {
 			if (minutes < 10) minutes = '0' + minutes;
 			if (seconds < 10) seconds = '0' + seconds;
 			this.timerTextNode.nodeValue = `${minutes}:${seconds}`;
+		}
+
+		if (this.alertEnabled) {
+			if (this.alertElapsed < this.alertDuration) {
+				this.alertElapsed += dt;
+			} else {
+				this.alertEnabled = false;
+				this.alertElement.style.display = 'none';
+			}
 		}
 	}
 
@@ -92,4 +111,13 @@ class Overlay {
 		}
 		this.winnerTextNode.nodeValue = value;
 	}
+
+	alert(text, duration) {
+		this.alertDuration = duration;
+		this.alertElapsed = 0;
+		this.alertEnabled = true;
+		this.alertElement.style.display = 'inline-block';
+		this.alertTextNode.nodeValue = text;
+	}
+
 }

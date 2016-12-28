@@ -1,7 +1,7 @@
-class LoadState extends State {
+class LoadStatePvP extends State {
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
-		console.log('Entered loading state');
+		console.log('Entered LoadStatePvP ...');
 		this.board = board;
 
 		if (faction === 'factionOne') {
@@ -17,7 +17,10 @@ class LoadState extends State {
 		let self = this;
 		if (board.board.length === 0) {
 			board.load(function() {
-				self.stateManager.changeState(new ShipPickState(self.stateManager, self.scene, board, faction));
+				// TODO: GAME FILM TEST, PLEASE IGNORE
+				self.stateManager.film.addPlay(faction, board.board);
+				
+				self.stateManager.changeState(new ShipPickStatePvP(self.stateManager, self.scene, board, faction));
 			});
 		} else {
 			board.initBoard();
@@ -27,7 +30,10 @@ class LoadState extends State {
 
 	update(dt) {
 		if (this.loaded) {
-			this.stateManager.changeState(new ShipPickState(this.stateManager, this.scene, this.board, this.faction));
+			// TODO: GAME FILM TEST, PLEASE IGNORE
+			this.stateManager.film.addPlay(this.faction, this.board.board);
+			
+			this.stateManager.changeState(new ShipPickStatePvP(this.stateManager, this.scene, this.board, this.faction));
 		}
 	}
 
@@ -38,26 +44,91 @@ class LoadState extends State {
 	}
 }
 
-class ShipPickState extends State {
+class ShipPickStatePvP extends State {
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
-		console.log('Entered ship picking state');
+		console.log('Entered ShipPickStatePvP ...');
 		this.board = board;
 		this.faction = faction;
 
 		this.board.registerShipsForPicking(faction);
+
+		this.beganUndoAnimation = false;
 	}
 
 	draw() {
 		this.board.display();
 	}
 
-	handleInput() {
-		let selectedCell = this.getPickedCell();
-		if (selectedCell !== null && selectedCell.pickable) {
-			this.board.resetPickRegistration();
-			this.board.selectCell(selectedCell.position);
-			this.stateManager.changeState(new MovePickState(this.stateManager, this.scene, this.board, this.faction, selectedCell));
+	update(dt) {
+		this.board.update(dt);
+		
+		if (this.beganUndoAnimation) {
+			let play = this.stateManager.film.getPreviousPlay();
+			if (play.struct === 'colony') {
+				if (this.board.getAuxColony(play.faction).animation.finished) {
+					this.board.getAuxColony(play.faction).undoAnimationOffset = null;
+					this.board.board = play.newBoard;
+					this.stateManager.film.goBackOne();
+					this.stateManager.changeState(new StructBuildStatePvP(this.stateManager, this.scene, this.board, play.faction, play.to));
+				}
+			} else {
+				if (this.board.getAuxTradeStation(play.faction).animation.finished) {
+					this.board.getAuxTradeStation(play.faction).undoAnimationOffset = null;
+					this.board.board = play.newBoard;
+					this.stateManager.film.goBackOne();
+					this.stateManager.changeState(new StructBuildStatePvP(this.stateManager, this.scene, this.board, play.faction, play.to));
+				}
+			}
+		}
+	}
+
+	handleInput(keycode) {
+		if (!this.beganUndoAnimation) {
+			let selectedCell = this.getPickedCell();
+			if (selectedCell !== null && selectedCell.pickable) {
+				this.board.resetPickRegistration();
+				this.board.selectCell(selectedCell.position);
+				this.stateManager.changeState(new MovePickStatePvP(this.stateManager, this.scene, this.board, this.faction, selectedCell));
+			}
+
+			if (keycode === 37) {
+				this.undo();
+			}
+		}
+	}
+
+	undo() {
+		let play = this.stateManager.film.getPreviousPlay();
+		if (play) {
+			this.board.board[play.to.z][play.to.x][2] = ' ';
+			this.stateManager.beginCameraRotation();
+
+			if (play.struct === 'colony') {
+				this.board.pushAuxColony(play.faction);
+
+				let src = this.board.getAuxColonyPosition(play.faction);
+				let dest = this.board.getScenePosition(play.to);
+				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+				
+				this.board.getAuxColony(play.faction).animation = new HopAnimation(1, dest, src);
+				this.board.getAuxColony(play.faction).undoAnimationOffset = pls;
+				this.board.getAuxColony(play.faction).animation.play();
+				this.beganUndoAnimation = true;
+			} else {
+				this.board.pushAuxTradeStation(play.faction);
+
+				let src = this.board.getAuxTradeStationPosition(play.faction);
+				let dest = this.board.getScenePosition(play.to);
+				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+				this.board.getAuxTradeStation(play.faction).animation = new HopAnimation(1, dest, src);
+				this.board.getAuxTradeStation(play.faction).undoAnimationOffset = pls;
+				this.board.getAuxTradeStation(play.faction).animation.play();
+				this.beganUndoAnimation = true;
+			}
+		} else {
+			this.stateManager.overlay.alert('Can\'t undo anymore', 700);
 		}
 	}
 
@@ -75,12 +146,16 @@ class ShipPickState extends State {
 	}
 }
 
-class MovePickState extends State {
+class MovePickStatePvP extends State {
 	constructor(stateManager, scene, board, faction, selected) {
 		super(stateManager, scene);
+		console.log('Entered MovePickStatePvP ...')
 		this.board = board;
 		this.faction = faction;
 		this.selected = selected;
+
+		this.board.initBoard();
+		this.board.selectCell(selected.position);
 
 		let connection = new Connection();
 		let possibleBoards = null;
@@ -93,8 +168,6 @@ class MovePickState extends State {
 				self.board.registerCellForPicking(position);
 			});
 		});
-
-		console.log('Entered move picking state')
 	}
 
 	draw() {
@@ -102,17 +175,28 @@ class MovePickState extends State {
 		this.board.display();
 	}
 
-	handleInput() {
+	handleInput(keycode) {
 		let selectedCell = this.getPickedCell();
 		if (selectedCell !== null && selectedCell.pickable) {
 			this.board.resetPickRegistration();
 			this.board.resetSelection();
-			this.stateManager.changeState(new MoveShipState(this.stateManager, this.scene, this.board, this.faction, this.selected.position, selectedCell.position));
+			this.stateManager.changeState(new MoveShipStatePvP(this.stateManager, this.scene, this.board, this.faction, this.selected.position, selectedCell.position));
 		} else if (selectedCell !== null && !selectedCell.pickable) {
 			this.board.resetPickRegistration();
 			this.board.resetSelection();
-			this.stateManager.changeState(new ShipPickState(this.stateManager, this.scene, this.board, this.faction));
+			this.stateManager.changeState(new ShipPickStatePvP(this.stateManager, this.scene, this.board, this.faction));
 		}
+
+		if (keycode === 37) {
+			this.undo();
+		}
+	}
+
+	undo() {
+		this.board.resetPickRegistration();
+		this.board.resetSelection();
+		this.board.board = this.stateManager.film.getPlay().prevBoard;
+		this.stateManager.changeState(new ShipPickStatePvP(this.stateManager, this.scene, this.board, this.stateManager.film.getPlay().faction));
 	}
 
 	getPossibleMovements(possibleBoards) {
@@ -147,10 +231,10 @@ class MovePickState extends State {
 	}
 }
 
-class MoveShipState extends State {
+class MoveShipStatePvP extends State {
 	constructor(stateManager, scene, board, faction, from, to) {
 		super(stateManager, scene);
-		console.log('Entered ship moving state');
+		console.log('Entered MoveShipStatePvP ...');
 		this.board = board;
 		this.faction = faction;
 		this.from = from;
@@ -162,6 +246,9 @@ class MoveShipState extends State {
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response.replace(/%20/g, " "));
+
+			// TODO: GAME FILM TEST, PLEASE IGNORE
+			self.stateManager.film.setPlayMove(from, to, board.board);
 
 			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
 			board.getShipAt(from).animation.play();
@@ -179,21 +266,23 @@ class MoveShipState extends State {
 		if (this.beganAnimation && this.board.getShipAt(this.from).animation.finished) {
 			this.board.resetPickRegistration();
 			this.board.resetSelection();
-			this.stateManager.changeState(new StructureBuildState(this.stateManager, this.scene, this.board, this.faction, this.to));
+			this.stateManager.changeState(new StructBuildStatePvP(this.stateManager, this.scene, this.board, this.faction, this.to));
 		}
 	}
 }
 
-class StructureBuildState extends State {
+class StructBuildStatePvP extends State {
 	constructor(stateManager, scene, board, faction, position) {
 		super(stateManager, scene);
-		console.log('Entered structure pick state');
+		console.log('Entered StructBuildStatePvP ...');
 		this.board = board;
 		this.faction = faction;
 		this.position = position;
 
 		this.beganColonyAnimation = false;
 		this.beganTradeStationAnimation = false;
+
+		this.beganUndoAnimation = false;
 
 		this.board.initBoard();
 		this.board.selectCell(position);
@@ -209,54 +298,76 @@ class StructureBuildState extends State {
 		this.board.update(dt);
 		
 		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
-			this.board.popAuxColony(this.faction);
+			let structAuxPos = this.board.popAuxColony(this.faction);
+
+			// TODO: GAME FILM TEST, PLEASE IGNORE
+			this.stateManager.film.setPlayStruct('colony', structAuxPos);
+			
 			this.board.placeColony(this.position, this.faction);
-			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+			this.stateManager.changeState(new TestEndStatePvP(this.stateManager, this.scene, this.board, this.faction));
 		}
 
 		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
-			this.board.popAuxTradeStation(this.faction);
-			this.board.placeTradeStation(this.position, this.faction);
-			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
+			let structAuxPos = this.board.popAuxTradeStation(this.faction);
+
+			// TODO: GAME FILM TEST, PLEASE IGNORE
+			this.stateManager.film.setPlayStruct('tradeStation', structAuxPos);
+			
+			this.board.placeTradeStation(this.position, this.faction);				
+			this.stateManager.changeState(new TestEndStatePvP(this.stateManager, this.scene, this.board, this.faction));
+		}
+
+		if (this.beganUndoAnimation) {
+			let play = this.stateManager.film.getPlay();
+			let selected = this.board.getCellAt(play.from);
+			if (this.board.getShipAt(play.to).animation.finished) {
+				this.board.board = play.prevBoard;
+				this.stateManager.changeState(new MovePickStatePvP(this.stateManager, this.scene, this.board, play.faction, selected));				
+			}
 		}
 	}
 
 	handleInput(keycode) {
-		if (keycode) {
-			if (!this.beganColonyAnimation && !this.beganTradeStationAnimation) {
-				switch (keycode) {
-					case 67:
-					case 99:						
-						this.stateManager.overlay.updateTip('');
-						this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
-						this.board.getAuxColony(this.faction).animation.play();
-						this.beganColonyAnimation = true;
-						break;
-					case 84:
-					case 116:						
-						this.stateManager.overlay.updateTip('');
-						this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
-						this.board.getAuxTradeStation(this.faction).animation.play();
-						this.beganTradeStationAnimation = true;
-						break;
-				}
+		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
+			if (keycode === 67 || keycode === 99) {
+				this.stateManager.overlay.updateTip('');
+				this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
+				this.board.getAuxColony(this.faction).animation.play();
+				this.beganColonyAnimation = true;
+			}
+			if (keycode === 84 || keycode === 116) {
+				this.stateManager.overlay.updateTip('');
+				this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
+				this.board.getAuxTradeStation(this.faction).animation.play();
+				this.beganTradeStationAnimation = true;
+			}
+			if (keycode === 37) {
+				this.undo();
 			}
 		}
 	}
+
+	undo() {
+		this.stateManager.overlay.updateTip('');
+		let play = this.stateManager.film.getPlay();
+		this.board.getShipAt(play.to).animation = new HopAnimation(1, this.board.getScenePosition(play.to), this.board.getScenePosition(play.from));
+		this.board.getShipAt(play.to).animation.play();
+		this.beganUndoAnimation = true;
+	}
 }
 
-class TestEndState extends State {
+class TestEndStatePvP extends State {
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
-		console.log('Entered end testing state');
+		console.log('Entered TestEndStatePvP ...');
 		this.board = board;
 
 		let connection = new Connection();
 		connection.isGameOverRequest(board, function(data) {
 			if (data.target.response === '0') {
-				stateManager.changeState(new LoadState(stateManager, scene, board, faction));
+				stateManager.changeState(new LoadStatePvP(stateManager, scene, board, faction));
 			} else {
-				stateManager.changeState(new GameOverState(stateManager, scene, board));
+				stateManager.changeState(new GameOverStatePvP(stateManager, scene, board));
 			}
 		});
 
@@ -268,10 +379,10 @@ class TestEndState extends State {
 	}
 }
 
-class GameOverState extends State {
+class GameOverStatePvP extends State {
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
-		console.log('Entered game over state');
+		console.log('Entered GameOverStatePvP ...');
 		this.board = board;
 
 		board.initBoard();
@@ -306,6 +417,7 @@ class PvP extends State {
 
 		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
 		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.film = new GameFilm(); 
 		this.gameStateManager.overlay.beginTimer();
 
 		let self = this;
@@ -322,7 +434,7 @@ class PvP extends State {
 		this.scene.camera = this.gameStateManager.camera;
 		this.currentFaction = 'factionOne';
 		
-		this.gameStateManager.pushState(new LoadState(this.gameStateManager, this.scene, this.board, this.currentFaction));
+		this.gameStateManager.pushState(new LoadStatePvP(this.gameStateManager, this.scene, this.board, this.currentFaction));
 
 		this.angle = 1000;
 		this.angularstep = 0.15;

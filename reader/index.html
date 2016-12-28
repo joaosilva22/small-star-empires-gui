@@ -39,9 +39,10 @@
 			background: rgba(0, 0, 0, 0.7);
 			font-size: 1.2em;
 			padding: 10px;
-			display: inline-block;
 			position: fixed;
 			top: 10px;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 
 		#banner {
@@ -52,6 +53,24 @@
 			width: 100%;
 			position: fixed;
 			top: 45%;
+		}
+
+		#alert-container {
+			position: fixed;
+			bottom: 70px;
+			left: 0;
+			right: 0;
+		}
+
+		#alert {
+			color: white;
+			background: rgba(0, 0, 0, 0.7);
+			font-size: 1.2em;
+			padding: 10px;
+			position: fixed;
+			bottom: 100px;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 		
 		#tip {
@@ -80,6 +99,10 @@
 			
 			<div id="banner">
 				<span id="winner"></span>
+			</div>
+
+			<div id="alert">
+				<span id="alert-text"></span>
 			</div>
 			
 			<div id="tip">
