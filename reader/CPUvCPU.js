@@ -11,8 +11,10 @@ class LoadStateCPUvCPU extends State {
 			this.faction = 'factionOne';
 		}
 
+		let self = this;
 		if (board.board.length === 0) {
 			board.load(function() {
+				self.stateManager.film.addPlay(faction, board.board);
 				stateManager.changeState(new BotPickStateCPUvCPU(stateManager, scene, board, faction, difficulty));
 			});
 		} else {
@@ -23,6 +25,7 @@ class LoadStateCPUvCPU extends State {
 
 	update(dt) {
 		if (this.loaded) {
+			this.stateManager.film.addPlay(this.faction, this.board.board);
 			this.stateManager.changeState(new BotPickStateCPUvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
 	}
@@ -113,6 +116,7 @@ class BotMoveShipStateCPUvCPU extends State {
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response);
+			self.stateManager.film.setPlayMove(from, to, board.board);
 
 			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
 			board.getShipAt(from).animation.play();
@@ -164,13 +168,17 @@ class BotStructBuildStateCPUvCPU extends State {
 		this.board.update(dt);
 		
 		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
-			this.board.popAuxColony(this.faction);
+			let structAuxPos = this.board.popAuxColony(this.faction);
+			this.stateManager.film.setPlayStruct('colony', structAuxPos);
+			
 			this.board.placeColony(this.position, this.faction);
 			this.stateManager.changeState(new TestEndStateCPUvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
 		
 		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
-			this.board.popAuxTradeStation(this.faction);
+			let structAuxPos = this.board.popAuxTradeStation(this.faction);
+			this.stateManager.film.setPlayStruct('tradeStation', structAuxPos);
+			
 			this.board.placeTradeStation(this.position, this.faction);
 			this.stateManager.changeState(new TestEndStateCPUvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
@@ -236,6 +244,7 @@ class CPUvCPU extends State {
 
 		this.gameStateManager = new StateManager();
 		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.film = new GameFilm();
 		this.gameStateManager.overlay.beginTimer();
 
 		this.board = new Board(scene);

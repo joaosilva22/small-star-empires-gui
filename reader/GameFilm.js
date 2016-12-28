@@ -52,6 +52,11 @@ class GameFilm {
 		return this.plays[this.current - 1];
 	}
 
+	getBeforePreviousPlay() {
+		if (this.current < 2) return;
+		return this.plays[this.current - 2];
+	}
+
 	goBackOne() {
 		if (this.current < 1) return;
 		this.current -= 1;

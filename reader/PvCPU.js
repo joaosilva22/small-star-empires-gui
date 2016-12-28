@@ -15,8 +15,10 @@ class LoadStatePvCPU extends State {
 		if (board.board.length === 0) {
 			board.load(function() {
 				if (faction === 'factionOne') {
+					self.stateManager.film.addPlay(faction, board.board);
 					self.stateManager.changeState(new ShipPickStatePvCPU(self.stateManager, self.scene, self.board, faction, self.difficulty));
 				} else {
+					self.stateManager.film.addPlay(faction, board.board);
 					self.stateManager.changeState(new BotPickStatePvCPU(self.stateManager, self.scene, self.board, faction, self.difficulty));
 				}
 			});
@@ -29,8 +31,10 @@ class LoadStatePvCPU extends State {
 	update(dt) {
 		if (this.loaded) {
 			if (this.faction === 'factionOne') {
+				this.stateManager.film.addPlay(this.faction, this.board.board);
 				this.stateManager.changeState(new ShipPickStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 			} else {
+				this.stateManager.film.addPlay(this.faction, this.board.board);
 				this.stateManager.changeState(new BotPickStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 			}
 		}
@@ -114,6 +118,8 @@ class ShipPickStatePvCPU extends State {
 		this.difficulty = difficulty;
 
 		this.board.registerShipsForPicking(faction);
+
+		this.beganUndoAnimation = false;
 	}
 
 	draw() {
@@ -122,14 +128,121 @@ class ShipPickStatePvCPU extends State {
 
 	update(dt) {
 		this.board.update(dt);
+
+		if (this.beganUndoAnimation) {
+			let lastBotPlay = this.stateManager.film.getPreviousPlay();
+			let lastPlayerPlay = this.stateManager.film.getBeforePreviousPlay();
+
+			if (lastBotPlay.struct === 'colony') {
+				if (this.board.getAuxColony(lastBotPlay.faction).animation.finished) {
+					this.board.getAuxColony(lastBotPlay.faction).undoAnimationOffset = null;
+					this.botStructUndone = true;
+				}
+			} else {
+				if (this.board.getAuxTradeStation(lastBotPlay.faction).animation.finished) {
+					this.board.getAuxTradeStation(lastBotPlay.faction).undoAnimationOffset = null;
+					this.botStructUndone = true;
+				}
+			}
+
+			if (lastPlayerPlay.struct === 'colony') {
+				if (this.board.getAuxColony(lastPlayerPlay.faction).animation.finished) {
+					this.board.getAuxColony(lastPlayerPlay.faction).undoAnimationOffset = null;
+					this.playerStructUndone = true;
+				}
+			} else {
+				if (this.board.getAuxTradeStation(lastPlayerPlay.faction).animation.finished) {
+					this.board.getAuxTradeStation(lastPlayerPlay.faction).undoAnimationOffset = null;
+					this.playerStructUndone = true;
+				}
+			}
+
+			if (this.botStructUndone && this.playerStructUndone && this.board.getShipAt(lastBotPlay.to).animation.finished) {
+				this.board.board = lastPlayerPlay.newBoard;
+				this.board.board[lastPlayerPlay.to.z][lastPlayerPlay.to.x][2] = ' ';
+				this.stateManager.film.goBackOne();
+				this.stateManager.film.goBackOne();
+				this.stateManager.changeState(new StructBuildStatePvCPU(this.stateManager, this.scene, this.board, lastPlayerPlay.faction, this.difficulty, lastPlayerPlay.to));
+			}
+		}
 	}
 
-	handleInput() {
-		let selectedCell = this.getPickedCell();
-		if (selectedCell !== null && selectedCell.pickable) {
-			this.board.resetPickRegistration();
-			this.board.selectCell(selectedCell.position);
-			this.stateManager.changeState(new MovePickStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty, selectedCell));
+	handleInput(keycode) {
+		if (!this.beganUndoAnimation) {
+			let selectedCell = this.getPickedCell();
+			if (selectedCell !== null && selectedCell.pickable) {
+				this.board.resetPickRegistration();
+				this.board.selectCell(selectedCell.position);
+				this.stateManager.changeState(new MovePickStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty, selectedCell));
+			}
+
+			if (keycode === 37) {
+				this.undo();
+			}
+		}
+	}
+
+	undo() {
+		let lastBotPlay = this.stateManager.film.getPreviousPlay();
+		let lastPlayerPlay = this.stateManager.film.getBeforePreviousPlay();
+		if (lastBotPlay) {
+			this.board.board[lastBotPlay.to.z][lastBotPlay.to.x][2] = ' ';
+
+			if (lastBotPlay.struct === 'colony') {
+				this.board.pushAuxColony(lastBotPlay.faction);
+
+				let src = this.board.getAuxColonyPosition(lastBotPlay.faction);
+				let dest = this.board.getScenePosition(lastBotPlay.to);
+				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+				this.board.getAuxColony(lastBotPlay.faction).animation = new HopAnimation(1, dest, src);
+				this.board.getAuxColony(lastBotPlay.faction).undoAnimationOffset = pls;
+				this.board.getAuxColony(lastBotPlay.faction).animation.play();
+				this.beganUndoAnimation = true;
+			} else {
+				this.board.pushAuxTradeStation(lastBotPlay.faction);
+
+				let src = this.board.getAuxColonyPosition(lastBotPlay.faction);
+				let dest = this.board.getScenePosition(lastBotPlay.to);
+				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+				this.board.getAuxTradeStation(lastBotPlay.faction).animation = new HopAnimation(1, dest, src);
+				this.board.getAuxTradeStation(lastBotPlay.faction).undoAnimationOffset = pls;
+				this.board.getAuxTradeStation(lastBotPlay.faction).animation.play();
+				this.beganUndoAnimation = true;
+			}
+
+			this.board.getShipAt(lastBotPlay.to).animation = new HopAnimation(1, this.board.getScenePosition(lastBotPlay.to), this.board.getScenePosition(lastBotPlay.from));
+			this.board.getShipAt(lastBotPlay.to).animation.play();
+			this.beganUndoAnimation = true;
+
+			this.board.board[lastPlayerPlay.to.z][lastPlayerPlay.to.x][2] = ' ';
+
+			if (lastPlayerPlay.struct === 'colony') {
+				this.board.pushAuxColony(lastPlayerPlay.faction);
+
+				let src = this.board.getAuxColonyPosition(lastPlayerPlay.faction);
+				let dest = this.board.getScenePosition(lastPlayerPlay.to);
+				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+				this.board.getAuxColony(lastPlayerPlay.faction).animation = new HopAnimation(1, dest, src);
+				this.board.getAuxColony(lastPlayerPlay.faction).undoAnimationOffset = pls;
+				this.board.getAuxColony(lastPlayerPlay.faction).animation.play();
+				this.beganUndoAnimation = true;
+			} else {
+				this.board.pushAuxTradeStation(lastPlayerPlay.faction);
+
+				let src = this.board.getAuxTradeStationPosition(lastPlayerPlay.faction);
+				let dest = this.board.getScenePosition(lastPlayerPlay.to);
+				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+				this.board.getAuxTradeStation(lastPlayerPlay.faction).animation = new HopAnimation(1, dest, src);
+				this.board.getAuxTradeStation(lastPlayerPlay.faction).undoAnimationOffset = pls;
+				this.board.getAuxTradeStation(lastPlayerPlay.faction).animation.play();
+				this.beganUndoAnimation = true;
+			}
+		} else {
+			this.stateManager.overlay.alert('Can\'t undo anymore', 700);
 		}
 	}
 
@@ -156,6 +269,9 @@ class MovePickStatePvCPU extends State {
 		this.difficulty = difficulty;
 		this.selected = selected;
 
+		this.board.initBoard();
+		this.board.selectCell(selected.position);
+
 		let connection = new Connection();
 		let possibleBoards = null;
 
@@ -173,7 +289,7 @@ class MovePickStatePvCPU extends State {
 		this.board.display();
 	}
 
-	handleInput() {
+	handleInput(keycode) {
 		let selectedCell = this.getPickedCell();
 		if (selectedCell !== null && selectedCell.pickable) {
 			this.board.resetPickRegistration();
@@ -184,6 +300,17 @@ class MovePickStatePvCPU extends State {
 			this.board.resetSelection();
 			this.stateManager.changeState(new ShipPickStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
+
+		if (keycode === 37) {
+			this.undo();
+		}
+	}
+
+	undo() {
+		this.board.resetPickRegistration();
+		this.board.resetSelection();
+		this.board.board = this.stateManager.film.getPlay().prevBoard;
+		this.stateManager.changeState(new ShipPickStatePvCPU(this.stateManager, this.scene, this.board, this.stateManager.film.getPlay().faction, this.difficulty));
 	}
 
 	getPossibleMovements(possibleBoards) {
@@ -236,6 +363,8 @@ class BotMoveShipStatePvCPU extends State {
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response);
 
+			self.stateManager.film.setPlayMove(from, to, board.board);
+
 			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
 			board.getShipAt(from).animation.play();
 			self.beganAnimation = true;
@@ -273,6 +402,8 @@ class MoveShipStatePvCPU extends State {
 		let connection = new Connection();
 		connection.moveShipRequest(board, faction, from.x, from.z, to.x, to.z, function(data) {
 			board.board = parseStringArray(data.target.response);
+
+			self.stateManager.film.setPlayMove(from, to, board.board);
 
 			board.getShipAt(from).animation = new HopAnimation(1, board.getScenePosition(from), board.getScenePosition(to));
 			board.getShipAt(from).animation.play();
@@ -322,13 +453,17 @@ class BotStructBuildStatePvCPU extends State {
 		this.board.update(dt);
 
 		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
-			this.board.popAuxColony(this.faction);
+			let structAuxPos = this.board.popAuxColony(this.faction);
+			this.stateManager.film.setPlayStruct('colony', structAuxPos);
+			
 			this.board.placeColony(this.position, this.faction);
 			this.stateManager.changeState(new TestEndStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
 
 		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
-			this.board.popAuxTradeStation(this.faction);
+			let structAuxPos = this.board.popAuxTradeStation(this.faction);
+			this.stateManager.film.setPlayStruct('tradeStation', structAuxPos);
+			
 			this.board.placeTradeStation(this.position, this.faction);
 			this.stateManager.changeState(new TestEndStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
@@ -351,6 +486,8 @@ class StructBuildStatePvCPU extends State {
 		this.beganColonyAnimation = false;
 		this.beganTradeStationAnimation = false;
 
+		this.beganUndoAnimation = false;
+
 		this.board.initBoard();
 		this.board.selectCell(position);
 
@@ -365,31 +502,57 @@ class StructBuildStatePvCPU extends State {
 		this.board.update(dt);
 		
 		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
-			this.board.popAuxColony(this.faction);
+			let structAuxPos = this.board.popAuxColony(this.faction);
+			this.stateManager.film.setPlayStruct('colony', structAuxPos);
+			
 			this.board.placeColony(this.position, this.faction);
 			this.stateManager.changeState(new TestEndStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
 		}
 
 		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
-			this.board.popAuxTradeStation(this.faction);
+			let structAuxPos = this.board.popAuxTradeStation(this.faction);
+			this.stateManager.film.setPlayStruct('tradeStation', structAuxPos);
+			
 			this.board.placeTradeStation(this.position, this.faction);
 			this.stateManager.changeState(new TestEndStatePvCPU(this.stateManager, this.scene, this.board, this.faction, this.difficulty));
+		}
+
+		if (this.beganUndoAnimation) {
+			let play = this.stateManager.film.getPlay();
+			let selected = this.board.getCellAt(play.from);
+			if (this.board.getShipAt(play.to).animation.finished) {
+				this.board.board = play.prevBoard;
+				this.stateManager.changeState(new MovePickStatePvCPU(this.stateManager, this.scene, this.board, play.faction, this.difficulty, selected));
+			}
 		}
 	}
 
 	handleInput(keycode) {
-		if (keycode === 67 || keycode === 99) {
-			this.stateManager.overlay.updateTip('');
-			this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
-			this.board.getAuxColony(this.faction).animation.play();
-			this.beganColonyAnimation = true;
+		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
+			if (keycode === 67 || keycode === 99) {
+				this.stateManager.overlay.updateTip('');
+				this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
+				this.board.getAuxColony(this.faction).animation.play();
+				this.beganColonyAnimation = true;
+			}
+			if (keycode === 84 || keycode === 116) {
+				this.stateManager.overlay.updateTip('');
+				this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
+				this.board.getAuxTradeStation(this.faction).animation.play();
+				this.beganTradeStationAnimation = true;
+			}
+			if (keycode === 37) {
+				this.undo();
+			}
 		}
-		if (keycode === 84 || keycode === 116) {
-			this.stateManager.overlay.updateTip('');
-			this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
-			this.board.getAuxTradeStation(this.faction).animation.play();
-			this.beganTradeStationAnimation = true;
-		}
+	}
+
+	undo() {
+		this.stateManager.overlay.updateTip('');
+		let play = this.stateManager.film.getPlay();
+		this.board.getShipAt(play.to).animation = new HopAnimation(1, this.board.getScenePosition(play.to), this.board.getScenePosition(play.from));
+		this.board.getShipAt(play.to).animation.play();
+		this.beganUndoAnimation = true;
 	}
 }
 
@@ -446,6 +609,7 @@ class PvCPU extends State {
 
 		this.gameStateManager = new StateManager();
 		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.film = new GameFilm();
 		this.gameStateManager.overlay.beginTimer();
 
 		this.board = new Board(scene);
