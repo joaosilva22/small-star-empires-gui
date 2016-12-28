@@ -275,6 +275,18 @@ class GameOverState extends State {
 		this.board = board;
 
 		board.initBoard();
+
+		let factionOneScore = this.stateManager.overlay.getScore('factionOne');
+		let factionTwoScore = this.stateManager.overlay.getScore('factionTwo');
+		if (factionOneScore === factionTwoScore) {
+			this.stateManager.overlay.updateWinner('It\'s a tie.');
+		} else if (factionOneScore > factionTwoScore) {
+			this.stateManager.overlay.updateWinner('Blue won!');
+		} else {
+			this.stateManager.overlay.updateWinner('Yellow won!');
+		}
+
+		this.stateManager.overlay.endTimer();
 	}
 
 	draw() {
@@ -294,6 +306,7 @@ class PvP extends State {
 
 		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
 		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.overlay.beginTimer();
 
 		let self = this;
 		this.gameStateManager.beginCameraRotation = function(angle) {
@@ -322,6 +335,7 @@ class PvP extends State {
 
 	update(dt) {
 		this.gameStateManager.update(dt);
+		this.gameStateManager.overlay.update(dt);
 		this.currentFaction = this.gameStateManager.getCurrentState().faction;
 
 		if (this.angle < Math.PI) {

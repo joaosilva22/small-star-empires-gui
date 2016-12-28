@@ -73,7 +73,7 @@ XMLscene.prototype.onGraphLoaded = function () {
     this.setupLights();
 
 	this.stateManager = new StateManager();
-	this.stateManager.pushState(new CPUvCPU(this.stateManager, this));
+	this.stateManager.pushState(new PvCPU(this.stateManager, this));
 	this.prevTime = 0;
 
 	this.interface.setActiveCamera(this.camera);

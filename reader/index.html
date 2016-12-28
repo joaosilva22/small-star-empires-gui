@@ -34,19 +34,36 @@
 			text-align: left;
 		}
 
+		#timer {
+			color: white;
+			background: rgba(0, 0, 0, 0.7);
+			font-size: 1.2em;
+			padding: 10px;
+			display: inline-block;
+			position: fixed;
+			top: 10px;
+		}
+
+		#banner {
+			color: white;
+			background: rgba(0, 0, 0, 0.7);
+			font-size: 2em;
+			padding: 20px;
+			width: 100%;
+			position: fixed;
+			top: 45%;
+		}
+		
 		#tip {
 			color: white;
 			background: rgba(0, 0, 0, 0.7);
 			font-size: 1.2em;
-			
 			padding: 10px;
 			text-align: center;
 			width: 100%;
-
 			position: fixed;
 			bottom: 10px;
 		}
-	
 		</style>
 	</head>
 	<body>
@@ -56,6 +73,15 @@
 				<div>Blue Faction: <span id="score-one"></span></div>
 				<div>Yellow Faction: <span id="score-two"></span></div>
 			</div>
+
+			<div id="timer">
+				<span id="timer-text"></span>
+			</div>
+			
+			<div id="banner">
+				<span id="winner"></span>
+			</div>
+			
 			<div id="tip">
 				<span id="tip-text"></span>
 			</div>

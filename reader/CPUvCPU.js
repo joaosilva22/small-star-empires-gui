@@ -211,6 +211,18 @@ class GameOverStateCPUvCPU extends State {
 		this.board = board;
 
 		board.initBoard();
+
+		let factionOneScore = this.stateManager.overlay.getScore('factionOne');
+		let factionTwoScore = this.stateManager.overlay.getScore('factionTwo');
+		if (factionOneScore === factionTwoScore) {
+			this.stateManager.overlay.updateWinner('It\'s a tie.');
+		} else if (factionOneScore > factionTwoScore) {
+			this.stateManager.overlay.updateWinner('Blue won!');
+		} else {
+			this.stateManager.overlay.updateWinner('Yellow won!');
+		}
+
+		this.stateManager.overlay.endTimer();
 	}
 
 	draw() {
@@ -224,6 +236,7 @@ class CPUvCPU extends State {
 
 		this.gameStateManager = new StateManager();
 		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.overlay.beginTimer();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();
@@ -246,6 +259,7 @@ class CPUvCPU extends State {
 
 	update(dt) {
 		this.gameStateManager.update(dt);
+		this.gameStateManager.overlay.update(dt);
 	}
 
 	handleInput(keycode) {	

@@ -17,7 +17,43 @@ class Overlay {
 		this.tipTextNode = document.createTextNode('');
 		this.tipTextElement.appendChild(this.tipTextNode);
 
+		this.bannerElement = document.getElementById('banner');
+		this.winnerTextElement = document.getElementById('winner');
+		this.winnerTextNode = document.createTextNode('');
+		this.winnerTextElement.appendChild(this.winnerTextNode);
+
+		this.timerTextElement = document.getElementById('timer-text');
+		this.timerTextNode = document.createTextNode('');
+		this.timerTextElement.appendChild(this.timerTextNode);
+
+		this.elapsed = 0;
+		this.timerEnabled = false;
+
 		this.updateTip('');
+		this.updateWinner('');
+	}
+
+	update(dt) {
+		if (this.timerEnabled) {
+			this.elapsed += dt;
+			let minutes = Math.floor((this.elapsed / 1000) / 60);
+			let seconds = Math.floor((this.elapsed / 1000) % 60);
+			if (minutes < 10) minutes = '0' + minutes;
+			if (seconds < 10) seconds = '0' + seconds;
+			this.timerTextNode.nodeValue = `${minutes}:${seconds}`;
+		}
+	}
+
+	beginTimer() {
+		this.timerEnabled = true;
+		this.elapsed = 0;
+	}
+
+	endTimer() {
+		this.timerEnabled = false;
+		let minutes = Math.floor((this.elapsed / 1000) / 60);
+		let seconds = Math.floor((this.elapsed / 1000) % 60);
+		console.log(`Game finished in ${minutes}min${seconds}s`);
 	}
 
 	updateScore(board) {
@@ -31,6 +67,14 @@ class Overlay {
 		});
 	}
 
+	getScore(faction) {
+		if (faction === 'factionOne') {
+			return this.scoreFactionOneNode.nodeValue;
+		} else {
+			return this.scoreFactionTwoNode.nodeValue;
+		}
+	}
+
 	updateTip(value) {
 		if (value === '') {
 			this.tipElement.style.display = 'none';
@@ -38,5 +82,14 @@ class Overlay {
 			this.tipElement.style.display = 'block';
 		}
 		this.tipTextNode.nodeValue = value;
+	}
+
+	updateWinner(value) {
+		if (value === '') {
+			this.bannerElement.style.display = 'none';
+		} else {
+			this.bannerElement.style.display = 'block';
+		}
+		this.winnerTextNode.nodeValue = value;
 	}
 }
