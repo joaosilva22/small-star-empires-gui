@@ -90,12 +90,12 @@
   
   
   <textures>
-    <texture id="tex_right_wall" file="resources/distant_sunset/distant_sunset_rt.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_left_wall" file="resources/distant_sunset/distant_sunset_bk.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_top_wall" file="resources/distant_sunset/distant_sunset_up.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_front_wall" file="resources/distant_sunset/distant_sunset_ft.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_back_wall" file="resources/distant_sunset/distant_sunset_lf.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_floor" file="resources/distant_sunset/distant_sunset_dn.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_right_wall" file="resources/sor_borg/borg_rt.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_left_wall" file="resources/sor_borg/borg_lf.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_top_wall" file="resources/sor_borg/borg_up.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_front_wall" file="resources/sor_borg/borg_ft.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_back_wall" file="resources/sor_borg/borg_bk.JPG" length_s="1.0" length_t="1.0" />
+    <texture id="tex_floor" file="resources/sor_borg/borg_dn.JPG" length_s="1.0" length_t="1.0" />
   </textures>
 
   
