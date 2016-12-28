@@ -15,10 +15,18 @@ void(v).
 baseSystem(g).
 baseSystem(h).
 
+baseSystem('g').
+baseSystem('h').
+
 emptySystem(0).
 onePlanetSystem(1).
 twoPlanetSystem(2).
 threePlanetSystem(3).
+
+emptySystem('0').
+onePlanetSystem('1').
+twoPlanetSystem('2').
+threePlanetSystem('3').
 
 blackholeSystem(b).
 wormholeSystem(w).

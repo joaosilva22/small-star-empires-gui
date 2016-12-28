@@ -98,7 +98,7 @@ hasTheGameEnded(Board, HasIt) :-
     getAllPossibleBoards(factionTwo, Board, 0, 0, [], FactionTwo),
     length(FactionTwo, FactionTwoBoards),
     FactionTwoBoards==0,
-	Hasit is 1,!.
+	HasIt is 1,!.
 hasTheGameEnded(_, 0).
 
 printWinner(Points, Points) :-

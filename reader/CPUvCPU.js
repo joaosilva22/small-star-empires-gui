@@ -144,12 +144,16 @@ class BotStructBuildStateCPUvCPU extends State {
 		this.structure = structure;
 
 		if (structure === 'colony') {
-			this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
-			this.board.getAuxColony(this.faction).animation.play();
+			if (this.board.getAuxColony(this.faction)) {
+				this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
+				this.board.getAuxColony(this.faction).animation.play();
+			}
 			this.beganColonyAnimation = true;
 		} else {
-			this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
-			this.board.getAuxTradeStation(this.faction).animation.play();
+			if (this.board.getAuxTradeStation(this.faction)) {
+				this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
+				this.board.getAuxTradeStation(this.faction).animation.play();
+			}
 			this.beganTradeStationAnimation = true;
 		}
 
@@ -191,6 +195,8 @@ class TestEndStateCPUvCPU extends State {
 				stateManager.changeState(new GameOverStateCPUvCPU(stateManager, scene, board));
 			}
 		});
+
+		this.stateManager.overlay.updateScore(this.board);
 	}
 
 	draw() {
@@ -217,6 +223,7 @@ class CPUvCPU extends State {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
+		this.gameStateManager.overlay = new Overlay();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();

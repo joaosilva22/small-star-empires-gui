@@ -454,12 +454,12 @@ class AuxiliaryBoard extends CGFobject {
 		this.board = board;
 
 		this.colonies = [];
-		for (let i = 0; i < 16; i++) {
+		for (let i = 0; i < 18; i++) {
 			this.colonies.push(new Colony(scene, faction));
 		}
 
 		this.tradeStations = [];
-		for (let i = 0; i < 16; i++) {
+		for (let i = 0; i < 18; i++) {
 			this.tradeStations.push(new TradeStation(scene, faction));
 		}
 	}

@@ -353,6 +353,8 @@ class StructBuildStatePvCPU extends State {
 
 		this.board.initBoard();
 		this.board.selectCell(position);
+
+		stateManager.overlay.updateTip('Press c/C to place a Colony, or t/T to place a Trade Station');
 	}
 
 	draw() {
@@ -377,11 +379,13 @@ class StructBuildStatePvCPU extends State {
 
 	handleInput(keycode) {
 		if (keycode === 67 || keycode === 99) {
+			this.stateManager.overlay.updateTip('');
 			this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
 			this.board.getAuxColony(this.faction).animation.play();
 			this.beganColonyAnimation = true;
 		}
 		if (keycode === 84 || keycode === 116) {
+			this.stateManager.overlay.updateTip('');
 			this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
 			this.board.getAuxTradeStation(this.faction).animation.play();
 			this.beganTradeStationAnimation = true;
@@ -402,6 +406,8 @@ class TestEndStatePvCPU extends State {
 				stateManager.changeState(new GameOverStatePvCPU(stateManager, scene, board));
 			}
 		});
+
+		this.stateManager.overlay.updateScore(this.board);
 	}
 
 	draw() {
@@ -427,6 +433,7 @@ class PvCPU extends State {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
+		this.gameStateManager.overlay = new Overlay();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();

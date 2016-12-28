@@ -22,13 +22,15 @@ class Connection {
 	    this.getPrologRequest(requestString, onSuccess);
 	}
 
-	placeStructureRequest(faction, board, x1, z1, x2, z2) {
+	placeStructureRequest(faction, board, structure, position, onSuccess) {
 		let boardString = parseArrayString(board.board);
-	    let requestString = `placeStructureL(${faction},${boardString},${x2},${z2})`;
-	    this.getPrologRequest(requestString, function(data) {
-		   board.board = parseStringArray(data.target.response);
-		   board.initBoard();
-	   });
+		let {x, z} = position;
+		let requestString = `placeStructureL(${faction},${boardString},${structure},${x},${z})`;
+		if (structure === 'trade station') {
+			requestString = `placeStructureL(${faction},${boardString},tradestation,${x},${z})`;
+		}
+		console.log(requestString);
+	    this.getPrologRequest(requestString, onSuccess);
 	}
 
 	shipPossibleMovementsRequest(faction, board, position, onSuccess){

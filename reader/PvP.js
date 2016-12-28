@@ -198,12 +198,7 @@ class StructureBuildState extends State {
 		this.board.initBoard();
 		this.board.selectCell(position);
 
-		let connection = new Connection();
-		connection.calculateTotalPointsRequest(faction, board, function(data) {
-			stateManager.updateScore(faction, data.target.response);
-		});
-
-		stateManager.updateTip('Press c/C to place a Colony, or t/T to place a Trade Station');
+		stateManager.overlay.updateTip('Press c/C to place a Colony, or t/T to place a Trade Station');
 	}
 
 	draw() {
@@ -212,18 +207,16 @@ class StructureBuildState extends State {
 
 	update(dt) {
 		this.board.update(dt);
-
+		
 		if (this.beganColonyAnimation && this.board.getAuxColony(this.faction).animation.finished) {
 			this.board.popAuxColony(this.faction);
 			this.board.placeColony(this.position, this.faction);
-			this.stateManager.updateTip('');
 			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 		}
 
 		if (this.beganTradeStationAnimation && this.board.getAuxTradeStation(this.faction).animation.finished) {
 			this.board.popAuxTradeStation(this.faction);
 			this.board.placeTradeStation(this.position, this.faction);
-			this.stateManager.updateTip('');
 			this.stateManager.changeState(new TestEndState(this.stateManager, this.scene, this.board, this.faction));
 		}
 	}
@@ -233,13 +226,15 @@ class StructureBuildState extends State {
 			if (!this.beganColonyAnimation && !this.beganTradeStationAnimation) {
 				switch (keycode) {
 					case 67:
-					case 99:
+					case 99:						
+						this.stateManager.overlay.updateTip('');
 						this.board.getAuxColony(this.faction).animation = new HopAnimation(1, this.board.getAuxColonyPosition(this.faction), this.board.getScenePosition(this.position));
 						this.board.getAuxColony(this.faction).animation.play();
 						this.beganColonyAnimation = true;
 						break;
 					case 84:
-					case 116:
+					case 116:						
+						this.stateManager.overlay.updateTip('');
 						this.board.getAuxTradeStation(this.faction).animation = new HopAnimation(1, this.board.getAuxTradeStationPosition(this.faction), this.board.getScenePosition(this.position));
 						this.board.getAuxTradeStation(this.faction).animation.play();
 						this.beganTradeStationAnimation = true;
@@ -264,6 +259,8 @@ class TestEndState extends State {
 				stateManager.changeState(new GameOverState(stateManager, scene, board));
 			}
 		});
+
+		this.stateManager.overlay.updateScore(this.board);
 	}
 	
 	draw() {
@@ -296,6 +293,7 @@ class PvP extends State {
 		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
 
 		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
+		this.gameStateManager.overlay = new Overlay();
 
 		let self = this;
 		this.gameStateManager.beginCameraRotation = function(angle) {
@@ -315,44 +313,6 @@ class PvP extends State {
 
 		this.angle = 1000;
 		this.angularstep = 0.15;
-
-		// TODO: Passar isto para um sitio mais adequado
-		// Mudar o sitio onde e feito o update do score
-		this.scoreFactionOneElement = document.getElementById('score-one');
-		this.scoreFactionTwoElement = document.getElementById('score-two');
-
-		this.scoreFactionOneNode = document.createTextNode('');
-		this.scoreFactionTwoNode = document.createTextNode('');
-
-		this.scoreFactionOneElement.appendChild(this.scoreFactionOneNode);
-		this.scoreFactionTwoElement.appendChild(this.scoreFactionTwoNode);
-
-		this.scoreFactionOneNode.nodeValue = 0;
-		this.scoreFactionTwoNode.nodeValue = 0;
-
-		this.gameStateManager.updateScore = function(faction, value) {
-			if (faction === 'factionOne') {
-				self.scoreFactionOneNode.nodeValue = value;
-			} else {
-				self.scoreFactionTwoNode.nodeValue = value;
-			}
-		};
-
-		this.tipElement = document.getElementById('tip');
-		this.tipTextElement = document.getElementById('tip-text');
-		this.tipTextNode = document.createTextNode('');
-		this.tipTextElement.appendChild(this.tipTextNode);
-
-		this.gameStateManager.updateTip = function(value) {
-			if (value === '') {
-				self.tipElement.style.display = 'none';
-			} else {
-				self.tipElement.style.display = 'block';
-			}
-			self.tipTextNode.nodeValue = value;
-		};
-
-		this.gameStateManager.updateTip('');
 	}
 
 	draw() {
