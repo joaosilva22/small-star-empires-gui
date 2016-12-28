@@ -43,26 +43,47 @@
   
   <lights>
     
-    <omni id="omni0" enabled="0" >
-      <location x="30.0" y="30.0" z="30.0" w="1.0" />
-      <ambient r="0.7" g="0.0" b="0.7" a="1.0" />
-      <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+    <omni id="omni1" enabled="1" >
+      <location x="0.0" y="50.0" z="0.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
       <specular r="0.5" g="0.5" b="0.5" a="0.5" />
     </omni>
     
-    <omni id="omni1" enabled="0" >
-      <location x="-30.0" y="30.0" z="-30.0" w="1.0" />
-      <ambient r="0.0" g="0.7" b="0.7" a="1.0" />
-      <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+    <omni id="omni2" enabled="1" >
+      <location x="50.0" y="50.0" z="0.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+    </omni>
+    
+    <omni id="omni3" enabled="1" >
+      <location x="50.0" y="50.0" z="50.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
       <specular r="0.5" g="0.5" b="0.5" a="0.5" />
     </omni>
 
-    <spot id="spot0" enabled="1" angle="45" exponent="10">
-      <target x="10.0" y="10.0" z="10.0" />
-      <location x="20.0" y="20.0" z="20.0" />
-      <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+    <omni id="omni4" enabled="1" >
+      <location x="0.0" y="50.0" z="50.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
       <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+    </omni>
+
+    <omni id="omni5" enabled="1" >
+      <location x="20.0" y="20.0" z="20.0" w="1.0" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+      <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+    </omni>
+
+    <spot id="spot0" enabled="1" angle="60" exponent="10">
+      <target x="20.0" y="0.0" z="20.0" />
+      <location x="0.0" y="20.0" z="0.0" />
+      <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+      <specular r="1.0" g="1.0" b="1.0" a="1.0" />
     </spot>
     
   </lights>
@@ -78,6 +99,7 @@
     <texture id="tex_cigar" file="resources/cigar.jpg" length_s="1.0" length_t="1.0" />
     <texture id="tex_ash" file="resources/cigar2.jpg" length_s="1.0" length_t="1.0" />
     <texture id="tex_wall" file="resources/wall.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_top_wall" file="resources/sor_borg/borg_dn.JPG" length_s="1.0" length_t="1.0" />
     <texture id="tex_floor" file="resources/floor.jpg" length_s="0.1" length_t="0.1" />
     <texture id="tex_boia" file="resources/lifeguard.jpg" length_s="1.0" length_t="1.0"/>
     <texture id="tex_ball" file="resources/soccer3.jpg" length_s="1.0" length_t="1.0"/>
@@ -278,14 +300,33 @@
       <translate x="0.0" y="0.0" z="-1.0"/>
     </transformation>
 
-    <transformation id="trans_floor">
+    <transformation id="trans_room">
+      <translate x="-15.0" y="-1.0" z="-15.0"/>
+    </transformation>
+
+   <transformation id="trans_floor">
       <rotate axis="x" angle="-90"/>
-      <translate x="0.0" y="-40.0" z="0.0"/>
+      <translate x="0.0" y="-80.0" z="0.0"/>
     </transformation>
 
     <transformation id="trans_wall">
       <rotate axis="y" angle="90"/>
-      <translate x="-40.0" y="0.0" z="0.0"/>
+      <translate x="-80.0" y="0.0" z="0.0"/>
+    </transformation>
+
+    <transformation id="trans_top_wall">
+      <rotate axis="x" angle="90"/>
+      <translate x="0.0" y="0.0" z="-40.0"/>
+    </transformation>
+
+    <transformation id="trans_front_wall">
+      <rotate axis="y" angle="-90"/>
+      <translate x="0.0" y="0.0" z="-80.0"/>
+    </transformation>
+
+    <transformation id="trans_back_wall">
+      <rotate axis="y" angle="180"/>
+      <translate x="-80.0" y="0.0" z="-80.0"/>
     </transformation>
 
     <transformation id="trans_boia">
@@ -425,11 +466,11 @@
     </primitive>
 
     <primitive id="wall">
-      <rectangle x1="0.0" x2="40.0" y1="0.0" y2="20.0"/>
+      <rectangle x1="0.0" x2="80.0" y1="0.0" y2="40.0"/>
     </primitive>
 
     <primitive id="floor">
-      <rectangle x1="0.0" x2="40.0" y1="0.0" y2="40.0"/>
+      <rectangle x1="0.0" x2="80.0" y1="0.0" y2="80.0"/>
     </primitive>
 
     <primitive id="boia">
@@ -1101,6 +1142,7 @@
     
     <component id="component_root">
       <transformation>
+        <transformationref id="trans_room"/>
       </transformation>
       
       <materials>
@@ -1140,6 +1182,9 @@
       <children>
         <componentref id="component_right_wall"/>
         <componentref id="component_left_wall"/>
+        <componentref id="component_front_wall"/>
+        <componentref id="component_back_wall"/>
+        <componentref id="component_top_wall"/>
         <componentref id="component_floor"/>
       </children>
     </component>
@@ -1172,6 +1217,54 @@
       
       <children>
         <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_front_wall">
+      <transformation>
+        <transformationref id="trans_front_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_back_wall">
+      <transformation>
+        <transformationref id="trans_back_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_wall"/>
+      
+      <children>
+        <primitiveref id="wall"/>
+      </children>
+    </component>
+
+    <component id="component_top_wall">
+      <transformation>
+        <transformationref id="trans_top_wall"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_top_wall"/>
+      
+      <children>
+        <primitiveref id="floor"/>
       </children>
     </component>
 
