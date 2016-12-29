@@ -9,7 +9,7 @@ class Menu extends State {
 		this.previousAmbient = this.ambient;
 
 		this.settings = this.gui.addFolder('Settings');
-		this.settings.add(this, 'ambient', ['Cena3.dsx', 'Cena4.dsx', 'Cena5.dsx']);
+		this.settings.add(this, 'ambient', ['Cena.dsx', 'Cena2.dsx', 'Cena3.dsx', 'Cena4.dsx', 'Cena5.dsx']);
 		this.settings.add(this, 'turnDuration', 30, 90);
 
 		this.gamemodes = this.gui.addFolder('Play');
