@@ -1,5 +1,12 @@
 
 class Cell extends CGFobject {
+	/**
+	* Represents a board cell
+	* @param {CGFscene} scene - Scene
+	* @param {String} type - Type
+	* @param {Object} position - Position
+	* @constructor
+	*/
     constructor(scene, type, position) {
 		super(scene);
 		this.side = new Rectangle(scene, 0.25, 0, -0.25, -1);
@@ -13,6 +20,11 @@ class Cell extends CGFobject {
 		this.selected = false;
 	}
 
+	/**
+	* Renders cell
+	* @param {Array} textures - Texture array
+	* @param {Array} shaders - Shader arary
+	*/
 	display(textures, shaders) {
 		let initial = Math.PI/6;
 		for (let i = 0; i < 6; i++) {
@@ -37,6 +49,13 @@ class Cell extends CGFobject {
 }
 
 class Ship extends CGFobject {
+	/**
+	 * Represents a board ship
+	 * @param {CGFscene} scene - Scene
+	 * @param {String} faction - Faction
+	 * @param {Object} position - Position
+	 * @constructor
+	 */
 	constructor(scene, faction, position) {
 		super(scene);
 		this.geometry = new Ovni(scene);
@@ -51,6 +70,10 @@ class Ship extends CGFobject {
 		this.animation = new HopAnimation(100, {x:0,y:0,z:0}, {x:0,y:0,z:0}); 
 	}
 
+	/**
+	 * Renders ship
+	 * @param {Array} textures - Texture array
+	 */
 	display(textures) {
 		this.scene.pushMatrix();
 		this.scene.translate(0,0.2,0);
@@ -64,12 +87,22 @@ class Ship extends CGFobject {
 		this.scene.popMatrix();
 	}
 
+	/**
+	* Updates ship
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.animation.update(dt);
 	}
 }
 
 class TradeStation extends CGFobject {
+	/**
+	 * Represents a board trade station
+	 * @param {CGFscene} scene - Scene
+	 * @param {String} faction - Faction
+	 * @constructor
+	 */
 	constructor(scene, faction) {
 		super(scene);
 		this.geometry = new SpaceStation(scene);
@@ -80,6 +113,10 @@ class TradeStation extends CGFobject {
 		this.animation = new HopAnimation(100, {x:0,y:0,z:0}, {x:0,y:0,z:0}); 
 	}
 
+	/**
+	 * Renders trade station
+	 * @param {Array} textures - Texture array
+	 */
 	display(textures) {
 		this.scene.pushMatrix();
 		if (!this.animation.finished) {
@@ -94,12 +131,22 @@ class TradeStation extends CGFobject {
 		this.scene.popMatrix();
 	}
 
+	/**
+	 * Updates trade station
+	 * @param {Number} dt - Delta time
+	 */
 	update(dt) {
 		this.animation.update(dt);
 	}
 }
 
 class Colony extends CGFobject {
+	/**
+	 * Represents a board colony
+	 * @param {CGFscene} scene - Scene
+	 * @param {String} faction - Faction
+	 * @constructor
+	 */
 	constructor(scene, faction) {
 		super(scene);
 		this.geometry = new SpaceColony(scene);
@@ -109,6 +156,10 @@ class Colony extends CGFobject {
 		this.animation = new HopAnimation(100, {x:0,y:0,z:0}, {x:0,y:0,z:0}); 
 	}
 
+	/**
+	 * Renders colony
+	 * @param {Array} textures - Texture array
+	 */
 	display(textures) {
 		this.scene.pushMatrix();
 		if (!this.animation.finished) {
@@ -124,6 +175,10 @@ class Colony extends CGFobject {
 		this.scene.popMatrix();
 	}
 
+	/**
+	 * Updates colony
+	 * @param {Number} dt - Delta time
+	 */
 	update(dt) {
 		this.animation.update(dt);
 	}
@@ -131,8 +186,11 @@ class Colony extends CGFobject {
 }
 
 class Board extends CGFobject{
-	// FIXME: Receber o fator de escala como argumento
-	// Do DSX se for possivel
+	/**
+	* Represents the game board
+	* @param {CGFscene} scene - Scene
+	* @constructor
+	*/
     constructor(scene) {
 		super(scene);
 
@@ -171,6 +229,10 @@ class Board extends CGFobject{
 
     }
 
+	/**
+	* Loads board
+	* @param {Function} onLoad - Callback
+	*/
 	load(onLoad) {
 		let connection = new Connection();
 		let self = this;
@@ -181,6 +243,7 @@ class Board extends CGFobject{
 		});
 	}
 
+	/** Initializes board */
 	initBoard() {
 		this.cells = [];
 		this.ships = [];
@@ -202,6 +265,11 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	* Places ship from faction at position
+	* @param {Object} position - Position
+	* @param {String} faction - Faction
+	*/
 	placeShipAt(position, faction) {
 		if (faction === 'factionOne') {
 			this.board[position.z][position.x][0] = 'A';
@@ -210,18 +278,33 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	* Returns board movement layer of cell
+	* @param {Cell} cell - Cell
+	*/
 	getMovementLayer(cell) {
 		return cell[0];
 	}
-	
+
+	/**
+	 * Returns board map layer of cell
+	 * @param {Cell} cell - Cell
+	 */
     getMapLayer(cell) {
 		return cell[1];
     }
 
+	/**
+	 * Returns board structure layer of cell
+	 * @param {Cell} cell - Cell
+	 */
 	getStructureLayer(cell) {
 		return cell[2];
 	}
 
+	/** Registers cell at position for picking
+	* @param {Object} position - Position
+	*/
 	registerCellForPicking(position) {
 		this.cells.forEach(function(cell) {
 			if (cell.position.x === position.x && cell.position.z === position.z) {
@@ -230,6 +313,9 @@ class Board extends CGFobject{
 		});
 	}
 
+	/** Registers ship at position for picking
+	 * @param {Object} position - Position
+	 */
 	registerShipsForPicking(faction) {
 		let self = this;
 		this.ships.forEach(function(ship) {
@@ -239,12 +325,17 @@ class Board extends CGFobject{
 		});
 	}
 
+	/** Resets pick registration */
 	resetPickRegistration() {
 		this.cells.forEach(function(cell) {
 			cell.pickable = false;
 		});
 	}
 
+	/**
+	* Selects cell at position
+	* @param {Object} position - Position
+	*/
 	selectCell(position) {
 		this.cells.forEach(function(cell) {
 			if (cell.position.x === position.x && cell.position.z === position.z) {
@@ -253,12 +344,17 @@ class Board extends CGFobject{
 		});
 	}
 
+	/** Resets selection */
 	resetSelection() {
 		this.cells.forEach(function(cell) {
 			cell.selected = false;
 		});
 	}
 
+	/**
+	* Returns cell with pickId
+	* @param {String} pickId - Pick id
+	*/
 	getCellByPickId(pickId) {
 		let ret = null;
 		this.cells.forEach(function(cell) {
@@ -269,6 +365,10 @@ class Board extends CGFobject{
 		return ret;
 	}
 
+	/** Places colony from faction at position
+	* @param {Object} position - Position
+	* @param {String} faction - Faction
+	*/
 	placeColony(position, faction) {
 		if (faction === 'factionOne') {
 			this.board[position.z][position.x][2] = 'o';
@@ -278,6 +378,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/** Places trade station from faction at position
+	 * @param {Object} position - Position
+	 * @param {String} faction - Faction
+	 */
 	placeTradeStation(position, faction) {
 		if (faction === 'factionOne') {
 			this.board[position.z][position.x][2] = 'l';
@@ -287,13 +391,13 @@ class Board extends CGFobject{
 		}
 	}
 
+	/** Renders board */
     display() {
 		let self = this;
 		
 		this.cells.forEach(function(cell) {
 			self.scene.pushMatrix();
 			self.scene.scale(5, 5, 5);
-//			self.scene.translate(-5.5 * self.distance, 0, -3.5 * self.distance);
 
 			if (cell.position.z % 2 === 0) {
 				let offset = cell.position.z * self.distance / 2;
@@ -310,7 +414,6 @@ class Board extends CGFobject{
 		this.ships.forEach(function(ship) {
 			self.scene.pushMatrix();
 			self.scene.scale(5, 5, 5);
-//			self.scene.translate(-5.5 * self.distance, 0, -3.5 * self.distance);
 			
 			if (ship.position.z % 2 === 0) {
 				let offset = ship.position.z * self.distance / 2;
@@ -328,7 +431,6 @@ class Board extends CGFobject{
 			for (let j = 0; j < this.board.length; j++) {
 				this.scene.pushMatrix();
 				this.scene.scale(5, 5, 5);
-//				this.scene.translate(-5.5 * this.distance, 0, -3.5 * this.distance);
 				var posX;
 				var posZ;
 				if (i % 2 === 0) {
@@ -366,6 +468,10 @@ class Board extends CGFobject{
 		this.scene.popMatrix();
     }
 
+	/**
+	* Updates board
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.ships.forEach(function(ship) {
 			ship.update(dt);
@@ -374,12 +480,21 @@ class Board extends CGFobject{
 		this.aux1.update(dt);
 	}
 
+	/** Sets texture coordinates */
 	setTexCoords() {};
 
+	/**
+	* Sets board
+	* @param {Array} board - Board array
+	*/
     setBoard(board) {
     	this.board = board;
     }
 
+	/**
+	* Returns scene position
+	* @param {Object} position - Position
+	*/
 	getScenePosition(position) {
 		let scenepos = {x: 0, y: 0, z: 0};
 		if (position.z % 2 === 0) {
@@ -394,6 +509,10 @@ class Board extends CGFobject{
 		return scenepos;
 	}
 
+	/**
+	* Returns ship at position
+	* @param {Object} position - Position
+	*/
 	getShipAt(position) {
 		let ret = null;
 		this.ships.forEach(function(ship) {
@@ -404,6 +523,10 @@ class Board extends CGFobject{
 		return ret;
 	}
 
+	/**
+	 * Returns cell at position
+	 * @param {Object} position - Position
+	 */
 	getCellAt(position) {
 		let ret = null;
 		this.cells.forEach(function(cell) {
@@ -414,6 +537,10 @@ class Board extends CGFobject{
 		return ret;
 	}
 
+	/**
+	 * Returns colony from aux board from faction
+	 * @param {String} faction - Faction
+	 */
 	getAuxColony(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.colonies[this.aux.colonies.length-1];
@@ -422,6 +549,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Returns trade station from aux board from faction
+	 * @param {String} faction - Faction
+	 */
 	getAuxTradeStation(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.tradeStations[this.aux.tradeStations.length-1];
@@ -430,6 +561,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	* Returns position on auxiliary board of colony from faction
+	* @param {String} faction - Faction
+	*/
 	getAuxColonyPosition(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.getColonyScenePosition();
@@ -440,6 +575,11 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Returns position on auxiliary board of colony from faction
+	 * @param {String} faction - Faction
+	 * @param {Number} index - Index
+	 */
 	getAuxColonyPositionAt(faction, index) {
 		if (faction === 'factionOne') {
 			return this.aux.getColonyScenePositionAt(index);
@@ -450,6 +590,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Returns position on auxiliary board of trade station from faction
+	 * @param {String} faction - Faction
+	 */
 	getAuxTradeStationPosition(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.getTradeStationScenePosition();
@@ -460,6 +604,11 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Returns position on auxiliary board of trade station from faction
+	 * @param {String} faction - Faction
+	 * @param {Number} index - Index
+	 */
 	getAuxTradeStationPositionAt(faction, index) {
 		if (faction === 'factionOne') {
 			return this.aux.getTradeStationScenePositionAt(index);
@@ -470,6 +619,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	* Pops colony from faction on auxiliary board
+	* @param {String} faction - Faction
+	*/
 	popAuxColony(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.popColony();
@@ -478,6 +631,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Pushes colony from faction to auxiliary board
+	 * @param {String} faction - Faction
+	 */
 	pushAuxColony(faction) {
 		if (faction === 'factionOne') {
 			this.aux.pushColony();
@@ -486,6 +643,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Pops trade station from faction on auxiliary board
+	 * @param {String} faction - Faction
+	 */
 	popAuxTradeStation(faction) {
 		if (faction === 'factionOne') {
 			return this.aux.popTradeStation();
@@ -494,6 +655,10 @@ class Board extends CGFobject{
 		}
 	}
 
+	/**
+	 * Pushes trade station from faction to auxiliary board
+	 * @param {String} faction - Faction
+	 */
 	pushAuxTradeStation(faction) {
 		if (faction === 'factionOne') {
 			this.aux.pushTradeStation();
@@ -502,6 +667,7 @@ class Board extends CGFobject{
 		}
 	}
 
+	/** Returns board center */
 	getBoardCenter() {
 		let pos = this.getScenePosition({x: 4, z: 4});
 		return vec3.fromValues(pos.x * 5, pos.y * 5, pos.z * 5);
@@ -509,6 +675,13 @@ class Board extends CGFobject{
 }
 
 class AuxiliaryBoard extends CGFobject {
+	/**
+	* Represents auxiliary board
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {Faction} faction - Faction
+	* @constructor
+	*/
 	constructor(scene, board, faction) {
 		super(scene);
 		this.board = board;
@@ -528,6 +701,7 @@ class AuxiliaryBoard extends CGFobject {
 		}
 	}
 
+	/** Renders auxiliary board */
 	display() {
 		for (let i = 0; i < this.colonies.length; i++) {
 			this.scene.pushMatrix();
@@ -550,6 +724,10 @@ class AuxiliaryBoard extends CGFobject {
 		this.scene.popMatrix();
 	}
 
+	/**
+	* Updates board
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		for (let i = 0; i < this.colonies.length; i++) {
 			this.colonies[i].update(dt);
@@ -559,42 +737,56 @@ class AuxiliaryBoard extends CGFobject {
 		}
 	}
 
+	/** Returns scene position of colony */
 	getColonyScenePosition() {
 		let current = this.colonies.length - 1;
 		let position = {x: 0, y: 0, z: 1 + current * 0.3};
 		return position;
 	}
 
+	/**
+	* Returns scene position of colony at index
+	* @param {Number} index - Index
+	*/
 	getColonyScenePositionAt(index) {
 		let position = {x: 0, y: 0, z: 1 + index * 0.3};
 		return position;
 	}
 
+	/** Returns scene position of trade station */
 	getTradeStationScenePosition() {
 		let current = this.tradeStations.length - 1;
 		let position = {x: 0, y: 0, z: 1 +  current * 0.3};
 		return position;
 	}
 
+	/**
+	 * Returns scene position of trade station at index
+	 * @param {Number} index - Index
+	 */
 	getTradeStationScenePositionAt(index) {
 		let position = {x: 0, y: 0, z: 1 + index * 0.4}
 		return position;
 	}
 
+	/** Pops colony */
 	popColony() {
 		this.colonies.pop();
 		return this.colonies.length;
 	}
 
+	/** Pushes colony */
 	pushColony() {
 		this.colonies.push(new Colony(this.scene, this.faction));
 	}
 
+	/** Pops trade station */
 	popTradeStation() {
 		this.tradeStations.pop();
 		return this.colonies.length;
 	}
 
+	/** Pushes trade station */
 	pushTradeStation() {
 		this.tradeStations.push(new TradeStation(this.scene, this.faction));
 	}

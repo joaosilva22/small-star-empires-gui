@@ -1,4 +1,13 @@
 class LoadStatePvCPU extends State {
+	/**
+	 * Load state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		console.log('Entered LoadStatePvCPU ...');
@@ -28,6 +37,10 @@ class LoadStatePvCPU extends State {
 		}
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		if (this.loaded) {
 			if (this.faction === 'factionOne') {
@@ -40,6 +53,7 @@ class LoadStatePvCPU extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		if (this.board.board.length !== 0) {
 			this.board.display();
@@ -48,6 +62,15 @@ class LoadStatePvCPU extends State {
 }
 
 class BotPickStatePvCPU extends State {
+	/**
+	* Bot pick state for PvCPU mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {String} faction - Current faction
+	* @param {String} difficulty - Game difficulty
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		console.log('Entered BotPickStatePvCPU ...');
@@ -71,10 +94,15 @@ class BotPickStatePvCPU extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Returns movement in board
+	* @param {Array} newboard - Board array
+	*/
 	getMovement(newboard) {
 		let from = null;
 		let to = null;
@@ -110,6 +138,15 @@ class BotPickStatePvCPU extends State {
 }
 
 class ShipPickStatePvCPU extends State {
+	/**
+	* Ship pick state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		console.log('Entered PlayerPickStatePvCPU ...');
@@ -122,10 +159,15 @@ class ShipPickStatePvCPU extends State {
 		this.beganUndoAnimation = false;
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 
@@ -167,6 +209,10 @@ class ShipPickStatePvCPU extends State {
 		}
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		if (!this.beganUndoAnimation) {
 			let selectedCell = this.getPickedCell();
@@ -182,6 +228,7 @@ class ShipPickStatePvCPU extends State {
 		}
 	}
 
+	/** Undoes play */
 	undo() {
 		if (!this.beganUndoAnimation) {
 			let lastBotPlay = this.stateManager.film.getPreviousPlay();
@@ -248,6 +295,7 @@ class ShipPickStatePvCPU extends State {
 		}
 	}
 
+	/** Returns picked cell */
 	getPickedCell() {
 		let self = this;
 		let cell = null;
@@ -263,6 +311,16 @@ class ShipPickStatePvCPU extends State {
 }
 
 class MovePickStatePvCPU extends State {
+	/**
+	 * Move pick state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @param {Cell} selected - The selected cell
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty, selected) {
 		super(stateManager, scene);
 		console.log('Entered MovePickStatePvCPU ...');
@@ -287,10 +345,15 @@ class MovePickStatePvCPU extends State {
 		});	
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		let selectedCell = this.getPickedCell();
 		if (selectedCell !== null && selectedCell.pickable) {
@@ -308,6 +371,7 @@ class MovePickStatePvCPU extends State {
 		}
 	}
 
+	/** Undoes play */
 	undo() {
 		this.board.resetPickRegistration();
 		this.board.resetSelection();
@@ -315,6 +379,10 @@ class MovePickStatePvCPU extends State {
 		this.stateManager.changeState(new ShipPickStatePvCPU(this.stateManager, this.scene, this.board, this.stateManager.film.getPlay().faction, this.difficulty));
 	}
 
+	/**
+	* Returns possible movements from board array
+	* @param {Array} possibleBoards - Board array
+	*/
 	getPossibleMovements(possibleBoards) {
 		let movements = [];
 		let self = this;
@@ -333,6 +401,7 @@ class MovePickStatePvCPU extends State {
 		return movements;
 	}
 
+	/** Returns picked cell */
 	getPickedCell() {
 		let self = this;
 		let cell = null;
@@ -348,6 +417,18 @@ class MovePickStatePvCPU extends State {
 }
 
 class BotMoveShipStatePvCPU extends State {
+	/**
+	* Bot move ship state for PvCPU mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {String} faction - Faction
+	* @param {String} difficulty - Game difficulty
+	* @param {Object} from - Movement origin
+	* @param {Object} to - Movement destination
+	* @param {String} structure - Structure to place
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction, difficulty, from, to, structure) {
 		super(stateManager, scene);
 		console.log('Entered BotMoveShipStatePvCPU ...');
@@ -373,10 +454,15 @@ class BotMoveShipStatePvCPU extends State {
 		});
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 
@@ -389,6 +475,17 @@ class BotMoveShipStatePvCPU extends State {
 }
 
 class MoveShipStatePvCPU extends State {
+	/**
+	 * Move ship state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @param {Object} from - Movement origin
+	 * @param {Object} to - Movement destination
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty, from, to) {
 		super(stateManager, scene);
 		console.log('Entered MoveShipStatePvCPU ...');
@@ -413,10 +510,15 @@ class MoveShipStatePvCPU extends State {
 		});
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 
@@ -429,6 +531,17 @@ class MoveShipStatePvCPU extends State {
 }
 
 class BotStructBuildStatePvCPU extends State {
+	/**
+	* Bot struct build state for PvCPU mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {String} faction - Faction
+	* @param {String} difficulty - Game difficulty
+	* @param {Object} position - Structure position
+	* @param {String} structure - Structure to build
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction, difficulty, position, structure) {
 		super(stateManager, scene);
 		console.log('Entered BotStructBuildStatePvCPU ...');
@@ -451,6 +564,10 @@ class BotStructBuildStatePvCPU extends State {
 		this.board.initBoard();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 
@@ -471,12 +588,23 @@ class BotStructBuildStatePvCPU extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class StructBuildStatePvCPU extends State {
+	/**
+	 * Struct build state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @param {Object} position - The structure position
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty, position) {
 		super(stateManager, scene);
 		console.log('Entered StructBuildStatePvCPU ...');
@@ -496,10 +624,15 @@ class StructBuildStatePvCPU extends State {
 		stateManager.overlay.updateTip('Press c/C to place a Colony, or t/T to place a Trade Station');
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 		
@@ -529,6 +662,10 @@ class StructBuildStatePvCPU extends State {
 		}
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
 			if (keycode === 67 || keycode === 99) {
@@ -549,6 +686,7 @@ class StructBuildStatePvCPU extends State {
 		}
 	}
 
+	/** Undoes play */
 	undo() {
 		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
 			this.stateManager.overlay.updateTip('');
@@ -561,6 +699,15 @@ class StructBuildStatePvCPU extends State {
 }
 
 class TestEndStatePvCPU extends State {
+	/**
+	 * Test end game state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		this.board = board;
@@ -577,12 +724,20 @@ class TestEndStatePvCPU extends State {
 		this.stateManager.overlay.updateScore(this.board);
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class GameOverStatePvCPU extends State {
+	/**
+	 * Game over state for PvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
 		this.board = board;
@@ -603,12 +758,22 @@ class GameOverStatePvCPU extends State {
 		this.stateManager.finished = true;
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class PvCPU extends State {
+	/**
+	 * PvCPU game mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Overlay} overlay - Overlay
+	 * @param {dat.GUI} gui - GUI
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, overlay, gui, difficulty) {
 		super(stateManager, scene);
 
@@ -643,11 +808,16 @@ class PvCPU extends State {
 		this.actions.open();
 	}
 
+	/** Renders state */
 	draw() {
 		this.scene.clearPickRegistration();
 		this.gameStateManager.draw();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.gameStateManager.update(dt);
 		this.gameStateManager.overlay.update(dt);
@@ -658,6 +828,10 @@ class PvCPU extends State {
 		}
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		this.gameStateManager.handleInput(keycode);
 
@@ -666,6 +840,7 @@ class PvCPU extends State {
 		}
 	}
 
+	/** Resets camera */
 	resetCamera() {
 		let to = this.board.getBoardCenter();
 		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
@@ -676,6 +851,11 @@ class PvCPU extends State {
 		this.camera._up = camera._up;
 	}
 
+	 /**
+	 * Removes dat.GUI folder
+	 * @param {dat.GUI} gui - GUI
+	 * @param {String} name - Folder name
+	 */
 	removeFolder(gui, name) {
 		let folder = gui.__folders[name];
 		if (!folder) return;
@@ -685,17 +865,20 @@ class PvCPU extends State {
 		gui.onResize();
 	}
 
+	/** Handles transition to menu state */
 	Menu() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
 	}
-	
+
+	/** Handles state undo */
 	Undo() {
 		if (this.gameStateManager.getCurrentState().undo) {
 			this.gameStateManager.getCurrentState().undo();
 		}
 	}
 
+	/** Handles transition to replay state */
 	Replay() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.pushState(new Replay(this.stateManager, this.scene, this.gameStateManager.film, this.gameStateManager.overlay, this.gui));

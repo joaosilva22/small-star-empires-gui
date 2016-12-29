@@ -1,5 +1,13 @@
 
 class Connection {
+
+	/**
+	 * Gets prolog request
+	 * @param {String} requestString - Request
+	 * @param {Function} onSuccess - On success callback
+	 * @param {Function} onError - On error callback
+	 * @param {Number} port - Port
+	 */
 	getPrologRequest(requestString, onSuccess, onError, port) {
 		var requestPort = port || 8081
 		var request = new XMLHttpRequest();
@@ -12,16 +20,38 @@ class Connection {
 		request.send();
 	} 
 
+	/**
+	 * Requests initial board
+	 * @param {Function} onSuccess - Callback
+	 */
 	getBoardRequest(onSuccess) {
 		this.getPrologRequest('getBoard', onSuccess);
 	}
 
+	/**
+	 * Requests ship movement
+	 * @param {Board} board - Board
+	 * @param {String} faction - Faction
+	 * @param {Number} x1 - Initial x
+	 * @param {Number} z1 - Initial z
+	 * @param {Number} x2 - Final x
+	 * @param {Number} z2 - Final z
+	 * @param {Function} onSuccess - Callback
+	 */
 	moveShipRequest(board, faction, x1, z1, x2, z2, onSuccess) {
 		let boardString = parseArrayString(board.board);
 	    let requestString = `moveShipL(${faction},${boardString},${x1},${z1},${x2},${z2})`;
 	    this.getPrologRequest(requestString, onSuccess);
 	}
 
+	/**
+	 * Request structure placement
+	 * @param {String} faction - Faction
+	 * @param {Board} board - Board
+	 * @param {String} structure - Structure
+	 * @param {Object} position - Position
+	 * @param {Function} onSuccess - Callback
+	 */
 	placeStructureRequest(faction, board, structure, position, onSuccess) {
 		let boardString = parseArrayString(board.board);
 		let {x, z} = position;
@@ -33,6 +63,13 @@ class Connection {
 	    this.getPrologRequest(requestString, onSuccess);
 	}
 
+	/**
+	 * Request ship possible movements
+	 * @param {String} faction - Faction
+	 * @param {Board} board - Board
+	 * @param {Object} position - Position
+	 * @param {Function} onSuccess - Callback
+	 */
 	shipPossibleMovementsRequest(faction, board, position, onSuccess){
 		let boardString = parseArrayString(board.board);
 		let {x, z} = position;
@@ -40,30 +77,59 @@ class Connection {
 	    this.getPrologRequest(requestString, onSuccess);
 	}
 
+	/**
+	 * Request player possible boards
+	 * @param {String} faction - Faction
+	 * @param {Board} board - Board
+	 * @param {Function} onSuccess - Callback
+	 */
 	playerPossibleBoardsRequest(faction, board, onSuccess){
 		let boardString = parseArrayString(board.board);
 	    let requestString = `playerPossibleBoards(${faction},${boardString})`;
 	    this.getPrologRequest(requestString, onSuccess); 
 	}
 
+	/**
+	 * Request player best board
+	 * @param {String} faction - Faction
+	 * @param {Board} board - Board
+	 * @param {Function} onSuccess - Callback
+	 */
 	playerBestBoardRequest(faction, board, onSuccess){
 		let boardString = parseArrayString(board.board);
 	    let requestString = `playerBestBoard(${faction},${boardString})`;
 	    this.getPrologRequest(requestString, onSuccess);
 	}
 
+	/**
+	 * Request if game is over
+	 * @param {Board} board - Board
+	 * @param {Function} onSuccess - Callback
+	 */
 	isGameOverRequest(board, onSuccess) {
 		let boardString = parseArrayString(board.board);
 		let requestString = `isTheGameOver(${boardString})`;
 		this.getPrologRequest(requestString, onSuccess);
 	}
 
+	/**
+	 * Request random board
+	 * @param {String} faction - Faction
+	 * @param {Board} board - Board
+	 * @param {Function} onSuccess - Callback
+	 */
 	getRandomBoardRequest(faction, board, onSuccess) {
 		let boardString = parseArrayString(board.board);
 		let requestString = `getRandomBoardPlease(${faction},${boardString})`;
 		this.getPrologRequest(requestString, onSuccess);
 	}
 
+	/**
+	 * Request total points
+	 * @param {String} faction - Faction
+	 * @param {Board} board - Board
+	 * @param {Function} onSuccess - Callback
+	 */
 	calculateTotalPointsRequest(faction, board, onSuccess) {
 		let boardString = parseArrayString(board.board);
 		let requestString = `calculateTotalPoints(${faction},${boardString})`;
@@ -72,6 +138,10 @@ class Connection {
 
 }
 
+/**
+ * Parses string to array
+ * @param {String} string - String
+ */
 function parseStringArray(string) {
 	let array = [];
 	let element = '';
@@ -94,6 +164,10 @@ function parseStringArray(string) {
 	return array;
 }
 
+/**
+ * Returns length of string array
+ * @param {String} string - String
+ */
 function getStringArrayLen(string) {
 	let length = 0;
 	let num = 0;
@@ -109,6 +183,10 @@ function getStringArrayLen(string) {
 	return -1;
 }
 
+/**
+ * Parses array to string
+ * @param {String} string - String
+ */
 function parseArrayString(array){
 	let string = "[";
 	for(let i=0; i<array.length; i++){

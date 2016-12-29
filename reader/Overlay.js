@@ -1,4 +1,5 @@
 class Overlay {
+	/** Game overlay */
 	constructor() {
 		this.scoreBlueElement = document.getElementById('score-blue');
 		this.scoreYellowElement = document.getElementById('score-yellow');
@@ -70,6 +71,7 @@ class Overlay {
 		this.hideReplay();
 	}
 
+	/** Updates overlay */
 	update(dt) {
 		if (this.timerEnabled) {
 			this.elapsed += dt;
@@ -114,11 +116,13 @@ class Overlay {
 		}
 	}
 
+	/** Begins overlay timer */
 	beginTimer() {
 		this.timerEnabled = true;
 		this.elapsed = 0;
 	}
 
+	/** Ends overlay timer */
 	endTimer() {
 		this.timerEnabled = false;
 		let minutes = Math.floor((this.elapsed / 1000) / 60);
@@ -126,6 +130,10 @@ class Overlay {
 		console.log(`Game finished in ${minutes}min${seconds}s`);
 	}
 
+	/**
+	* Updates score
+	* @board {Board} board - Board to calculate points on
+	*/
 	updateScore(board) {
 		let connection = new Connection();
 		let self = this;
@@ -137,16 +145,22 @@ class Overlay {
 		});
 	}
 
+	/** Hides score */
 	hideScore() {
 		this.scoreBlueElement.style.display = 'none';
 		this.scoreYellowElement.style.display = 'none';
 	}
 
+	/** Shows score */
 	showScore() {
 		this.scoreBlueElement.style.display = 'block';
 		this.scoreYellowElement.style.display = 'block';
 	}
 
+	/**
+	* Returns score for faction
+	* @param {String} faction - Faction
+	*/
 	getScore(faction) {
 		if (faction === 'factionOne') {
 			return this.scoreFactionOneNode.nodeValue;
@@ -155,6 +169,10 @@ class Overlay {
 		}
 	}
 
+	/**
+	 * Sets score for faction
+	 * @param {String} faction - Faction
+	 */
 	setScore(faction, value) {
 		if (faction === 'factionOne') {
 			this.scoreFactionOneNode.nodeValue = value;
@@ -163,6 +181,10 @@ class Overlay {
 		}
 	}
 
+	/**
+	* Updates tip
+	* @param {String} value - New value
+	*/
 	updateTip(value) {
 		if (value === '') {
 			this.tipElement.style.display = 'none';
@@ -172,6 +194,10 @@ class Overlay {
 		this.tipTextNode.nodeValue = value;
 	}
 
+	/**
+	* Updates winner
+	* @param {String} value = New value
+	*/
 	updateWinner(value) {
 		if (value === '') {
 			this.bannerElement.style.display = 'none';
@@ -181,6 +207,11 @@ class Overlay {
 		this.winnerTextNode.nodeValue = value;
 	}
 
+	/**
+	* Shows alert for duration
+	* @param {String} text - Text to display
+	* @param {Number} duration - Duration
+	*/
 	alert(text, duration) {
 		this.alertDuration = duration;
 		this.alertElapsed = 0;
@@ -189,10 +220,15 @@ class Overlay {
 		this.alertTextNode.nodeValue = text;
 	}
 
+	/** Hides alert */
 	endAlert() {
 		this.alertElapsed = this.alertDuration;
 	}
 
+	/**
+	* Starts stopwatch for faction
+	* @param {String} faction - Faction
+	*/
 	beginStopWatch(faction) {
 		if (faction === 'factionOne') {
 			this.stopwatchBlueRemain = this.stopwatchDuration;
@@ -203,6 +239,10 @@ class Overlay {
 		}
 	}
 
+	/**
+	 * Stops stopwatch for faction
+	 * @param {String} faction - Faction
+	 */	
 	pauseStopWatch(faction) {
 		if (faction === 'factionOne') {
 			this.stopwatchBlueEnabled = false;
@@ -211,6 +251,10 @@ class Overlay {
 		}
 	}
 
+	/**
+	 * Resets stopwatch for faction
+	 * @param {String} faction - Faction
+	 */
 	resetStopWatch(faction) {
 		if (faction === 'factionOne') {
 			this.stopwatchBlueRemain = this.stopwatchDuration;
@@ -221,6 +265,10 @@ class Overlay {
 		}
 	}
 
+	/**
+	* Checks if stopwatch ended for faction
+	* @param {String} faction - Faction
+	*/
 	hasStopWatchEnded(faction) {
 		if (faction === 'factionOne') {
 			if (this.stopwatchBlueRemain <= 0) {
@@ -234,24 +282,32 @@ class Overlay {
 		return false;
 	}
 
+	/** Hides stopwatches */
 	hideStopWatch() {
 		this.stopwatchBlueElement.style.display = 'none';
 		this.stopwatchYellowElement.style.display = 'none';
 	}
 
+	/** Shows stopwatches */
 	showStopWatch() {
 		this.stopwatchBlueElement.style.display = this.stopWatchBlueDisplay;
 		this.stopwatchYellowElement.style.display = this.stopWatchYellowDisplay;
 	}
 
+	/**
+	* Sets stopwatch duration
+	* @param {Number} duration - New duration
+	*/
 	setStopWatchDuration(duration) {
 		this.stopwatchDuration = duration * 1000;
 	}
 
+	/** Shows replay warning */
 	showReplay() {
 		this.replayTextElement.style.display = this.replayTextDisplay;
 	}
 
+	/** Hides replay warning */
 	hideReplay() {
 		this.replayTextElement.style.display = 'none';
 	}

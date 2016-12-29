@@ -1,4 +1,12 @@
 class Menu extends State {
+	/**
+	* Represents the game's main menu state
+	* @param {StateManager} stateManager - State manager for this state
+	* @param {CGFscene} scene - Scene for this state
+	* @param {Overlay} overlay - Overlay controler
+	* @param {dat.GUI} gui - GUI
+	* @constructor
+	*/
 	constructor(stateManager, scene, overlay, gui) {
 		super(stateManager, scene);
 		console.log('Entered Menu ...');
@@ -31,6 +39,10 @@ class Menu extends State {
 		this.overlay.hideReplay();
 	}
 
+	/**
+	* Updates the main menu
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		if (this.previousAmbient != this.ambient) {
 			this.previousAmbient = this.ambient;
@@ -38,6 +50,11 @@ class Menu extends State {
 		}
 	}
 
+	/**
+	* Removes dat.GUI folder
+	* @param {dat.GUI} gui - GUI
+	* @param {String} name - Folder name
+	*/
 	removeFolder(gui, name) {
 		let folder = gui.__folders[name];
 		if (!folder) return;
@@ -47,6 +64,7 @@ class Menu extends State {
 		gui.onResize();
 	}
 
+	/** Handles transition to PvP state */
 	PvP() {
 		this.removeFolder(this.gui, 'Play');
 		this.removeFolder(this.gui, 'Settings');
@@ -56,6 +74,7 @@ class Menu extends State {
 		this.stateManager.changeState(new PvP(this.stateManager, this.scene, this.overlay, this.gui, this.turnDuration));
 	}
 
+	/** Handles transition to PvCPU state */
 	PvEasyCPU() {
 		this.removeFolder(this.gui, 'Play');
 		this.removeFolder(this.gui, 'Settings');
@@ -65,6 +84,7 @@ class Menu extends State {
 		this.stateManager.changeState(new PvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'easy'));
 	}
 
+	/** Handles transition to PvCPU state */
 	PvHardCPU() {
 		this.removeFolder(this.gui, 'Play');
 		this.removeFolder(this.gui, 'Settings');
@@ -74,6 +94,7 @@ class Menu extends State {
 		this.stateManager.changeState(new PvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'hard'));
 	}
 
+	/** Handles transition to CPUvCPU state */
 	EasyCPUvEasyCPU() {
 		this.removeFolder(this.gui, 'Play');
 		this.removeFolder(this.gui, 'Settings');
@@ -83,6 +104,7 @@ class Menu extends State {
 		this.stateManager.changeState(new CPUvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'easy'));
 	}
 
+	/** Handles transition to CPUvCPU state */
 	HardCPUvHardCPU() {
 		this.removeFolder(this.gui, 'Play');
 		this.removeFolder(this.gui, 'Settings');
@@ -92,6 +114,10 @@ class Menu extends State {
 		this.stateManager.changeState(new CPUvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'hard'));
 	}
 
+	/**
+	* Changes the game ambient
+	* @param {String} ambient - Ambient file name
+	*/
 	changeAmbient(ambient) {
 		window.location = `?file=${ambient}`;
 	}

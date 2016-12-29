@@ -1,4 +1,13 @@
 class LoadStateCPUvCPU extends State {
+	/**
+	 * Load state for CPUvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		console.log('Entered LoadStateCPUvCPU ...');
@@ -23,6 +32,10 @@ class LoadStateCPUvCPU extends State {
 		}
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		if (this.loaded) {
 			this.stateManager.film.addPlay(this.faction, this.board.board);
@@ -30,6 +43,7 @@ class LoadStateCPUvCPU extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		if (this.board.board.length !== 0) {
 			this.board.display();
@@ -38,6 +52,15 @@ class LoadStateCPUvCPU extends State {
 }
 
 class BotPickStateCPUvCPU extends State {
+	/**
+	 * Bot pick state for CPUvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @param {String} faction - Current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		console.log('Entered BotPickStateCPUvCPU ...');
@@ -61,10 +84,15 @@ class BotPickStateCPUvCPU extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	 * Returns movement in board
+	 * @param {Array} newboard - Board array
+	 */
 	getMovement(newboard) {
 		let from = null;
 		let to = null;
@@ -100,6 +128,18 @@ class BotPickStateCPUvCPU extends State {
 }
 
 class BotMoveShipStateCPUvCPU extends State {
+	/**
+	 * Bot move ship state for CPUvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @param {String} faction - Faction
+	 * @param {String} difficulty - Game difficulty
+	 * @param {Object} from - Movement origin
+	 * @param {Object} to - Movement destination
+	 * @param {String} structure - Structure to place
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty, from, to, structure) {
 		super(stateManager, scene);
 		console.log('Entered BotMoveShipStateCPUvCPU ...');
@@ -124,10 +164,12 @@ class BotMoveShipStateCPUvCPU extends State {
 		});
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
-	
+
+	/** Updates state */
 	update(dt) {
 		this.board.update(dt);
 
@@ -138,6 +180,17 @@ class BotMoveShipStateCPUvCPU extends State {
 }
 
 class BotStructBuildStateCPUvCPU extends State {
+	/**
+	 * Bot struct build state for CPUvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @param {String} faction - Faction
+	 * @param {String} difficulty - Game difficulty
+	 * @param {Object} position - Structure position
+	 * @param {String} structure - Structure to build
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty, position, structure) {
 		super(stateManager, scene);
 		console.log('Entered BotStructBuildStateCPUvCPU ...');
@@ -164,6 +217,10 @@ class BotStructBuildStateCPUvCPU extends State {
 		this.board.initBoard();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 		
@@ -184,12 +241,22 @@ class BotStructBuildStateCPUvCPU extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class TestEndStateCPUvCPU extends State {
+	/**
+	 * Test end game state for CPUvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @param {String} faction - The current faction
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, faction, difficulty) {
 		super(stateManager, scene);
 		console.log('Entered TestEndStateCPUvCPU ...');
@@ -207,12 +274,20 @@ class TestEndStateCPUvCPU extends State {
 		this.stateManager.overlay.updateScore(this.board);
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class GameOverStateCPUvCPU extends State {
+	/**
+	 * Game over state for CPUvCPU mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - The game board
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
 		console.log('Entered GameOverStateCUPvCPU ...');
@@ -234,12 +309,22 @@ class GameOverStateCPUvCPU extends State {
 		this.stateManager.finished = true;
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class CPUvCPU extends State {
+	/**
+	 * CPUvCPU game mode
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Overlay} overlay - Overlay
+	 * @param {dat.GUI} gui - GUI
+	 * @param {String} difficulty - Game difficulty
+	 * @constructor
+	 */
 	constructor(stateManager, scene, overlay, gui, difficulty) {
 		super(stateManager, scene);
 
@@ -273,10 +358,15 @@ class CPUvCPU extends State {
 		this.actions.open();
 	}
 
+	/** Renders state */
 	draw() {
 		this.gameStateManager.draw();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.gameStateManager.update(dt);
 		this.gameStateManager.overlay.update(dt);
@@ -287,12 +377,17 @@ class CPUvCPU extends State {
 		}
 	}
 
+	/**
+	 * Handles input
+	 * @param {Number} keycode - Key code
+	 */
 	handleInput(keycode) {	
 		if (keycode === 82 || keycode === 114) {
 			this.resetCamera();
 		}
 	}
 
+	/** Resets camera */
 	resetCamera() {
 		let to = this.board.getBoardCenter();
 		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
@@ -303,6 +398,11 @@ class CPUvCPU extends State {
 		this.camera._up = camera._up;
 	}
 
+	/**
+	 * Removes dat.GUI folder
+	 * @param {dat.GUI} gui - GUI
+	 * @param {String} name - Folder name
+	 */
 	removeFolder(gui, name) {
 		let folder = gui.__folders[name];
 		if (!folder) return;
@@ -312,11 +412,13 @@ class CPUvCPU extends State {
 		gui.onResize();
 	}
 
+	/** Handles transition to menu state */
 	Menu() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
 	}
 
+	/** Handles transition to replay state */
 	Replay() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.pushState(new Replay(this.stateManager, this.scene, this.gameStateManager.film, this.gameStateManager.overlay, this.gui));

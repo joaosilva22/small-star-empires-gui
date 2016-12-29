@@ -1,4 +1,12 @@
 class LoadStatePvP extends State {
+	/**
+	* Load state for PvP mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - The game board
+	* @param {String} faction - The current faction
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
 		console.log('Entered LoadStatePvP ...');
@@ -34,6 +42,10 @@ class LoadStatePvP extends State {
 		}
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		if (this.loaded) {
 			// TODO: GAME FILM TEST, PLEASE IGNORE
@@ -48,6 +60,7 @@ class LoadStatePvP extends State {
 		}
 	}
 
+	/** Renders state */
 	draw() {
 		if (this.board.board.length !== 0) {
 			this.board.display();
@@ -56,6 +69,14 @@ class LoadStatePvP extends State {
 }
 
 class ShipPickStatePvP extends State {
+	/**
+	* Ship pick state for pvp mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - The game board
+	* @param {String} faction - The current faction
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
 		console.log('Entered ShipPickStatePvP ...');
@@ -67,10 +88,15 @@ class ShipPickStatePvP extends State {
 		this.beganUndoAnimation = false;
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 		
@@ -106,6 +132,10 @@ class ShipPickStatePvP extends State {
 		}
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		if (!this.beganUndoAnimation) {
 			let selectedCell = this.getPickedCell();
@@ -121,6 +151,7 @@ class ShipPickStatePvP extends State {
 		}
 	}
 
+	/** Undoes play */
 	undo() {
 		if (!this.beganUndoAnimation) {
 			let play = this.stateManager.film.getPreviousPlay();
@@ -157,6 +188,7 @@ class ShipPickStatePvP extends State {
 		}
 	}
 
+	/** Returns picked cell */
 	getPickedCell() {
 		let self = this;
 		let cell = null;
@@ -172,6 +204,15 @@ class ShipPickStatePvP extends State {
 }
 
 class MovePickStatePvP extends State {
+	/**
+	* Move pick state for PvP mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - The game board
+	* @param {String} faction - The current faction
+	* @param {Cell} selected - The selected cell
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction, selected) {
 		super(stateManager, scene);
 		console.log('Entered MovePickStatePvP ...')
@@ -195,11 +236,16 @@ class MovePickStatePvP extends State {
 		});
 	}
 
+	/** Renders the state */
 	draw() {
 		this.scene.clearPickRegistration();
 		this.board.display();
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		let selectedCell = this.getPickedCell();
 		if (selectedCell !== null && selectedCell.pickable) {
@@ -217,6 +263,7 @@ class MovePickStatePvP extends State {
 		}
 	}
 
+	/** Undoes play */
 	undo() {
 		this.board.resetPickRegistration();
 		this.board.resetSelection();
@@ -224,6 +271,10 @@ class MovePickStatePvP extends State {
 		this.stateManager.changeState(new ShipPickStatePvP(this.stateManager, this.scene, this.board, this.stateManager.film.getPlay().faction));
 	}
 
+	/**
+	* Returns possible movements from boards
+	* @param {Array} possibleBoards - Array of boards
+	*/
 	getPossibleMovements(possibleBoards) {
 		let movements = [];
 		let self = this;
@@ -242,6 +293,7 @@ class MovePickStatePvP extends State {
 		return movements;
 	}
 
+	/** Returns picked cell */
 	getPickedCell() {
 		let self = this;
 		let cell = null;
@@ -257,6 +309,16 @@ class MovePickStatePvP extends State {
 }
 
 class MoveShipStatePvP extends State {
+	/**
+	* Move ship state for PvP mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - The game board
+	* @param {String} faction - The current faction
+	* @param {Object} from - Movement origin
+	* @param {Object} to - Movement destination
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction, from, to) {
 		super(stateManager, scene);
 		console.log('Entered MoveShipStatePvP ...');
@@ -281,10 +343,15 @@ class MoveShipStatePvP extends State {
 		});
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 
@@ -297,6 +364,15 @@ class MoveShipStatePvP extends State {
 }
 
 class StructBuildStatePvP extends State {
+	/**
+	* Struct build state for PvP mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - The game board
+	* @param {String} faction - The current faction
+	* @param {Object} position - The structure position
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction, position) {
 		super(stateManager, scene);
 		console.log('Entered StructBuildStatePvP ...');
@@ -315,10 +391,15 @@ class StructBuildStatePvP extends State {
 		stateManager.overlay.updateTip('Press c/C to place a Colony, or t/T to place a Trade Station');
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/** 
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 		
@@ -352,6 +433,10 @@ class StructBuildStatePvP extends State {
 		}
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
 			if (keycode === 67 || keycode === 99) {
@@ -372,6 +457,7 @@ class StructBuildStatePvP extends State {
 		}
 	}
 
+	/** Undoes play */
 	undo() {
 		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
 			this.stateManager.overlay.updateTip('');
@@ -384,6 +470,14 @@ class StructBuildStatePvP extends State {
 }
 
 class TestEndStatePvP extends State {
+	/**
+	* Test end game state for PvP mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {String} faction - The current faction
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, faction) {
 		super(stateManager, scene);
 		console.log('Entered TestEndStatePvP ...');
@@ -400,13 +494,21 @@ class TestEndStatePvP extends State {
 
 		this.stateManager.overlay.updateScore(this.board);
 	}
-	
+
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class GameOverStatePvP extends State {
+	/**
+	* Game over state for PvP mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - The game board
+	* @constructor
+	*/
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
 		console.log('Entered GameOverStatePvP ...');
@@ -428,12 +530,22 @@ class GameOverStatePvP extends State {
 		this.stateManager.finished = true;
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class PvP extends State {
+	/**
+	* PvP game mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Overlay} overlay - Overlay
+	* @param {dat.GUI} gui - GUI
+	* @param {Number} turnDuration - Duration of a turn
+	* @constructor
+	*/
 	constructor(stateManager, scene, overlay, gui, turnDuration) {
 		super(stateManager, scene);
 
@@ -482,11 +594,16 @@ class PvP extends State {
 		this.actions.open();
 	}
 
+	/** Renders state */
 	draw() {
 		this.scene.clearPickRegistration();
 		this.gameStateManager.draw();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.gameStateManager.update(dt);
 		this.gameStateManager.overlay.update(dt);
@@ -515,6 +632,10 @@ class PvP extends State {
 		}
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Key code
+	*/
 	handleInput(keycode) {
 		this.gameStateManager.handleInput(keycode);
 
@@ -523,6 +644,7 @@ class PvP extends State {
 		}
 	}
 
+	/** Resets camera position */
 	resetCamera() {
 		let to = this.board.getBoardCenter();
 		let from = null;
@@ -538,6 +660,11 @@ class PvP extends State {
 		this.gameStateManager.camera._up = camera._up;
 	}
 
+	/**
+	* Removes dat.GUI folder
+	* @param {dat.GUI} gui - GUI
+	* @param {String} name - Folder name
+	*/
 	removeFolder(gui, name) {
 		let folder = gui.__folders[name];
 		if (!folder) return;
@@ -547,17 +674,20 @@ class PvP extends State {
 		gui.onResize();
 	}
 
+	/** Handles transition to menu state */
 	Menu() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
 	}
 
+	/** Handles state undo */
 	Undo() {
 		if (this.gameStateManager.getCurrentState().undo) {
 			this.gameStateManager.getCurrentState().undo();
 		}
 	}
 
+	/** Handles transition to replay state */
 	Replay() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.pushState(new Replay(this.stateManager, this.scene, this.gameStateManager.film, this.gameStateManager.overlay, this.gui));

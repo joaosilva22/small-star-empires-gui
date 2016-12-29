@@ -1,4 +1,12 @@
 class LoadInitialStateReplay extends State {
+	/**
+	* Load initial state for replay
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {GameFilm} film - Game film to replay
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, film) {
 		super(stateManager, scene);
 		console.log('Entered LoadInitialStateReplay ...');
@@ -14,12 +22,21 @@ class LoadInitialStateReplay extends State {
 		this.stateManager.overlay.updateWinner('');
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class MoveShipStateReplay extends State {
+	/**
+	* Move ship state for replay
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {Board} board - Board
+	* @param {GameFilm} film - Game film to replay
+	* @constructor
+	*/
 	constructor(stateManager, scene, board, film) {
 		super(stateManager, scene);
 		console.log('Entered MoveShipStateReplay ...');
@@ -36,10 +53,15 @@ class MoveShipStateReplay extends State {
 		this.stateManager.overlay.updateScore(this.board);
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	* Updates state
+	* @param {Number} dt - Delta time
+	*/
 	update(dt) {
 		this.board.update(dt);
 
@@ -52,6 +74,14 @@ class MoveShipStateReplay extends State {
 }
 
 class StructBuildStateReplay extends State {
+	/**
+	 * Struct build state for replay
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @param {GameFilm} film - Game film to replay
+	 * @constructor
+	 */
 	constructor(stateManager, scene, board, film) {
 		super(stateManager, scene);
 		console.log('Entered StructBuildStateReplay ...');
@@ -74,10 +104,15 @@ class StructBuildStateReplay extends State {
 		this.stateManager.overlay.updateScore(this.board);
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 
+	/**
+	 * Updates state
+	 * @param {Number} dt - Delta time
+	 */
 	update(dt) {
 		this.board.update(dt);
 		
@@ -106,6 +141,13 @@ class StructBuildStateReplay extends State {
 }
 
 class EndStateReplay extends State {
+	/**
+	 * End state for replay
+	 * @param {StateManager} stateManager - State manager
+	 * @param {CGFscene} scene - Scene
+	 * @param {Board} board - Board
+	 * @constructor  
+	 */
 	constructor(stateManager, scene, board) {
 		super(stateManager, scene);
 		console.log('Entered EndStateReplay ...');
@@ -126,12 +168,22 @@ class EndStateReplay extends State {
 		this.stateManager.overlay.updateScore(this.board);
 	}
 
+	/** Renders state */
 	draw() {
 		this.board.display();
 	}
 }
 
 class Replay extends State {
+	/**
+	* Replay mode
+	* @param {StateManager} stateManager - State manager
+	* @param {CGFscene} scene - Scene
+	* @param {GameFilm} film - Game film to replay
+	* @param {Overlay} overlay - Overlay
+	* @param {dat.GUI} gui - GUI
+	* @constructor
+	*/
 	constructor(stateManager, scene, film, overlay, gui) {
 		super(stateManager, scene);
 		console.log('Entered Replay ...');
@@ -166,15 +218,24 @@ class Replay extends State {
 		this.replayStateManager.pushState(new LoadInitialStateReplay(this.replayStateManager, this.scene, this.board, film));
 	}
 
+	/** Renders state */
 	draw() {
 		this.replayStateManager.draw();
 	}
 
+	/**
+	 * Updates state
+	 * @param {Number} dt - Delta time
+	 */
 	update(dt) {
 		this.replayStateManager.update(dt);
 		this.replayStateManager.overlay.update(dt);
 	}
 
+	/**
+	* Handles input
+	* @param {Number} keycode - Keycode
+	*/
 	handleInput(keycode) {
 		this.replayStateManager.handleInput(keycode);
 
@@ -183,6 +244,7 @@ class Replay extends State {
 		}
 	}
 
+	/** Resets camera */
 	resetCamera() {
 		let to = this.board.getBoardCenter();
 		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
@@ -193,6 +255,11 @@ class Replay extends State {
 		this.camera._up = camera._up;
 	}
 
+	/**
+	 * Removes dat.GUI folder
+	 * @param {dat.GUI} gui - GUI
+	 * @param {String} name - Folder name
+	 */
 	removeFolder(gui, name) {
 		let folder = gui.__folders[name];
 		if (!folder) return;
@@ -202,6 +269,7 @@ class Replay extends State {
 		gui.onResize();
 	}
 
+	/** Handles transition to menu state */
 	Menu() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.replayStateManager.overlay, this.gui));
