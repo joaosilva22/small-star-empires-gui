@@ -1,3 +1,5 @@
+:- use_module(library(random)).
+
 readPlayerInput(X1, Z1, X2, Z2, Structure) :-
     write('# Select source coordinates [X, Z] # '),
     read(Source),
@@ -420,15 +422,18 @@ getAllPossiblePoints(Faction, PossibleBoards, Index, Current, Points) :-
     NIndex is Index+1,
     getAllPossiblePoints(Faction, PossibleBoards, NIndex, NPoints, Points).
 
+getRandomBoardPlease(Faction, Board, NewBoard) :-
+	write('Got here'),
+	getAllPossibleBoards(Faction, Board, 0, 0, [], PossibleBoards),
+    length(PossibleBoards, Length),
+	random(0, Length, BoardNumber),
+    nth0(BoardNumber, PossibleBoards, NewBoard).
+
 getBestBoard(Faction, Board, NewBoard) :-
     getAllPossibleBoards(Faction, Board, 0, 0, [], Result),
     getAllPossiblePoints(Faction, Result, 0, [], Points),
     getHighestValue(Points, _, Index),
     nth0(Index, Result, NewBoard).
 
-getRandomBoard(Faction, Board, NewBoard) :-
-	getAllPossibleBoards(Faction, Board, 0, 0, [], PossibleBoards),
-    length(PossibleBoards, Length),
-    random(0, Length, BoardNumber),
-    nth0(BoardNumber, PossibleBoards, NewBoard).
+
 

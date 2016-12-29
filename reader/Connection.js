@@ -60,7 +60,7 @@ class Connection {
 
 	getRandomBoardRequest(faction, board, onSuccess) {
 		let boardString = parseArrayString(board.board);
-		let requestString = `getARandomBoard(${faction},${boardString})`;
+		let requestString = `getRandomBoardPlease(${faction},${boardString})`;
 		this.getPrologRequest(requestString, onSuccess);
 	}
 

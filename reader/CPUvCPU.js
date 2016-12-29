@@ -239,7 +239,7 @@ class GameOverStateCPUvCPU extends State {
 }
 
 class CPUvCPU extends State {
-	constructor(stateManager, scene, overlay, gui) {
+	constructor(stateManager, scene, overlay, gui, difficulty) {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
@@ -263,7 +263,7 @@ class CPUvCPU extends State {
 		this.scene.camera = this.camera;
 		
 		// FIXME: A dificuldade deve ser passada como parametro
-		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, this.board, 'factionOne', 'hard'));
+		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, this.board, 'factionOne', difficulty));
 
 		this.gameStateManager.overlay.updateScore(this.board);
 

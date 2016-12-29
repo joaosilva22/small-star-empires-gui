@@ -6,7 +6,9 @@ class Menu extends State {
 
 		this.gamemodes = this.gui.addFolder('Play');
 		this.gamemodes.add(this, 'PvP');
+		this.gamemodes.add(this, 'PvEasyCPU');
 		this.gamemodes.add(this, 'PvHardCPU');
+		this.gamemodes.add(this, 'EasyCPUvEasyCPU');
 		this.gamemodes.add(this, 'HardCPUvHardCPU');
 		this.gamemodes.open();
 
@@ -37,12 +39,28 @@ class Menu extends State {
 		this.stateManager.changeState(new PvP(this.stateManager, this.scene, this.overlay, this.gui));
 	}
 
+	PvEasyCPU() {
+		this.removeFolder(this.gui, 'Play');
+		this.overlay.updateWinner('');
+		this.overlay.endAlert();
+		this.overlay.updateTip('');
+		this.stateManager.changeState(new PvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'easy'));
+	}
+
 	PvHardCPU() {
 		this.removeFolder(this.gui, 'Play');
 		this.overlay.updateWinner('');
 		this.overlay.endAlert();
 		this.overlay.updateTip('');
-		this.stateManager.changeState(new PvCPU(this.stateManager, this.scene, this.overlay, this.gui));
+		this.stateManager.changeState(new PvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'hard'));
+	}
+
+	EasyCPUvEasyCPU() {
+		this.removeFolder(this.gui, 'Play');
+		this.overlay.updateWinner('');
+		this.overlay.endAlert();
+		this.overlay.updateTip('');
+		this.stateManager.changeState(new CPUvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'easy'));
 	}
 
 	HardCPUvHardCPU() {
@@ -50,7 +68,7 @@ class Menu extends State {
 		this.overlay.updateWinner('');
 		this.overlay.endAlert();
 		this.overlay.updateTip('');
-		this.stateManager.changeState(new CPUvCPU(this.stateManager, this.scene, this.overlay, this.gui));
+		this.stateManager.changeState(new CPUvCPU(this.stateManager, this.scene, this.overlay, this.gui, 'hard'));
 	}
 				
 }

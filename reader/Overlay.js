@@ -50,6 +50,9 @@ class Overlay {
 		this.stopwatchYellowNode = document.createTextNode('60');
 		this.stopwatchYellowElement.appendChild(this.stopwatchYellowNode);
 
+		this.stopWatchBlueDisplay = this.stopwatchBlueElement.style.display;
+		this.stopWatchYellowDisplay = this.stopwatchYellowElement.style.display;
+
 		this.stopwatchDuration = 60000;
 		this.stopwatchBlueEnabled = false;
 		this.stopwatchYellowEnabled = false;
@@ -225,9 +228,6 @@ class Overlay {
 	}
 
 	hideStopWatch() {
-		this.stopWatchBlueDisplay = this.stopwatchBlueElement.style.display;
-		this.stopWatchYellowDisplay = this.stopwatchYellowElement.style.display;
-		
 		this.stopwatchBlueElement.style.display = 'none';
 		this.stopwatchYellowElement.style.display = 'none';
 	}
