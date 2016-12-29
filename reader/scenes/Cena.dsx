@@ -555,6 +555,8 @@
   
   
   <components>
+
+    <game />
     
     <component id="component_head_top">
       <transformation>
