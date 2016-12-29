@@ -3,9 +3,9 @@
 :-use_module(library(codesio)).
 
 :- initialization(['board.pl',
-		   'game.pl',
-		   'rules.pl',
-		   'display.pl']).
+				   'game.pl',
+				   'rules.pl',
+				   'display.pl']).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                        Server                                                   %%%%
@@ -33,32 +33,32 @@ server :-
 server_loop(Socket) :-
 	repeat,
 	socket_server_accept(Socket, _Client, Stream, [type(text)]),
-		% write('Accepted connection'), nl,
-	    % Parse Request
-		catch((
-			read_request(Stream, Request),
-			read_header(Stream)
-		),_Exception,(
-			% write('Error parsing request.'),nl,
-			close_stream(Stream),
-			fail
-		)),
-		
-		% Generate Response
-		handle_request(Request, MyReply, Status),
-		format('Request: ~q~n',[Request]),
-		format('Reply: ~q~n', [MyReply]),
-		
-		% Output Response
-		format(Stream, 'HTTP/1.0 ~p~n', [Status]),
-		format(Stream, 'Access-Control-Allow-Origin: *~n', []),
-		format(Stream, 'Content-Type: text/plain~n~n', []),
-		format(Stream, '~p', [MyReply]),
+	% write('Accepted connection'), nl,
+	% Parse Request
+	catch((
+				 read_request(Stream, Request),
+				 read_header(Stream)
+			 ),_Exception,(
+			  % write('Error parsing request.'),nl,
+			  close_stream(Stream),
+			  fail
+		  )),
 	
-		% write('Finnished Connection'),nl,nl,
-		close_stream(Stream),
+	% Generate Response
+	handle_request(Request, MyReply, Status),
+	format('Request: ~q~n',[Request]),
+	format('Reply: ~q~n', [MyReply]),
+	
+	% Output Response
+	format(Stream, 'HTTP/1.0 ~p~n', [Status]),
+	format(Stream, 'Access-Control-Allow-Origin: *~n', []),
+	format(Stream, 'Content-Type: text/plain~n~n', []),
+	format(Stream, '~p', [MyReply]),
+	
+	% write('Finnished Connection'),nl,nl,
+	close_stream(Stream),
 	(Request = quit), !.
-	
+
 close_stream(Stream) :- flush_output(Stream), close(Stream).
 
 % Handles parsed HTTP requests
@@ -82,10 +82,9 @@ read_request(Stream, Request) :-
 	
 	catch(read_from_codes(RL2, Request), error(syntax_error(_),_), fail), !.
 read_request(_,syntax_error).
-	
+
 read_request_aux([32|_],[46]) :- !.
 read_request_aux([C|Cs],[C|RCs]) :- read_request_aux(Cs, RCs).
-
 
 % Reads and Ignores the rest of the lines of the HTTP Header
 read_header(Stream) :-
@@ -110,27 +109,52 @@ print_header_line(_).
 :- ensure_loaded('board.pl').
 :- ensure_loaded('rules.pl').
 
+% getBoard() : Returns the initial board
 parse_input(getBoard, Board) :- getBoard(Board).
+
+% getAllPossibleBoardsFrom(Faction, Board, X, Z) : Returns all
+% the possible boards for a certain player from the current position
 parse_input(getAllPossibleBoardsFrom(Faction, Board, X, Z), PossibleBoards) :- getAllPossibleBoardsFrom(Faction, Board, X, Z, PossibleBoards).
+
+% isTheGameOver(Board) : Checks whether or not the game has ended
 parse_input(isTheGameOver(Board), Answer) :- hasTheGameEnded(Board, Answer).
+
+% getRandomBoardPlease(Faction, Board) : Returns a random board
+% For a given player (If you ask him nicely)
 parse_input(getRandomBoardPlease(Faction, Board), NewBoard) :- getRandomBoardPlease(Faction, Board, NewBoard).
+
+% calculateTotalPoints(Faction, Board) : Returns the point total
+% For a given player
 parse_input(calculateTotalPoints(Faction, Board), Points) :- calculateTotalPoints(Faction, Board, Points).
 
-parse_input(handshake, handshake).
-parse_input(test(C,N), Res) :- test(C,Res,N).
+% moveShipL(Faction, Board, X1, Z1, X2, Z2) : Moves a player's ship
+% From position (x1, z1) to position (x2, z2)
+parse_input(moveShipL(Faction,Board,X1,Z1,X2,Z2), NewBoard) :- moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard).
+
+% placeStructureL(Faction, Board, Structure, X2, Z2) : Places a structure
+% For a given player in the position (x2, z2)
+parse_input(placeStructureL(Faction, Board, Structure, X2, Z2), NewBoard) :- placeStructureL(Faction, Board, Structure, X2, Z2, NewBoard).
+
+% shipPossibleMovements(Faction, Board, X, Z) : Returns all possible boards
+% For the ship at position (x, z)
+parse_input(shipPossibleMovements(Faction,Board,X,Z),PossibleBoards) :- shipPossibleMovements(Faction,Board,X,Z,PossibleBoards).
+
+% playerPossibleBoards(Faction, Board) : Returns all possible boards for all
+% Possible ships for a given player
+parse_input(playerPossibleBoards(Faction,Board),PossibleBoards) :- playerPossibleBoards(Faction,Board,PossibleBoards).
+
+% playerBestBoard(Faction, Board) : Returns the best board for a given player
+parse_input(playerBestBoard(Faction,Board),NewBoard) :- playerBestBoard(Faction,Board,NewBoard).
+
+% getAllPossibleBoards(Faction) : Returns all possible boards for a faction
 parse_input(getAllPossibleBoards(Faction), PossibleBoards) :- board(Board), getAllPossibleBoards(Faction, Board, PossibleBoards).
+
+%parse_input(handshake, handshake).
+%parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
-
-
-parse_input(moveShipL(Faction,Board,X1,Z1,X2,Z2), NewBoard) :- moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard).
-parse_input(placeStructureL(Faction, Board, Structure, X2, Z2), NewBoard) :- placeStructureL(Faction, Board, Structure, X2, Z2, NewBoard).
-parse_input(shipPossibleMovements(Faction,Board,X,Z),PossibleBoards) :- shipPossibleMovements(Faction,Board,X,Z,PossibleBoards).
-parse_input(playerPossibleBoards(Faction,Board),PossibleBoards) :- playerPossibleBoards(Faction,Board,PossibleBoards).
-parse_input(playerBestBoard(Faction,Board),NewBoard) :- playerBestBoard(Faction,Board,NewBoard).
-
 
 moveShipL(Faction,Board,X1,Z1,X2,Z2,NewBoard):-
 	moveShip(Faction,Board,X1,Z1,X2,Z2,NewBoard),
