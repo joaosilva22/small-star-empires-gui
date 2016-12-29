@@ -254,14 +254,18 @@ class CPUvCPU extends State {
 		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
 
 		this.camera = new CGFcamera(Math.PI / 2, 0.1, 100.0, from, to);
-		this.scene.graph.views.order.push('defaultgamecam');
+		if (!this.scene.graph.views.order.includes('defaultgamecam')) {
+			this.scene.graph.views.order.push('defaultgamecam');
+		}
 		this.scene.graph.views.perspectives['defaultgamecam'] = this.camera;
 		
 		this.scene.interface.setActiveCamera(null);
 		this.scene.camera = this.camera;
 		
 		// FIXME: A dificuldade deve ser passada como parametro
-		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, new Board(scene), 'factionOne', 'hard'));
+		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, this.board, 'factionOne', 'hard'));
+
+		this.gameStateManager.overlay.updateScore(this.board);
 
 		this.gui = gui;
 		let actions = this.gui.addFolder('Actions');

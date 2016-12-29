@@ -456,15 +456,18 @@ class PvP extends State {
 				self.angle = 0;
 			}
 		};
-		
-		this.scene.graph.views.order.push('defaultgamecam');
+
+		if (!this.scene.graph.views.order.includes('defaultgamecam')) {
+			this.scene.graph.views.order.push('defaultgamecam');
+		}
 		this.scene.graph.views.perspectives['defaultgamecam'] = this.gameStateManager.camera;
 
-		this.scene.interface.setActiveCamera(null);
+		this.scene.interface.setActiveCamera(this.gameStateManager.camera);
 		this.scene.camera = this.gameStateManager.camera;
 		this.currentFaction = 'factionOne';
 		
 		this.gameStateManager.pushState(new LoadStatePvP(this.gameStateManager, this.scene, this.board, this.currentFaction));
+		this.gameStateManager.overlay.updateScore(this.board);
 
 		this.angle = 1000;
 		this.angularstep = 0.15;
