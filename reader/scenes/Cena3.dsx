@@ -3,7 +3,7 @@
   <scene root="component_root" axis_length="2.0" />
   
   
-<views default="view5" >
+  <views default="view5" >
     
     <perspective id="view0" near="0.1" far="1000.0" angle="45.0">
       <from x="30.0" y="20.0" z="30.0" />
@@ -184,7 +184,7 @@
       <translate x="-20.0" y="-20.0" z="-20.0"/>
     </transformation>
 
-   <transformation id="trans_floor">
+    <transformation id="trans_floor">
       <rotate axis="x" angle="-90"/>
       <translate x="0.0" y="-80.0" z="0.0"/>
     </transformation>
@@ -253,6 +253,8 @@
   
   
   <components>
+
+    <game />
     
     <component id="component_root">
       <transformation>

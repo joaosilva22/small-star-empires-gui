@@ -72,8 +72,8 @@ XMLscene.prototype.onGraphLoaded = function () {
 
     this.setupLights();
 
-	this.stateManager = new StateManager();
-	this.stateManager.pushState(new Menu(this.stateManager, this, new Overlay(), this.interface.gui));
+//	this.stateManager = new StateManager();
+//	this.stateManager.pushState(new Menu(this.stateManager, this, new Overlay(), this.interface.gui));
 	this.prevTime = 0;
 
 	this.interface.setActiveCamera(this.camera);
@@ -114,8 +114,10 @@ XMLscene.prototype.display = function () {
 
 		/* Game Render */
 		// handleInput MUST come before draw
-		this.stateManager.handleInput();
-		this.stateManager.draw();
+		if (this.graph.game) {
+			this.graph.game.handleInput();
+			this.graph.game.draw();
+		}
     }
 };
 
@@ -295,7 +297,8 @@ XMLscene.prototype.update = function(currTime) {
 	}
 	let dt = currTime - this.prevTime;
 	this.prevTime = currTime;
-	this.stateManager.update(dt);
+
+	if (this.graph.game) this.graph.game.update(dt);
 };
 
 XMLscene.prototype.logPicking = function () {

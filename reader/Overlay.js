@@ -236,4 +236,8 @@ class Overlay {
 		this.stopwatchBlueElement.style.display = this.stopWatchBlueDisplay;
 		this.stopwatchYellowElement.style.display = this.stopWatchYellowDisplay;
 	}
+
+	setStopWatchDuration(duration) {
+		this.stopwatchDuration = duration * 1000;
+	}
 }

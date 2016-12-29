@@ -434,7 +434,7 @@ class GameOverStatePvP extends State {
 }
 
 class PvP extends State {
-	constructor(stateManager, scene, overlay, gui) {
+	constructor(stateManager, scene, overlay, gui, turnDuration) {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
@@ -448,6 +448,7 @@ class PvP extends State {
 		this.gameStateManager.film = new GameFilm();
 
 		this.gameStateManager.overlay.showScore();
+		this.gameStateManager.overlay.setStopWatchDuration(turnDuration);
 		this.gameStateManager.overlay.showStopWatch();
 		this.gameStateManager.overlay.beginTimer();
 

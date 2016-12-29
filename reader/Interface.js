@@ -19,7 +19,7 @@ Interface.prototype.init = function(application) {
 Interface.prototype.processKeyboard = function(event) {
     CGFinterface.prototype.processKeyboard.call(this, event);
     var code = event.which || event.keyCode;
-	this.scene.stateManager.handleInput(code);
+	this.scene.graph.game.handleInput(code);
     switch (code) {
 	case (86):
 	case (118):

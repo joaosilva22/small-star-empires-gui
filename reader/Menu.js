@@ -4,7 +4,10 @@ class Menu extends State {
 		console.log('Entered Menu ...');
 		this.gui = gui;
 
+		this.turnDuration = 60;
+
 		this.gamemodes = this.gui.addFolder('Play');
+		this.gamemodes.add(this, 'turnDuration', 30, 90);
 		this.gamemodes.add(this, 'PvP');
 		this.gamemodes.add(this, 'PvEasyCPU');
 		this.gamemodes.add(this, 'PvHardCPU');
@@ -36,7 +39,7 @@ class Menu extends State {
 		this.overlay.updateWinner('');
 		this.overlay.endAlert();
 		this.overlay.updateTip('');
-		this.stateManager.changeState(new PvP(this.stateManager, this.scene, this.overlay, this.gui));
+		this.stateManager.changeState(new PvP(this.stateManager, this.scene, this.overlay, this.gui, this.turnDuration));
 	}
 
 	PvEasyCPU() {
