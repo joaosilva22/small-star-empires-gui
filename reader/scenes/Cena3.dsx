@@ -3,7 +3,7 @@
   <scene root="component_root" axis_length="2.0" />
   
   
-  <views default="view0" >
+<views default="view5" >
     
     <perspective id="view0" near="0.1" far="1000.0" angle="45.0">
       <from x="30.0" y="20.0" z="30.0" />
@@ -28,6 +28,11 @@
     <perspective id="view4" near="0.1" far="1000.0" angle="45.0">
       <from x="0.0" y="25.0" z="00.0" />
       <to x="10.0" y="10.0" z="10.0" />
+    </perspective>
+
+    <perspective id="view5" near="0.1" far="1000.0" angle="45.0">
+      <from x="4.0" y="17.0" z="-8.0" />
+      <to x="10.0" y="15.0" z="-2.0" />
     </perspective>
 
   </views>
@@ -90,12 +95,15 @@
   
   
   <textures>
-    <texture id="tex_right_wall" file="resources/exosystem/exosystem_rt.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_left_wall" file="resources/exosystem/exosystem_bk.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_top_wall" file="resources/exosystem/exosystem_up.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_front_wall" file="resources/exosystem/exosystem_ft.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_back_wall" file="resources/exosystem/exosystem_lf.jpg" length_s="1.0" length_t="1.0" />
-    <texture id="tex_floor" file="resources/exosystem/exosystem_dn.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="greytex" file="resources/base.png" length_s="1.0" length_t="1.0" />
+    <texture id="tex_right_wall" file="resources/extragalactic/asteroids_rt.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_left_wall" file="resources/extragalactic/asteroids_bk.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_top_wall" file="resources/extragalactic/asteroids_up.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_front_wall" file="resources/extragalactic/asteroids_ft.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_back_wall" file="resources/extragalactic/asteroids_lf.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_floor" file="resources/extragalactic/asteroids_dn.jpg" length_s="1.0" length_t="1.0" />
+    <texture id="tex_planet" file="resources/sun.jpg" length_s="1.0" length_t="1.0"/>
+    <texture id="tex_planet_ring" file="resources/meteor.jpg" length_s="1.0" length_t="1.0"/>
   </textures>
 
   
@@ -233,6 +241,14 @@
       <rectangle x1="0.0" x2="80.0" y1="0.0" y2="80.0"/>
     </primitive>
 
+    <primitive id="boia">
+      <torus inner="1.2" outer="2.5" slices="12" loops="24"/>
+    </primitive>
+
+    <primitive id="ball">
+      <sphere radius="1.0" slices="24" stacks="24"/>
+    </primitive>
+
   </primitives>
   
   
@@ -271,6 +287,14 @@
         <componentref id="component_back_wall"/>
         <componentref id="component_top_wall"/>
         <componentref id="component_floor"/>
+        <componentref id="component_planet"/>
+        <componentref id="component_planet2"/>
+        <componentref id="component_planet3"/>
+        <componentref id="component_planet4"/>
+        <componentref id="component_planet5"/>
+        <componentref id="component_planet6"/>
+        <componentref id="component_planet7"/>
+        <componentref id="component_planet8"/>
       </children>
     </component>
 
@@ -369,6 +393,189 @@
       </children>
     </component>
 
+    <component id="component_planet">
+      <transformation>
+        <translate x="55.0" y="30.0" z="5.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet2">
+      <transformation>
+        <translate x="30.0" y="25.0" z="55.0"/>
+        <rotate axis="x" angle="90"/>
+        <rotate axis="z" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet3">
+      <transformation>
+        <translate x="30.0" y="35.0" z="15.0"/>
+        <rotate axis="x" angle="90"/>
+        <rotate axis="z" angle="180"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet4">
+      <transformation>
+        <translate x="55.0" y="30.0" z="55.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet5">
+      <transformation>
+        <translate x="70.0" y="10.0" z="40.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet6">
+      <transformation>
+        <translate x="10.0" y="30.0" z="30.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet7">
+      <transformation>
+        <translate x="10.0" y="30.0" z="60.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet8">
+      <transformation>
+        <translate x="80.0" y="30.0" z="30.0"/>
+        <rotate axis="x" angle="90"/>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="greytex"/>
+      
+      <children>
+        <componentref id="component_planet_center"/>
+        <componentref id="component_planet_disc"/>
+      </children>
+    </component>
+
+    <component id="component_planet_center">
+      <transformation>
+      </transformation>
+      
+      <materials>
+        <material id="pearl" />
+      </materials>
+      
+      <texture id="tex_planet"/>
+      
+      <children>
+        <primitiveref id="ball"/>
+      </children>
+    </component>
+
+    <component id="component_planet_disc">
+      <transformation>
+        <rotate axis="x" angle="30"/>
+        <scale x="1.0" y="1.0" z="0.1"/>
+      </transformation>
+      
+      <materials>
+        <material id="metal" />
+        <material id="rubber" />
+        <material id="glass" />
+        <material id="jade" />
+        <material id="pearl" />
+        <material id="black_rubber" />
+        <material id="material0" />
+      </materials>
+      
+      <texture id="tex_planet_ring"/>
+      
+      <children>
+        <primitiveref id="boia"/>
+      </children>
+    </component>
   </components>
 
 </dsx>
