@@ -39,6 +39,20 @@ class Overlay {
 		this.alertEnabled = false;
 		this.alertElement.style.display = 'none';
 
+		this.stopwatchBlueElement = document.getElementById('timer-blue');
+		this.stopwatchBlueNode = document.createTextNode('60');
+		this.stopwatchBlueElement.appendChild(this.stopwatchBlueNode);
+
+		this.stopwatchYellowElement = document.getElementById('timer-yellow');
+		this.stopwatchYellowNode = document.createTextNode('60');
+		this.stopwatchYellowElement.appendChild(this.stopwatchYellowNode);
+
+		this.stopwatchDuration = 60000;
+		this.stopwatchBlueEnabled = false;
+		this.stopwatchYellowEnabled = false;
+		this.stopwatchBlueRemain = this.stopwatchDuration;
+		this.stopwatchYellowRemain = this.stopwatchDuration;
+
 		this.updateTip('');
 		this.updateWinner('');
 	}
@@ -59,6 +73,30 @@ class Overlay {
 			} else {
 				this.alertEnabled = false;
 				this.alertElement.style.display = 'none';
+			}
+		}
+
+		if (this.stopwatchBlueEnabled) {
+			if (this.stopwatchBlueRemain > 0) {
+				this.stopwatchBlueRemain -= dt;
+				let val = Math.floor(this.stopwatchBlueRemain / 1000);
+				if (val < 10) val = '0' + val;
+				this.stopwatchBlueNode.nodeValue = val;
+			} else {
+				this.stopwatchBlueNode.nodeValue = '00';
+				this.stopwatchBlueEnabled = false;
+			}
+		}
+
+		if (this.stopwatchYellowEnabled) {
+			if (this.stopwatchYellowRemain > 0) {
+				this.stopwatchYellowRemain -= dt;
+				let val = Math.floor(this.stopwatchYellowRemain / 1000);
+				if (val < 10) val = '0' + val;
+				this.stopwatchYellowNode.nodeValue = val;
+			} else {
+				this.stopwatchYellowNode.nodeValue = '00';
+				this.stopwatchYellowEnabled = false;
 			}
 		}
 	}
@@ -94,6 +132,14 @@ class Overlay {
 		}
 	}
 
+	setScore(faction, value) {
+		if (faction === 'factionOne') {
+			this.scoreFactionOneNode.nodeValue = value;
+		} else {
+			this.scoreFactionTwoNode.nodeValue = value;
+		}
+	}
+
 	updateTip(value) {
 		if (value === '') {
 			this.tipElement.style.display = 'none';
@@ -118,6 +164,52 @@ class Overlay {
 		this.alertEnabled = true;
 		this.alertElement.style.display = 'inline-block';
 		this.alertTextNode.nodeValue = text;
+	}
+
+	beginStopWatch(faction) {
+		if (faction === 'factionOne') {
+			this.stopwatchBlueRemain = this.stopwatchDuration;
+			this.stopwatchBlueEnabled = true;
+		} else {
+			this.stopwatchYellowRemain = this.stopwatchDuration;
+			this.stopwatchYellowEnabled = true;
+		}
+	}
+
+	pauseStopWatch(faction) {
+		if (faction === 'factionOne') {
+			this.stopwatchBlueEnabled = false;
+		} else {
+			this.stopwatchYellowEnabled = false;
+		}
+	}
+
+	resetStopWatch(faction) {
+		if (faction === 'factionOne') {
+			this.stopwatchBlueRemain = this.stopwatchDuration;
+			this.stopwatchBlueNode.nodeValue = Math.floor(this.stopwatchBlueRemain / 1000);
+		} else {
+			this.stopwatchYellowRemain = this.stopwatchDuration;
+			this.stopwatchYellowNode.nodeValue = Math.floor(this.stopwatchYellowRemain / 1000);
+		}
+	}
+
+	hasStopWatchEnded(faction) {
+		if (faction === 'factionOne') {
+			if (this.stopwatchBlueRemain <= 0) {
+				return true;
+			}
+		} else {
+			if (this.stopwatchYellowRemain <= 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	hideStopWatch() {
+		this.stopwatchBlueElement.style.display = 'none';
+		this.stopwatchYellowElement.style.display = 'none';
 	}
 
 }

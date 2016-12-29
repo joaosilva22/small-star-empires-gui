@@ -35,14 +35,40 @@
 		}
 
 		#timer {
-			color: white;
-			background: rgba(0, 0, 0, 0.7);
-			font-size: 1.2em;
-			padding: 10px;
 			position: fixed;
 			top: 10px;
 			left: 50%;
 			transform: translateX(-50%);
+			margin-top: 10px;
+		}
+
+		#timer-text {
+			color: white;
+			background: rgba(0, 0, 0, 0.7);
+			font-size: 1.2em;
+			padding: 10px;
+		}
+
+		#timer-blue {
+			color: white;
+			background: rgba(0, 0, 0, 0.7);
+			font-size: 1.2em;
+			padding: 10px;
+			margin-right: 5px;
+			border-bottom-width: -2px;
+			border-bottom-color: blue;
+			border-bottom-style: solid;
+		}
+
+		#timer-yellow {
+			color: white;
+			background: rgba(0, 0, 0, 0.7);
+			font-size: 1.2em;
+			padding: 10px;
+			margin-left: 5px;
+			border-bottom-width: -2px;
+			border-bottom-color: yellow;
+			border-bottom-style: solid;
 		}
 
 		#banner {
@@ -94,7 +120,9 @@
 			</div>
 
 			<div id="timer">
+				<span id="timer-blue"></span>
 				<span id="timer-text"></span>
+				<span id="timer-yellow"></span>
 			</div>
 			
 			<div id="banner">

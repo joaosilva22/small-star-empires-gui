@@ -246,6 +246,7 @@ class CPUvCPU extends State {
 		this.gameStateManager.overlay = new Overlay();
 		this.gameStateManager.film = new GameFilm();
 		this.gameStateManager.overlay.beginTimer();
+		this.gameStateManager.overlay.hideStopWatch();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();

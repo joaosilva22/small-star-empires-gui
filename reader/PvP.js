@@ -12,6 +12,7 @@ class LoadStatePvP extends State {
 			this.faction = 'factionOne';
 		}
 
+		this.previousFaction = faction;
 		this.loaded = false;
 
 		let self = this;
@@ -19,6 +20,11 @@ class LoadStatePvP extends State {
 			board.load(function() {
 				// TODO: GAME FILM TEST, PLEASE IGNORE
 				self.stateManager.film.addPlay(faction, board.board);
+
+				self.stateManager.overlay.pauseStopWatch(self.faction);
+				self.stateManager.overlay.resetStopWatch(self.faction);
+				self.stateManager.overlay.resetStopWatch(faction);
+				self.stateManager.overlay.beginStopWatch(faction);
 				
 				self.stateManager.changeState(new ShipPickStatePvP(self.stateManager, self.scene, board, faction));
 			});
@@ -32,6 +38,11 @@ class LoadStatePvP extends State {
 		if (this.loaded) {
 			// TODO: GAME FILM TEST, PLEASE IGNORE
 			this.stateManager.film.addPlay(this.faction, this.board.board);
+
+			this.stateManager.overlay.pauseStopWatch(this.previousFaction);
+			this.stateManager.overlay.resetStopWatch(this.previousFaction);
+			this.stateManager.overlay.resetStopWatch(this.faction);
+			this.stateManager.overlay.beginStopWatch(this.faction);
 			
 			this.stateManager.changeState(new ShipPickStatePvP(this.stateManager, this.scene, this.board, this.faction));
 		}
@@ -70,6 +81,12 @@ class ShipPickStatePvP extends State {
 					this.board.getAuxColony(play.faction).undoAnimationOffset = null;
 					this.board.board = play.newBoard;
 					this.stateManager.film.goBackOne();
+
+					this.stateManager.overlay.pauseStopWatch(this.faction);
+					this.stateManager.overlay.resetStopWatch(this.faction);
+					this.stateManager.overlay.resetStopWatch(play.faction);
+					this.stateManager.overlay.beginStopWatch(play.faction);
+					
 					this.stateManager.changeState(new StructBuildStatePvP(this.stateManager, this.scene, this.board, play.faction, play.to));
 				}
 			} else {
@@ -77,6 +94,12 @@ class ShipPickStatePvP extends State {
 					this.board.getAuxTradeStation(play.faction).undoAnimationOffset = null;
 					this.board.board = play.newBoard;
 					this.stateManager.film.goBackOne();
+
+					this.stateManager.overlay.pauseStopWatch(this.faction);
+					this.stateManager.overlay.resetStopWatch(this.faction);
+					this.stateManager.overlay.resetStopWatch(play.faction);
+					this.stateManager.overlay.beginStopWatch(play.faction);
+
 					this.stateManager.changeState(new StructBuildStatePvP(this.stateManager, this.scene, this.board, play.faction, play.to));
 				}
 			}
@@ -459,7 +482,13 @@ class PvP extends State {
 				this.gameStateManager.camera.orbit(CGFcameraAxis.Y, diff);
 				this.angle += this.angularstep;
 			}
-		} 
+		}
+
+		if (this.gameStateManager.overlay.hasStopWatchEnded(this.currentFaction) && !this.timeout) {
+			this.gameStateManager.overlay.setScore(this.currentFaction, -1);
+			this.gameStateManager.pushState(new GameOverStatePvP(this.gameStateManager, this.scene, this.board));
+			this.timeout = true;
+		}
 	}
 
 	handleInput(keycode) {
