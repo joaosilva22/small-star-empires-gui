@@ -183,66 +183,68 @@ class ShipPickStatePvCPU extends State {
 	}
 
 	undo() {
-		let lastBotPlay = this.stateManager.film.getPreviousPlay();
-		let lastPlayerPlay = this.stateManager.film.getBeforePreviousPlay();
-		if (lastBotPlay) {
-			this.board.board[lastBotPlay.to.z][lastBotPlay.to.x][2] = ' ';
+		if (!this.beganUndoAnimation) {
+			let lastBotPlay = this.stateManager.film.getPreviousPlay();
+			let lastPlayerPlay = this.stateManager.film.getBeforePreviousPlay();
+			if (lastBotPlay) {
+				this.board.board[lastBotPlay.to.z][lastBotPlay.to.x][2] = ' ';
 
-			if (lastBotPlay.struct === 'colony') {
-				this.board.pushAuxColony(lastBotPlay.faction);
+				if (lastBotPlay.struct === 'colony') {
+					this.board.pushAuxColony(lastBotPlay.faction);
 
-				let src = this.board.getAuxColonyPosition(lastBotPlay.faction);
-				let dest = this.board.getScenePosition(lastBotPlay.to);
-				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+					let src = this.board.getAuxColonyPosition(lastBotPlay.faction);
+					let dest = this.board.getScenePosition(lastBotPlay.to);
+					let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
 
-				this.board.getAuxColony(lastBotPlay.faction).animation = new HopAnimation(1, dest, src);
-				this.board.getAuxColony(lastBotPlay.faction).undoAnimationOffset = pls;
-				this.board.getAuxColony(lastBotPlay.faction).animation.play();
+					this.board.getAuxColony(lastBotPlay.faction).animation = new HopAnimation(1, dest, src);
+					this.board.getAuxColony(lastBotPlay.faction).undoAnimationOffset = pls;
+					this.board.getAuxColony(lastBotPlay.faction).animation.play();
+					this.beganUndoAnimation = true;
+				} else {
+					this.board.pushAuxTradeStation(lastBotPlay.faction);
+
+					let src = this.board.getAuxColonyPosition(lastBotPlay.faction);
+					let dest = this.board.getScenePosition(lastBotPlay.to);
+					let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+					this.board.getAuxTradeStation(lastBotPlay.faction).animation = new HopAnimation(1, dest, src);
+					this.board.getAuxTradeStation(lastBotPlay.faction).undoAnimationOffset = pls;
+					this.board.getAuxTradeStation(lastBotPlay.faction).animation.play();
+					this.beganUndoAnimation = true;
+				}
+
+				this.board.getShipAt(lastBotPlay.to).animation = new HopAnimation(1, this.board.getScenePosition(lastBotPlay.to), this.board.getScenePosition(lastBotPlay.from));
+				this.board.getShipAt(lastBotPlay.to).animation.play();
 				this.beganUndoAnimation = true;
+
+				this.board.board[lastPlayerPlay.to.z][lastPlayerPlay.to.x][2] = ' ';
+
+				if (lastPlayerPlay.struct === 'colony') {
+					this.board.pushAuxColony(lastPlayerPlay.faction);
+
+					let src = this.board.getAuxColonyPosition(lastPlayerPlay.faction);
+					let dest = this.board.getScenePosition(lastPlayerPlay.to);
+					let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+					this.board.getAuxColony(lastPlayerPlay.faction).animation = new HopAnimation(1, dest, src);
+					this.board.getAuxColony(lastPlayerPlay.faction).undoAnimationOffset = pls;
+					this.board.getAuxColony(lastPlayerPlay.faction).animation.play();
+					this.beganUndoAnimation = true;
+				} else {
+					this.board.pushAuxTradeStation(lastPlayerPlay.faction);
+
+					let src = this.board.getAuxTradeStationPosition(lastPlayerPlay.faction);
+					let dest = this.board.getScenePosition(lastPlayerPlay.to);
+					let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+					this.board.getAuxTradeStation(lastPlayerPlay.faction).animation = new HopAnimation(1, dest, src);
+					this.board.getAuxTradeStation(lastPlayerPlay.faction).undoAnimationOffset = pls;
+					this.board.getAuxTradeStation(lastPlayerPlay.faction).animation.play();
+					this.beganUndoAnimation = true;
+				}
 			} else {
-				this.board.pushAuxTradeStation(lastBotPlay.faction);
-
-				let src = this.board.getAuxColonyPosition(lastBotPlay.faction);
-				let dest = this.board.getScenePosition(lastBotPlay.to);
-				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
-
-				this.board.getAuxTradeStation(lastBotPlay.faction).animation = new HopAnimation(1, dest, src);
-				this.board.getAuxTradeStation(lastBotPlay.faction).undoAnimationOffset = pls;
-				this.board.getAuxTradeStation(lastBotPlay.faction).animation.play();
-				this.beganUndoAnimation = true;
+				this.stateManager.overlay.alert('Can\'t undo anymore', 700);
 			}
-
-			this.board.getShipAt(lastBotPlay.to).animation = new HopAnimation(1, this.board.getScenePosition(lastBotPlay.to), this.board.getScenePosition(lastBotPlay.from));
-			this.board.getShipAt(lastBotPlay.to).animation.play();
-			this.beganUndoAnimation = true;
-
-			this.board.board[lastPlayerPlay.to.z][lastPlayerPlay.to.x][2] = ' ';
-
-			if (lastPlayerPlay.struct === 'colony') {
-				this.board.pushAuxColony(lastPlayerPlay.faction);
-
-				let src = this.board.getAuxColonyPosition(lastPlayerPlay.faction);
-				let dest = this.board.getScenePosition(lastPlayerPlay.to);
-				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
-
-				this.board.getAuxColony(lastPlayerPlay.faction).animation = new HopAnimation(1, dest, src);
-				this.board.getAuxColony(lastPlayerPlay.faction).undoAnimationOffset = pls;
-				this.board.getAuxColony(lastPlayerPlay.faction).animation.play();
-				this.beganUndoAnimation = true;
-			} else {
-				this.board.pushAuxTradeStation(lastPlayerPlay.faction);
-
-				let src = this.board.getAuxTradeStationPosition(lastPlayerPlay.faction);
-				let dest = this.board.getScenePosition(lastPlayerPlay.to);
-				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
-
-				this.board.getAuxTradeStation(lastPlayerPlay.faction).animation = new HopAnimation(1, dest, src);
-				this.board.getAuxTradeStation(lastPlayerPlay.faction).undoAnimationOffset = pls;
-				this.board.getAuxTradeStation(lastPlayerPlay.faction).animation.play();
-				this.beganUndoAnimation = true;
-			}
-		} else {
-			this.stateManager.overlay.alert('Can\'t undo anymore', 700);
 		}
 	}
 
@@ -548,11 +550,13 @@ class StructBuildStatePvCPU extends State {
 	}
 
 	undo() {
-		this.stateManager.overlay.updateTip('');
-		let play = this.stateManager.film.getPlay();
-		this.board.getShipAt(play.to).animation = new HopAnimation(1, this.board.getScenePosition(play.to), this.board.getScenePosition(play.from));
-		this.board.getShipAt(play.to).animation.play();
-		this.beganUndoAnimation = true;
+		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
+			this.stateManager.overlay.updateTip('');
+			let play = this.stateManager.film.getPlay();
+			this.board.getShipAt(play.to).animation = new HopAnimation(1, this.board.getScenePosition(play.to), this.board.getScenePosition(play.from));
+			this.board.getShipAt(play.to).animation.play();
+			this.beganUndoAnimation = true;
+		}
 	}
 }
 
@@ -604,14 +608,15 @@ class GameOverStatePvCPU extends State {
 }
 
 class PvCPU extends State {
-	constructor(stateManager, scene) {
+	constructor(stateManager, scene, overlay, gui) {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
-		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.overlay = overlay;
 		this.gameStateManager.film = new GameFilm();
+
+		this.gameStateManager.overlay.showScore();
 		this.gameStateManager.overlay.beginTimer();
-		this.gameStateManager.overlay.hideStopWatch();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();
@@ -626,6 +631,12 @@ class PvCPU extends State {
 		
 		// FIXME: A dificuldade deve ser passada como parametro
 		this.gameStateManager.pushState(new LoadStatePvCPU(this.gameStateManager, this.scene, new Board(scene), 'factionOne', 'hard'));
+
+		this.gui = gui;
+		let actions = this.gui.addFolder('Actions');
+		actions.add(this, 'Menu');
+		actions.add(this, 'Undo');
+		actions.open();
 	}
 
 	draw() {
@@ -654,5 +665,25 @@ class PvCPU extends State {
 		this.camera.target = camera.target;
 		this.camera.direction = camera.direction;
 		this.camera._up = camera._up;
+	}
+
+	removeFolder(gui, name) {
+		let folder = gui.__folders[name];
+		if (!folder) return;
+		folder.close();
+		gui.__ul.removeChild(folder.domElement.parentNode);
+		delete gui.__folders[name];
+		gui.onResize();
+	}
+
+	Menu() {
+		this.removeFolder(this.gui, 'Actions');
+		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
+	}
+	
+	Undo() {
+		if (this.gameStateManager.getCurrentState().undo) {
+			this.gameStateManager.getCurrentState().undo();
+		}
 	}
 }

@@ -122,36 +122,38 @@ class ShipPickStatePvP extends State {
 	}
 
 	undo() {
-		let play = this.stateManager.film.getPreviousPlay();
-		if (play) {
-			this.board.board[play.to.z][play.to.x][2] = ' ';
-			this.stateManager.beginCameraRotation();
+		if (!this.beganUndoAnimation) {
+			let play = this.stateManager.film.getPreviousPlay();
+			if (play) {
+				this.board.board[play.to.z][play.to.x][2] = ' ';
+				this.stateManager.beginCameraRotation();
 
-			if (play.struct === 'colony') {
-				this.board.pushAuxColony(play.faction);
+				if (play.struct === 'colony') {
+					this.board.pushAuxColony(play.faction);
 
-				let src = this.board.getAuxColonyPosition(play.faction);
-				let dest = this.board.getScenePosition(play.to);
-				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
-				
-				this.board.getAuxColony(play.faction).animation = new HopAnimation(1, dest, src);
-				this.board.getAuxColony(play.faction).undoAnimationOffset = pls;
-				this.board.getAuxColony(play.faction).animation.play();
-				this.beganUndoAnimation = true;
+					let src = this.board.getAuxColonyPosition(play.faction);
+					let dest = this.board.getScenePosition(play.to);
+					let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+					
+					this.board.getAuxColony(play.faction).animation = new HopAnimation(1, dest, src);
+					this.board.getAuxColony(play.faction).undoAnimationOffset = pls;
+					this.board.getAuxColony(play.faction).animation.play();
+					this.beganUndoAnimation = true;
+				} else {
+					this.board.pushAuxTradeStation(play.faction);
+
+					let src = this.board.getAuxTradeStationPosition(play.faction);
+					let dest = this.board.getScenePosition(play.to);
+					let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
+
+					this.board.getAuxTradeStation(play.faction).animation = new HopAnimation(1, dest, src);
+					this.board.getAuxTradeStation(play.faction).undoAnimationOffset = pls;
+					this.board.getAuxTradeStation(play.faction).animation.play();
+					this.beganUndoAnimation = true;
+				}
 			} else {
-				this.board.pushAuxTradeStation(play.faction);
-
-				let src = this.board.getAuxTradeStationPosition(play.faction);
-				let dest = this.board.getScenePosition(play.to);
-				let pls = {x: dest.x - src.x, y: dest.y - src.y, z: dest.z - src.z};
-
-				this.board.getAuxTradeStation(play.faction).animation = new HopAnimation(1, dest, src);
-				this.board.getAuxTradeStation(play.faction).undoAnimationOffset = pls;
-				this.board.getAuxTradeStation(play.faction).animation.play();
-				this.beganUndoAnimation = true;
+				this.stateManager.overlay.alert('Can\'t undo anymore', 700);
 			}
-		} else {
-			this.stateManager.overlay.alert('Can\'t undo anymore', 700);
 		}
 	}
 
@@ -371,11 +373,13 @@ class StructBuildStatePvP extends State {
 	}
 
 	undo() {
-		this.stateManager.overlay.updateTip('');
-		let play = this.stateManager.film.getPlay();
-		this.board.getShipAt(play.to).animation = new HopAnimation(1, this.board.getScenePosition(play.to), this.board.getScenePosition(play.from));
-		this.board.getShipAt(play.to).animation.play();
-		this.beganUndoAnimation = true;
+		if (!this.beganColonyAnimation && !this.beganTradeStationAnimation && !this.beganUndoAnimation) {
+			this.stateManager.overlay.updateTip('');
+			let play = this.stateManager.film.getPlay();
+			this.board.getShipAt(play.to).animation = new HopAnimation(1, this.board.getScenePosition(play.to), this.board.getScenePosition(play.from));
+			this.board.getShipAt(play.to).animation.play();
+			this.beganUndoAnimation = true;
+		}
 	}
 }
 
@@ -429,7 +433,7 @@ class GameOverStatePvP extends State {
 }
 
 class PvP extends State {
-	constructor(stateManager, scene) {
+	constructor(stateManager, scene, overlay, gui) {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
@@ -439,8 +443,11 @@ class PvP extends State {
 		let from = vec3.fromValues(to[0], to[1] + 20, to[2] - 15);
 
 		this.gameStateManager.camera = new CGFcamera(Math.PI/2, 0.1, 100.0, from, to);
-		this.gameStateManager.overlay = new Overlay();
-		this.gameStateManager.film = new GameFilm(); 
+		this.gameStateManager.overlay = overlay;
+		this.gameStateManager.film = new GameFilm();
+
+		this.gameStateManager.overlay.showScore();
+		this.gameStateManager.overlay.showStopWatch();
 		this.gameStateManager.overlay.beginTimer();
 
 		let self = this;
@@ -461,6 +468,12 @@ class PvP extends State {
 
 		this.angle = 1000;
 		this.angularstep = 0.15;
+
+		this.gui = gui;
+		let actions = this.gui.addFolder('Actions');
+		actions.add(this, 'Menu');
+		actions.add(this, 'Undo');
+		actions.open();
 	}
 
 	draw() {
@@ -512,6 +525,26 @@ class PvP extends State {
 		this.gameStateManager.camera.target = camera.target;
 		this.gameStateManager.camera.direction = camera.direction;
 		this.gameStateManager.camera._up = camera._up;
+	}
+
+	removeFolder(gui, name) {
+		let folder = gui.__folders[name];
+		if (!folder) return;
+		folder.close();
+		gui.__ul.removeChild(folder.domElement.parentNode);
+		delete gui.__folders[name];
+		gui.onResize();
+	}
+
+	Menu() {
+		this.removeFolder(this.gui, 'Actions');
+		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
+	}
+
+	Undo() {
+		if (this.gameStateManager.getCurrentState().undo) {
+			this.gameStateManager.getCurrentState().undo();
+		}
 	}
 }
 

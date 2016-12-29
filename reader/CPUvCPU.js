@@ -239,14 +239,15 @@ class GameOverStateCPUvCPU extends State {
 }
 
 class CPUvCPU extends State {
-	constructor(stateManager, scene) {
+	constructor(stateManager, scene, overlay, gui) {
 		super(stateManager, scene);
 
 		this.gameStateManager = new StateManager();
-		this.gameStateManager.overlay = new Overlay();
+		this.gameStateManager.overlay = overlay;
 		this.gameStateManager.film = new GameFilm();
+
+		this.gameStateManager.overlay.showScore();
 		this.gameStateManager.overlay.beginTimer();
-		this.gameStateManager.overlay.hideStopWatch();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();
@@ -261,6 +262,11 @@ class CPUvCPU extends State {
 		
 		// FIXME: A dificuldade deve ser passada como parametro
 		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, new Board(scene), 'factionOne', 'hard'));
+
+		this.gui = gui;
+		let actions = this.gui.addFolder('Actions');
+		actions.add(this, 'Menu');
+		actions.open();
 	}
 
 	draw() {
@@ -286,5 +292,19 @@ class CPUvCPU extends State {
 		this.camera.target = camera.target;
 		this.camera.direction = camera.direction;
 		this.camera._up = camera._up;
+	}
+
+	removeFolder(gui, name) {
+		let folder = gui.__folders[name];
+		if (!folder) return;
+		folder.close();
+		gui.__ul.removeChild(folder.domElement.parentNode);
+		delete gui.__folders[name];
+		gui.onResize();
+	}
+
+	Menu() {
+		this.removeFolder(this.gui, 'Actions');
+		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
 	}
 }

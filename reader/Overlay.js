@@ -1,5 +1,8 @@
 class Overlay {
 	constructor() {
+		this.scoreBlueElement = document.getElementById('score-blue');
+		this.scoreYellowElement = document.getElementById('score-yellow');
+		
 		this.scoreFactionOneElement = document.getElementById('score-one');
 		this.scoreFactionTwoElement = document.getElementById('score-two');
 
@@ -124,6 +127,16 @@ class Overlay {
 		});
 	}
 
+	hideScore() {
+		this.scoreBlueElement.style.display = 'none';
+		this.scoreYellowElement.style.display = 'none';
+	}
+
+	showScore() {
+		this.scoreBlueElement.style.display = 'block';
+		this.scoreYellowElement.style.display = 'block';
+	}
+
 	getScore(faction) {
 		if (faction === 'factionOne') {
 			return this.scoreFactionOneNode.nodeValue;
@@ -164,6 +177,10 @@ class Overlay {
 		this.alertEnabled = true;
 		this.alertElement.style.display = 'inline-block';
 		this.alertTextNode.nodeValue = text;
+	}
+
+	endAlert() {
+		this.alertElapsed = this.alertDuration;
 	}
 
 	beginStopWatch(faction) {
@@ -208,8 +225,15 @@ class Overlay {
 	}
 
 	hideStopWatch() {
+		this.stopWatchBlueDisplay = this.stopwatchBlueElement.style.display;
+		this.stopWatchYellowDisplay = this.stopwatchYellowElement.style.display;
+		
 		this.stopwatchBlueElement.style.display = 'none';
 		this.stopwatchYellowElement.style.display = 'none';
 	}
 
+	showStopWatch() {
+		this.stopwatchBlueElement.style.display = this.stopWatchBlueDisplay;
+		this.stopwatchYellowElement.style.display = this.stopWatchYellowDisplay;
+	}
 }
