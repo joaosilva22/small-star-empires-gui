@@ -475,11 +475,11 @@ class PvP extends State {
 		this.angularstep = 0.15;
 
 		this.gui = gui;
-		let actions = this.gui.addFolder('Actions');
-		actions.add(this, 'Menu');
-		actions.add(this, 'Undo');
+		this.actions = this.gui.addFolder('Actions');
+		this.actions.add(this, 'Menu');
+		this.actions.add(this, 'Undo');
 		this.filmAvailable = false;
-		actions.open();
+		this.actions.open();
 	}
 
 	draw() {
@@ -509,7 +509,7 @@ class PvP extends State {
 			this.timeout = true;
 		}
 
-		if (!this.filmAvailable && this.gameStateManager.finished) {
+		if (!this.filmAvailable && this.gameStateManager.finished && this.gameStateManager.film.current !== 0) {
 			this.actions.add(this, 'Replay');
 			this.filmAvailable = true;
 		}

@@ -514,6 +514,9 @@ class AuxiliaryBoard extends CGFobject {
 		this.board = board;
 		this.faction = faction;
 
+		this.box = new Box(scene, 1, 0.25, 6);
+		this.boxTexture = new CGFtexture(this.scene, 'resources/relaig/aux.png'),
+
 		this.colonies = [];
 		for (let i = 0; i < 18; i++) {
 			this.colonies.push(new Colony(scene, faction));
@@ -539,6 +542,12 @@ class AuxiliaryBoard extends CGFobject {
 			this.tradeStations[i].display(this.board.textures);
 			this.scene.popMatrix();
 		}
+
+		this.scene.pushMatrix();
+		this.scene.translate(0, -0.125, 3.5);
+		this.boxTexture.bind();
+		this.box.display();
+		this.scene.popMatrix();
 	}
 
 	update(dt) {

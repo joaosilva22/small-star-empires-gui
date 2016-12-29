@@ -143,6 +143,7 @@ class Replay extends State {
 
 		this.replayStateManager.overlay.showScore();
 		this.replayStateManager.overlay.beginTimer();
+		this.replayStateManager.overlay.showReplay();
 
 		this.board = new Board(scene);
 		let to = this.board.getBoardCenter();

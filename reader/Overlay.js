@@ -61,6 +61,13 @@ class Overlay {
 
 		this.updateTip('');
 		this.updateWinner('');
+
+		this.replayTextElement = document.getElementById('replay-text');
+		this.replayTextNode = document.createTextNode('[REPLAY]');
+		this.replayTextElement.appendChild(this.replayTextNode);
+		this.replayTextDisplay = this.replayTextElement.style.display;
+
+		this.hideReplay();
 	}
 
 	update(dt) {
@@ -239,5 +246,13 @@ class Overlay {
 
 	setStopWatchDuration(duration) {
 		this.stopwatchDuration = duration * 1000;
+	}
+
+	showReplay() {
+		this.replayTextElement.style.display = this.replayTextDisplay;
+	}
+
+	hideReplay() {
+		this.replayTextElement.style.display = 'none';
 	}
 }

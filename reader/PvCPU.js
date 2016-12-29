@@ -636,11 +636,11 @@ class PvCPU extends State {
 		this.gameStateManager.overlay.updateScore(this.board);
 
 		this.gui = gui;
-		let actions = this.gui.addFolder('Actions');
-		actions.add(this, 'Menu');
-		actions.add(this, 'Undo');
+		this.actions = this.gui.addFolder('Actions');
+		this.actions.add(this, 'Menu');
+		this.actions.add(this, 'Undo');
 		this.filmAvailable = false;
-		actions.open();
+		this.actions.open();
 	}
 
 	draw() {
