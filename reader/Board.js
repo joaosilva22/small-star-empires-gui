@@ -195,10 +195,18 @@ class Board extends CGFobject{
 				if (this.getMovementLayer(this.board[i][j]) === 'A') {
 					this.ships.push(new Ship(this.scene, 'factionOne', {x: j, z: i}));
 				}
-				if (this.getMovementLayer(this.board[i][j][0]) === 'B') {
+				if (this.getMovementLayer(this.board[i][j]) === 'B') {
 					this.ships.push(new Ship(this.scene, 'factionTwo', {x: j, z: i}));
 				}
 			}
+		}
+	}
+
+	placeShipAt(position, faction) {
+		if (faction === 'factionOne') {
+			this.board[position.z][position.x][0] = 'A';
+		} else {
+			this.board[position.z][position.x][0] = 'B';
 		}
 	}
 

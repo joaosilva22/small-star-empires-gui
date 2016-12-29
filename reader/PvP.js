@@ -425,6 +425,7 @@ class GameOverStatePvP extends State {
 		}
 
 		this.stateManager.overlay.endTimer();
+		this.stateManager.finished = true;
 	}
 
 	draw() {
@@ -476,6 +477,7 @@ class PvP extends State {
 		let actions = this.gui.addFolder('Actions');
 		actions.add(this, 'Menu');
 		actions.add(this, 'Undo');
+		this.filmAvailable = false;
 		actions.open();
 	}
 
@@ -504,6 +506,11 @@ class PvP extends State {
 			this.gameStateManager.overlay.setScore(this.currentFaction, -1);
 			this.gameStateManager.pushState(new GameOverStatePvP(this.gameStateManager, this.scene, this.board));
 			this.timeout = true;
+		}
+
+		if (!this.filmAvailable && this.gameStateManager.finished) {
+			this.actions.add(this, 'Replay');
+			this.filmAvailable = true;
 		}
 	}
 
@@ -548,6 +555,11 @@ class PvP extends State {
 		if (this.gameStateManager.getCurrentState().undo) {
 			this.gameStateManager.getCurrentState().undo();
 		}
+	}
+
+	Replay() {
+		this.removeFolder(this.gui, 'Actions');
+		this.stateManager.pushState(new Replay(this.stateManager, this.scene, this.gameStateManager.film, this.gameStateManager.overlay, this.gui));
 	}
 }
 

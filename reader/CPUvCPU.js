@@ -231,6 +231,7 @@ class GameOverStateCPUvCPU extends State {
 		}
 
 		this.stateManager.overlay.endTimer();
+		this.stateManager.finished = true;
 	}
 
 	draw() {
@@ -262,15 +263,14 @@ class CPUvCPU extends State {
 		this.scene.interface.setActiveCamera(null);
 		this.scene.camera = this.camera;
 		
-		// FIXME: A dificuldade deve ser passada como parametro
 		this.gameStateManager.pushState(new LoadStateCPUvCPU(this.gameStateManager, this.scene, this.board, 'factionOne', difficulty));
-
 		this.gameStateManager.overlay.updateScore(this.board);
 
 		this.gui = gui;
-		let actions = this.gui.addFolder('Actions');
-		actions.add(this, 'Menu');
-		actions.open();
+		this.actions = this.gui.addFolder('Actions');
+		this.actions.add(this, 'Menu');
+		this.filmAvailable = false;
+		this.actions.open();
 	}
 
 	draw() {
@@ -280,6 +280,11 @@ class CPUvCPU extends State {
 	update(dt) {
 		this.gameStateManager.update(dt);
 		this.gameStateManager.overlay.update(dt);
+
+		if (!this.filmAvailable && this.gameStateManager.finished) {
+			this.actions.add(this, 'Replay');
+			this.filmAvailable = true;
+		}
 	}
 
 	handleInput(keycode) {	
@@ -310,5 +315,10 @@ class CPUvCPU extends State {
 	Menu() {
 		this.removeFolder(this.gui, 'Actions');
 		this.stateManager.changeState(new Menu(this.stateManager, this.scene, this.gameStateManager.overlay, this.gui));
+	}
+
+	Replay() {
+		this.removeFolder(this.gui, 'Actions');
+		this.stateManager.pushState(new Replay(this.stateManager, this.scene, this.gameStateManager.film, this.gameStateManager.overlay, this.gui));
 	}
 }

@@ -600,6 +600,7 @@ class GameOverStatePvCPU extends State {
 		}
 
 		this.stateManager.overlay.endTimer();
+		this.stateManager.finished = true;
 	}
 
 	draw() {
@@ -631,7 +632,6 @@ class PvCPU extends State {
 		this.scene.camera = this.camera;
 		this.scene.interface.setActiveCamera(this.camera);
 		
-		// FIXME: A dificuldade deve ser passada como parametro
 		this.gameStateManager.pushState(new LoadStatePvCPU(this.gameStateManager, this.scene, this.board, 'factionOne', difficulty));
 		this.gameStateManager.overlay.updateScore(this.board);
 
@@ -639,6 +639,7 @@ class PvCPU extends State {
 		let actions = this.gui.addFolder('Actions');
 		actions.add(this, 'Menu');
 		actions.add(this, 'Undo');
+		this.filmAvailable = false;
 		actions.open();
 	}
 
@@ -650,6 +651,11 @@ class PvCPU extends State {
 	update(dt) {
 		this.gameStateManager.update(dt);
 		this.gameStateManager.overlay.update(dt);
+
+		if (!this.filmAvailable && this.gameStateManager.finished) {
+			this.actions.add(this, 'Replay');
+			this.filmAvailable = true;
+		}
 	}
 
 	handleInput(keycode) {
@@ -688,5 +694,10 @@ class PvCPU extends State {
 		if (this.gameStateManager.getCurrentState().undo) {
 			this.gameStateManager.getCurrentState().undo();
 		}
+	}
+
+	Replay() {
+		this.removeFolder(this.gui, 'Actions');
+		this.stateManager.pushState(new Replay(this.stateManager, this.scene, this.gameStateManager.film, this.gameStateManager.overlay, this.gui));
 	}
 }

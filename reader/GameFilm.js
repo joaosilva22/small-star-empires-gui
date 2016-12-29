@@ -57,8 +57,22 @@ class GameFilm {
 		return this.plays[this.current - 2];
 	}
 
+	goToBeginning() {
+		this.current = 0;
+	}
+
 	goBackOne() {
 		if (this.current < 1) return;
 		this.current -= 1;
+	}
+
+	goForwardOne() {
+		if (this.current > this.plays.length - 2) return;
+		this.current += 1;
+	}
+
+	hasNext() {
+		if (this.current < this.plays.length - 1) return true;
+		return false;
 	}
 }
